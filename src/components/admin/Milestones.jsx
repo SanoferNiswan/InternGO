@@ -10,7 +10,7 @@ const Milestones = () => {
   const { token } = useSelector((state) => state.auth);
   const [planDetails, setPlanDetails] = useState({
     name: "",
-    planDays: 0,
+    planDays: null,
     description: "",
   });
   const [listOfMilestone, setListOfMilestone] = useState([]);
@@ -25,7 +25,7 @@ const Milestones = () => {
     description: "",
     objectiveDays: 0,
     noOfInteractions: 0,
-    roadmapType: "CUSTOM",
+    roadmapType: "DEFAULT",
     milestoneId: null,
   });
 
@@ -87,7 +87,7 @@ const Milestones = () => {
       alert(JSON.stringify(newMilestone));
 
       // Reset form
-      setNewMilestone({ name: "", mentorName: "", milestoneDays: 0 });
+      setNewMilestone({ name: "", mentorName: "", milestoneDays: null });
     } catch (error) {
       console.error("Error adding milestone:", error);
     }
@@ -190,7 +190,7 @@ const Milestones = () => {
             {/* Milestone Header */}
             <div className="bg-white p-2 shadow-lg rounded-lg">
               <div>
-                <p className="p-2 font-bold">Milestone milestone id </p>
+                <p className="p-2 font-bold">Milestone {milestone.id} </p>
               </div>
               <div className="flex justify-between items-center border-b pb-2">
                 <div className="relative">
@@ -228,7 +228,7 @@ const Milestones = () => {
                     placeholder=" "
                   />
                   <label className="absolute text-md text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-5 origin-[0] bg-white px-2 ml-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">
-                    Number of Days
+                    Days
                   </label>
                 </div>
 
@@ -466,7 +466,7 @@ const Milestones = () => {
 
               <div className="flex justify-around w-1/6">
               <button
-                onClick={addMilestone}
+                onClick={(e)=>{e.target.disabled = true; addMilestone()}}
                 className="text-sm bg-gray-700 text-white px-3 py-1 rounded hover:bg-gray-900"
               >
                 Save
