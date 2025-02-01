@@ -11,6 +11,6 @@ const UserDetail = () => {
       <Profile userId={id} token={token} />
     </div>
   )
-}
+} 
 
 export default UserDetail

@@ -29,7 +29,7 @@ const Resources = () => {
       const response = await axios.post(`/api/users?limit=6&offset=${(currentPage - 1) * 6}`,{}, {
         headers: {
           Authorization: `Bearer ${token}`,
-        },
+        }, 
       });
       setUsers(response.data.data.data);
       console.log(response.data.data.data);

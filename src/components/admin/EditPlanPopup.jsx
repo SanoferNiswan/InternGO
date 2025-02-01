@@ -31,7 +31,7 @@ const EditPlanPopup = ({ planDetails, onClose, onUpdate, token }) => {
       const response = await axios.patch(
         `/api/plans/${planDetails?.id}/update`,
         { ...updatedPlan },
-        {
+        { 
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
