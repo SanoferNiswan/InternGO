@@ -18,7 +18,7 @@ const Milestones = () => {
   const [newMilestone, setNewMilestone] = useState({
     name: "",
     mentorName: "",
-    milestoneDays: null
+    milestoneDays: null,
   });
   const [newObjective, setNewObjective] = useState({
     name: "",
@@ -45,10 +45,6 @@ const Milestones = () => {
 
         setPlanDetails(response.data.data);
         setListOfMilestone(response.data.data.milestones);
-        // setListOfMilestone((prev) => [
-        //   ...(prev || []),
-        //   ...response.data.data.milestones,
-        // ]);
       } catch (error) {
         console.error("Error fetching plan details:", error);
       }
@@ -122,7 +118,7 @@ const Milestones = () => {
           objectives: [...milestone.objectives, objectiveData],
         };
       }
-      return milestone; 
+      return milestone;
     });
     setShowObjectiveForm(null);
     setListOfMilestone(newMilestone_data);
@@ -149,6 +145,136 @@ const Milestones = () => {
       });
     } catch (error) {
       console.error("Error adding objective:", error);
+    }
+  };
+
+  const handleMilestoneChange = (e, milestoneId, field) => {
+    const { value } = e.target;
+
+    // Update the milestone in state
+    setListOfMilestone((prevMilestones) =>
+      prevMilestones.map((milestone) =>
+        milestone.id === milestoneId
+          ? { ...milestone, [field]: value }
+          : milestone
+      )
+    );
+  };
+
+  const handleUpdateMilestone = async (milestone) => {
+    try {
+      const response = await axios.patch(
+        `/api/plans/${planId}/update/milestone/${milestone.id}`,
+        {
+          name: milestone.name,
+          mentorName: milestone.mentorName,
+          milestoneDays: milestone.milestoneDays,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      console.log("Milestone updated:", response.data);
+    } catch (error) {
+      console.error("Error updating milestone:", error);
+    }
+  };
+
+  const handleDeleteMilestone = async (milestoneId) => {
+    if (
+      !window.confirm(
+        `Are you sure you want to delete this milestone? ${milestoneId} from plan ${planId}`
+      )
+    )
+      return;
+
+    try {
+      await axios.delete(
+        `/api/plans/${planId}/delete/milestone/${milestoneId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      setListOfMilestone((prevMilestones) =>
+        prevMilestones.filter((milestone) => milestone.id !== milestoneId)
+      );
+
+      console.log(`Milestone ${milestoneId} deleted`);
+    } catch (error) {
+      console.error("Error deleting milestone:", error);
+    }
+  };
+
+  const handleObjectiveChange = (e, milestoneId, objectiveId, field) => {
+    const { value } = e.target;
+
+    // Update state immediately
+    setListOfMilestone((prevMilestones) =>
+      prevMilestones.map((milestone) =>
+        milestone.id === milestoneId
+          ? {
+              ...milestone,
+              objectives: milestone.objectives.map((objective) =>
+                objective.id === objectiveId
+                  ? { ...objective, [field]: value }
+                  : objective
+              ),
+            }
+          : milestone
+      )
+    );
+  };
+
+  const handleUpdateObjective = async (milestoneId, objective) => {
+    try {
+      const response = await axios.patch(
+        `/api/plans/${planId}/update/objective/${objective.id}`,
+        {
+          milestoneId,
+          objectiveData: {
+            name: objective.name,
+            mentorName: objective.mentorName,
+            milestoneDays: objective.milestoneDays,
+          },
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      console.log("Objective updated:", response.data);
+    } catch (error) {
+      console.error("Error updating objective:", error);
+    }
+  };
+
+  const handleDeleteObjective = async (milestoneId, objectiveId) => {
+    if (!window.confirm("Are you sure you want to delete this objective?"))
+      return;
+
+    try {
+      await axios.delete(
+        `/api/plans/${planId}/delete/objective/${objectiveId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      // Remove objective from state
+      setListOfMilestone((prevMilestones) =>
+        prevMilestones.map((milestone) =>
+          milestone.id === milestoneId
+            ? {
+                ...milestone,
+                objectives: milestone.objectives.filter(
+                  (objective) => objective.id !== objectiveId
+                ),
+              }
+            : milestone
+        )
+      );
+
+      console.log(`Objective ${objectiveId} deleted`);
+    } catch (error) {
+      console.error("Error deleting objective:", error);
     }
   };
 
@@ -190,49 +316,62 @@ const Milestones = () => {
             {/* Milestone Header */}
             <div className="bg-white p-2 shadow-lg rounded-lg">
               <div>
-                <p className="p-2 font-bold">Milestone {milestone.id} </p>
+                <p className="p-2 font-bold">Milestone {milestone.id}</p>
               </div>
               <div className="flex justify-between items-center border-b pb-2">
+                {/* Name */}
                 <div className="relative">
                   <input
                     type="text"
                     value={milestone.name}
-                    onChange={() => {}}
-                    className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" "
+                    onChange={(e) =>
+                      handleMilestoneChange(e, milestone.id, "name")
+                    }
+                    onBlur={() => handleUpdateMilestone(milestone)}
+                    className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                   />
-                  <label className="absolute text-md text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-5 origin-[0] bg-white px-2 ml-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">
+                  <label className="absolute text-md text-gray-500 transform -translate-y-4 scale-75 top-2 z-5 bg-white px-2 ml-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-focus:scale-75 peer-focus:top-2 peer-focus:text-blue-600">
                     Name
                   </label>
                 </div>
 
+                {/* Mentor Name */}
                 <div className="relative">
                   <input
                     type="text"
                     value={milestone.mentorName}
-                    onChange={() => {}}
-                    className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" "
+                    onChange={(e) =>
+                      handleMilestoneChange(e, milestone.id, "mentorName")
+                    }
+                    onBlur={() => handleUpdateMilestone(milestone)}
+                    className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                   />
-                  <label className="absolute text-md text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-5 origin-[0] bg-white px-2 ml-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">
+                  <label className="absolute text-md text-gray-500 transform -translate-y-4 scale-75 top-2 z-5 bg-white px-2 ml-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-focus:scale-75 peer-focus:top-2 peer-focus:text-blue-600">
                     Mentor Name
                   </label>
                 </div>
 
+                {/* Number of Days */}
                 <div className="relative">
                   <input
                     type="number"
                     value={milestone.milestoneDays}
-                    onChange={() => {}}
-                    className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                    placeholder=" "
+                    onChange={(e) =>
+                      handleMilestoneChange(e, milestone.id, "milestoneDays")
+                    }
+                    onBlur={() => handleUpdateMilestone(milestone)}
+                    className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
                   />
-                  <label className="absolute text-md text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-5 origin-[0] bg-white px-2 ml-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">
+                  <label className="absolute text-md text-gray-500 transform -translate-y-4 scale-75 top-2 z-5 bg-white px-2 ml-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-focus:scale-75 peer-focus:top-2 peer-focus:text-blue-600">
                     Days
                   </label>
                 </div>
 
-                <button className="text-red-600 hover:text-red-800 pr-10">
+                {/* Delete Button */}
+                <button
+                  className="text-red-600 hover:text-red-800 pr-10"
+                  onClick={() => handleDeleteMilestone(milestone.id)}
+                >
                   <FaTrash />
                 </button>
               </div>
@@ -257,46 +396,161 @@ const Milestones = () => {
                 </thead>
                 <tbody>
                   {(milestone.objectives || []).map((objective) => (
+                    // <tr key={objective.id} className="border-b">
+                    //   <td>
+                    //     <input
+                    //       type="text"
+                    //       value={objective.name}
+                    //       className="border px-2 py-1 rounded w-full"
+                    //     />
+                    //   </td>
+                    //   <td>
+                    //     <input
+                    //       type="text"
+                    //       value={objective.description}
+                    //       className="border px-2 py-1 rounded w-full"
+                    //     />
+                    //   </td>
+                    //   <td>
+                    //     <input
+                    //       type="number"
+                    //       value={objective.objectiveDays}
+                    //       className="border px-2 py-1 rounded w-full"
+                    //     />
+                    //   </td>
+                    //   <td>
+                    //     <input
+                    //       type="number"
+                    //       value={objective.noOfInteractions}
+                    //       className="border px-2 py-1 rounded w-full"
+                    //     />
+                    //   </td>
+                    //   <td>
+                    //     <select
+                    //       value={objective.roadmapType}
+                    //       className="border px-2 py-1 rounded w-full"
+                    //     >
+                    //       <option value="CUSTOM">Custom</option>
+                    //       <option value="DEFAULT">Default</option>
+                    //     </select>
+                    //   </td>
+                    //   <td>
+                    //     <button className="text-red-600 hover:text-red-800 ml-6">
+                    //       <FaTrash />
+                    //     </button>
+                    //   </td>
+                    // </tr>
                     <tr key={objective.id} className="border-b">
+                      {/* Objective Name */}
                       <td>
                         <input
                           type="text"
                           value={objective.name}
+                          onChange={(e) =>
+                            handleObjectiveChange(
+                              e,
+                              milestone.id,
+                              objective.id,
+                              "name"
+                            )
+                          }
+                          onBlur={() =>
+                            handleUpdateObjective(milestone.id, objective)
+                          }
                           className="border px-2 py-1 rounded w-full"
                         />
                       </td>
+
+                      {/* Description */}
                       <td>
                         <input
                           type="text"
                           value={objective.description}
+                          onChange={(e) =>
+                            handleObjectiveChange(
+                              e,
+                              milestone.id,
+                              objective.id,
+                              "description"
+                            )
+                          }
+                          onBlur={() =>
+                            handleUpdateObjective(milestone.id, objective)
+                          }
                           className="border px-2 py-1 rounded w-full"
                         />
                       </td>
+
+                      {/* Days */}
                       <td>
                         <input
                           type="number"
                           value={objective.objectiveDays}
+                          onChange={(e) =>
+                            handleObjectiveChange(
+                              e,
+                              milestone.id,
+                              objective.id,
+                              "objectiveDays"
+                            )
+                          }
+                          onBlur={() =>
+                            handleUpdateObjective(milestone.id, objective)
+                          }
                           className="border px-2 py-1 rounded w-full"
                         />
                       </td>
+
+                      {/* Number of Interactions */}
                       <td>
                         <input
                           type="number"
                           value={objective.noOfInteractions}
+                          onChange={(e) =>
+                            handleObjectiveChange(
+                              e,
+                              milestone.id,
+                              objective.id,
+                              "noOfInteractions"
+                            )
+                          }
+                          onBlur={() =>
+                            handleUpdateObjective(milestone.id, objective)
+                          }
                           className="border px-2 py-1 rounded w-full"
                         />
                       </td>
+
+                      {/* Roadmap Type Dropdown */}
                       <td>
                         <select
                           value={objective.roadmapType}
+                          onChange={(e) =>
+                            handleObjectiveChange(
+                              e,
+                              milestone.id,
+                              objective.id,
+                              "roadmapType"
+                            )
+                          }
+                          onBlur={() =>
+                            handleUpdateObjective(milestone.id, objective)
+                          }
                           className="border px-2 py-1 rounded w-full"
                         >
                           <option value="CUSTOM">Custom</option>
                           <option value="DEFAULT">Default</option>
                         </select>
                       </td>
+
+                      {/* Delete Button */}
                       <td>
-                        <button className="text-red-600 hover:text-red-800 ml-6">
+                        <button
+                          className="text-red-600 hover:text-red-800 ml-6"
+                          onClick={() =>
+                            handleDeleteObjective(milestone.id, objective.id)
+                          }
+                        >
                           <FaTrash />
                         </button>
                       </td>
@@ -465,18 +719,21 @@ const Milestones = () => {
               </div>
 
               <div className="flex justify-around w-1/6">
-              <button
-                onClick={(e)=>{e.target.disabled = true; addMilestone()}}
-                className="text-sm bg-gray-700 text-white px-3 py-1 rounded hover:bg-gray-900"
-              >
-                Save
-              </button>
-              <button
-                onClick={()=>setShowMilestoneForm(false)}
-                className="text-sm bg-gray-700 text-white px-3 py-1 rounded hover:bg-gray-900"
-              >
-                cancel
-              </button>
+                <button
+                  onClick={(e) => {
+                    e.target.disabled = true;
+                    addMilestone();
+                  }}
+                  className="text-sm bg-gray-700 text-white px-3 py-1 rounded hover:bg-gray-900"
+                >
+                  Save
+                </button>
+                <button
+                  onClick={() => setShowMilestoneForm(false)}
+                  className="text-sm bg-gray-700 text-white px-3 py-1 rounded hover:bg-gray-900"
+                >
+                  cancel
+                </button>
               </div>
             </div>
           </div>
