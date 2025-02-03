@@ -10,7 +10,7 @@ const AddAssetModal = ({ isAssetModalOpen, setIsAssetModalOpen, userId }) => {
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post('/api/users/create/assets', {
+      const response = await axios.post('api/users/create/assets', {
         userId: userId,  
         assetType,
         assetName,

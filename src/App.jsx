@@ -19,6 +19,7 @@ import UserDetail from './components/admin/UserDetail';
 import NotFound from './pages/NotFound';
 import MyProfile from './components/common/MyProfile';
 import Milestones from './components/admin/Milestones';
+import Dashboard from './pages/dashboard/Dashboard';
  
 const App = () => {
     return (
@@ -30,13 +31,14 @@ const App = () => {
                 <Route path="*" element={<NotFound />} />
                 {/* Protected Dashboard Routes */}
                 <Route
-                path="/dashboard"
+                path="/dashboard" 
                 element={
                     <ProtectedRoute>
                         <DashboardLayout />
                     </ProtectedRoute>
                 }
                 >
+                    <Route index element={<Dashboard />} />
                     <Route path="daily-update" element={<DailyUpdate />} />
                     <Route path="feedback" element={<Feedback />} />
                     <Route path="help" element={<Help />} />

@@ -8,7 +8,7 @@ import { setAuth } from '../../redux/authSlice';
 const SignIn = () => {
 
   const dispatch = useDispatch();
-  const SIGNIN_URL = "/api/auth/signin";
+  const SIGNIN_URL = "/api/auth/signin"; 
   const [formData, setFormData] = useState({
     email: '',
     password: '',
@@ -25,10 +25,8 @@ const SignIn = () => {
         const { userId, name, token, role, permissions } = user;
   
         if (token) {
-          // Persist and set state
           dispatch(setAuth({ user, userId, name, token, role, permissions }));
   
-          // Navigate to dashboard
           navigate('/dashboard', { replace: true });
         }
       } else {
@@ -39,41 +37,7 @@ const SignIn = () => {
       alert(error);
     }
   };
-  
-
-// const handleSubmit = async (e) => {
-//   e.preventDefault();
-//   try {
-//     const response = await axios.post(
-//       SIGNIN_URL, 
-//       formData
-//     );
-//     console.log(response,response.data.data);
-//     if (response.data) {
-//       const user=response.data.data;
-//       console.log(user);
-      
-//       if(user.token){
-//         document.cookie = `token=${user.token}; path=/; secure; HttpOnly; max-age=60`;
-//         localStorage.setItem("token", user.token);
-//         localStorage.setItem('roles', JSON.stringify(user.role));
-//         localStorage.setItem('permissions', JSON.stringify(user.permissions));
-
-//         // After successful login
-//         dispatch(setAuth({ user, token: user.token, roles: user.role, permissions: user.permissions }));
-//         navigate('/dashboard', { replace: true });
-//       }
-      
-//     } else {
-//       alert('Invalid email or password. Please try again.');
-//     }
-//   } catch (error) {
-//     console.error('Sign In Error:', error);
-//     alert('An error occurred while signing in. Please try again.');
-//   }
-// };
-
-
+ 
   return (
     <div className="min-h-screen flex items-center justify-center">
       <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-lg shadow-gray-400">

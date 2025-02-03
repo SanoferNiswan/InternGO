@@ -1,14 +1,14 @@
-
 import { createSlice } from '@reduxjs/toolkit';
+import Cookies from 'js-cookie'; 
 
 const initialState = {
-  user: null,
-  userId: null,
-  name: null,
-  token: null,
-  role: null,
-  permissions: [],
-}; 
+  user: JSON.parse(Cookies.get('user') || 'null'),
+  userId: Cookies.get('userId') || null,
+  name: Cookies.get('name') || null,
+  token: Cookies.get('token') || null,  
+  role: Cookies.get('role') || null,
+  permissions: JSON.parse(Cookies.get('permissions') || '[]'),
+};
 
 const authSlice = createSlice({
   name: 'auth',
@@ -16,6 +16,7 @@ const authSlice = createSlice({
   reducers: {
     setAuth: (state, action) => {
       const { user, userId, name, token, role, permissions } = action.payload;
+
       state.user = user;
       state.userId = userId;
       state.name = name;
@@ -23,13 +24,12 @@ const authSlice = createSlice({
       state.role = role;
       state.permissions = permissions;
 
-      // Persist state to localStorage
-      localStorage.setItem('user', JSON.stringify(user));
-      localStorage.setItem('userId', userId);
-      localStorage.setItem('name', name);
-      localStorage.setItem('token', token);
-      localStorage.setItem('role', role);
-      localStorage.setItem('permissions', JSON.stringify(permissions));
+      Cookies.set('user', JSON.stringify(user), { expires: 2, secure: true });
+      Cookies.set('userId', userId, { expires: 2, secure: true });
+      Cookies.set('name', name, { expires: 2, secure: true });
+      Cookies.set('token', token, { expires: 2, secure: true });
+      Cookies.set('role', role, { expires: 2, secure: true });
+      Cookies.set('permissions', JSON.stringify(permissions), { expires: 2, secure: true });
     },
     clearAuth: (state) => {
       state.user = null;
@@ -39,17 +39,16 @@ const authSlice = createSlice({
       state.role = null;
       state.permissions = [];
 
-      // Clear from localStorage on logout
-      localStorage.removeItem('user');
-      localStorage.removeItem('userId');
-      localStorage.removeItem('name');
-      localStorage.removeItem('token');
-      localStorage.removeItem('role');
-      localStorage.removeItem('permissions');
+      // Remove all cookies on logout
+      Cookies.remove('user');
+      Cookies.remove('userId');
+      Cookies.remove('name');
+      Cookies.remove('token');
+      Cookies.remove('role');
+      Cookies.remove('permissions');
     },
   },
 });
 
 export const { setAuth, clearAuth } = authSlice.actions;
-
 export default authSlice.reducer;

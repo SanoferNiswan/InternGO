@@ -8,7 +8,7 @@ const GLogout = () => {
 
   const onLogout = () => {
     dispatch(clearAuth());
-    navigate('/');
+    navigate('/'); 
     
   };
 

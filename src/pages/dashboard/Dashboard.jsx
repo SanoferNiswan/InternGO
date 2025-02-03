@@ -1,82 +1,101 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import GLogout from '../../components/authentication/GLogout'; // Logout button component
-import logo from '../../assets/logo.png';
+import React from "react";
+import { useSelector } from "react-redux";
+import AdminDashboard from "./AdminDashboard";
+import InternDashboard from "./InternDashboard";
 
 const Dashboard = () => {
-  const { name, permissions } = useSelector((state) => state.auth);
-
-  const tabs = [
-    { name: 'Profile', permission: 'profile.update', component: 'Profile' },
-    { name: 'Daily Update', permission: 'tasks.update', component: 'DailyUpdate' },
-    { name: 'RoadMap', permission: 'roadmaps.view', component: 'Roadmap' },
-    { name: 'Help', permission: 'announcements.view', component: 'Help' },
-    { name: 'Create RoadMap', permission: 'roadmaps.create', component: 'CreateRoadmap' },
-    { name: 'FeedBack', permission: 'feedback.view', component: 'Feedback' },
-    { name: 'Interactions', permission: 'interactions.view', component: 'Interactions' },
-    { name: 'Create Plan', permission: 'plans.create', component: 'CreatePlan' },
-    { name: 'Interaction Schedule', permission: 'interactions.schedule', component: 'InteractionSchedule' },
-    { name: 'Records', permission: 'users.view', component: 'Records' },
-    { name: 'Pending Tickets', permission: 'tickets.view', component: 'PendingTickets' },
-    { name: 'Create Announcement', permission: 'announcements.create', component: 'CreateAnnouncement' },
-  ];
-
-  // Filter tabs based on permissions
-  const filteredTabs = tabs.filter((tab) => permissions.includes(tab.permission));
+  const { role } = useSelector((state) => state.auth); // Get user role from Redux state
 
   return (
-    <div className="flex h-screen bg-gray-100">
-      {/* Sidebar */}
-      <div className="w-1/6 bg-white shadow-lg">
-        <div className="flex flex-col items-center">
-          <img src={logo} alt="InterGO" className="w-40 h-30" />
-        </div>
-        <nav className="mt-2">
-          <ul>
-            {filteredTabs.map((tab, index) => (
-              <li key={index} className="mb-2">
-                <a
-                  href={`/${tab.name.toLowerCase().replace(/\s+/g, '-')}`}
-                  className="block px-4 py-2 text-gray-600 hover:bg-gray-200 rounded-lg"
-                >
-                  {tab.name}
-                </a>
-              </li>
-            ))}
-          </ul>
-        </nav>
-      </div>
-
-      {/* Main Content */}
-      <div className="flex-1 flex flex-col">
-        {/* Top Navbar */}
-        <header className="flex items-center justify-between bg-white px-6 py-4">
-          <h1 className="text-2xl font-semibold text-gray-700">Dashboard</h1>
-          {/* Profile Icon with Dropdown */}
-          <div className="relative">
-            <div className="flex items-center justify-center w-10 h-10 bg-gray-300 text-white rounded-full cursor-pointer">
-              {name?.[0].toUpperCase()}
-            </div>
-            <div className="absolute right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg w-48">
-              <ul className="py-2">
-                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                  Edit Profile
-                </li>
-                <li className="px-4 py-2 hover:bg-gray-100 cursor-pointer">
-                  <GLogout />
-                </li>
-              </ul>
-            </div>
-          </div>
-        </header>
-
-        {/* Main Content Placeholder */}
-        <main className="flex-1 p-6">
-          <p className="text-gray-600">Select a tab from the sidebar to view its content.</p>
-        </main>
-      </div>
+    <div className="p-6">
+      {role === "Admins" ? <AdminDashboard /> : role === "Interns" ? <InternDashboard /> : 
+        <p className="text-red-500 text-lg font-semibold">Unauthorized Access</p>}
     </div>
   );
 };
 
 export default Dashboard;
+
+
+
+// import React from "react";
+// import { FaUsers, FaClipboardList, FaTasks, FaChartBar } from "react-icons/fa";
+
+// const Dashboard = () => {
+//   return (
+//     <div className="p-6">
+
+//       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+//         <div className="p-6 bg-white shadow-md rounded-lg flex items-center gap-4">
+//           <FaUsers className="text-blue-500 text-4xl" />
+//           <div>
+//             <p className="text-gray-500">Total Users</p>
+//             <h2 className="text-2xl font-bold">120</h2>
+//           </div>
+//         </div>
+
+//         <div className="p-6 bg-white shadow-md rounded-lg flex items-center gap-4">
+//           <FaClipboardList className="text-green-500 text-4xl" />
+//           <div>
+//             <p className="text-gray-500">Active Users</p>
+//             <h2 className="text-2xl font-bold">85</h2>
+//           </div>
+//         </div>
+
+//         <div className="p-6 bg-white shadow-md rounded-lg flex items-center gap-4">
+//           <FaTasks className="text-yellow-500 text-4xl" />
+//           <div>
+//             <p className="text-gray-500">Pending Tasks</p>
+//             <h2 className="text-2xl font-bold">32</h2>
+//           </div>
+//         </div>
+
+//         <div className="p-6 bg-white shadow-md rounded-lg flex items-center gap-4">
+//           <FaChartBar className="text-red-500 text-4xl" />
+//           <div>
+//             <p className="text-gray-500">Reports Generated</p>
+//             <h2 className="text-2xl font-bold">47</h2>
+//           </div>
+//         </div>
+//       </div>
+
+//       <div className="mt-8 bg-white p-6 shadow-md rounded-lg">
+//         <h2 className="text-lg font-bold text-gray-700 mb-4">Recent Activity</h2>
+//         <ul className="space-y-4">
+//           <li className="flex items-center justify-between text-gray-600">
+//             <span>John Doe updated profile information</span>
+//             <span className="text-sm text-gray-400">2 hours ago</span>
+//           </li>
+//           <li className="flex items-center justify-between text-gray-600">
+//             <span>Admin added a new user</span>
+//             <span className="text-sm text-gray-400">5 hours ago</span>
+//           </li>
+//           <li className="flex items-center justify-between text-gray-600">
+//             <span>Project report submitted by Jane</span>
+//             <span className="text-sm text-gray-400">1 day ago</span>
+//           </li>
+//         </ul>
+//       </div>
+
+//       {/* Quick Links */}
+//       <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+//         <div className="p-6 bg-blue-500 text-white rounded-lg shadow-md cursor-pointer hover:bg-blue-600 transition">
+//           <h3 className="text-lg font-bold">Manage Users</h3>
+//           <p className="text-sm">View and update user details.</p>
+//         </div>
+
+//         <div className="p-6 bg-green-500 text-white rounded-lg shadow-md cursor-pointer hover:bg-green-600 transition">
+//           <h3 className="text-lg font-bold">Task Management</h3>
+//           <p className="text-sm">Assign and track pending tasks.</p>
+//         </div>
+
+//         <div className="p-6 bg-yellow-500 text-white rounded-lg shadow-md cursor-pointer hover:bg-yellow-600 transition">
+//           <h3 className="text-lg font-bold">Generate Reports</h3>
+//           <p className="text-sm">Access analytics and reports.</p>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Dashboard;

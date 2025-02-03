@@ -44,7 +44,7 @@ const EditProfileModal = ({ profileData, setIsEditProfileModalOpen, userId, toke
         }
       };
       window.location.reload();
-    } catch (error) {
+    } catch (error) { 
       console.error('Error updating profile:', error);
     }
   };

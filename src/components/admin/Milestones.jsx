@@ -171,19 +171,22 @@ const Milestones = () => {
     console.log("plan Id : ",planId);
 
     try {
+      
       const response = await axios.patch(
         `/api/plans/${planId}/update/milestone`,
         {
-          planId:planId,
           milestoneId: milestone.id,
-          objectiveData: {
+          milestoneData: {
             name: milestone.name,
             mentorName: milestone.mentorName,
-            milestoneDays: milestone.milestoneDays,
+            milestoneDays: parseInt(milestone.milestoneDays),
           },
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
+
+      console.log("patched");
+      
 
       console.log("Milestone updated:", response.data);
     } catch (error) {

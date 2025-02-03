@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { FaCalendarAlt, FaClipboardList } from "react-icons/fa";
 
 const Plan = () => {
-  const { token } = useSelector((state) => state.auth);
+  const { token,role } = useSelector((state) => state.auth);
   const [loading,setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [planName, setPlanName] = useState('');
@@ -33,7 +33,7 @@ const Plan = () => {
     }
     catch(err){
       console.log(err);
-      
+      return <div>unauthorized</div>
     }
   }
 
@@ -81,6 +81,10 @@ const Plan = () => {
 
   if(loading){
     return <div>Loading...</div>
+  }
+
+  if(role!="Admins"){
+    return <div className='font-bold text-red-600'>You are restricted to access this page</div>
   }
 
   return (

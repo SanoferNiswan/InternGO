@@ -10,7 +10,7 @@ const EditProfile = () => {
 
   const [formData, setFormData] = useState({
     personalEmail: "",
-    phone_no: "",
+    phone_no: "", 
     gender: "", 
     bloodGroup: "",
     dateOfBirth: "",
@@ -137,8 +137,12 @@ const EditProfile = () => {
     if (profilePhoto) {
       updatedData.profilePhoto = profilePhoto;
     }
-  
+
+    console.log("updated data",updatedData);
+    
     try {
+      console.log("inside try block");
+      
       const response = await axios.patch(`/api/users/update/${userId}`, updatedData, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -325,18 +329,11 @@ const EditProfile = () => {
 
       {/* skills section */}
       <div className="bg-white p-6 rounded-lg shadow-md space-y-4">
-        <h2 className="text-lg font-bold mb-2">Bank Details</h2>
+        <h2 className="text-lg font-bold mb-2">Skills (comma separated)</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <label className="block mb-2">Skills (comma-separated)</label>
-          {/* <FloatingInput
-            name="skills"
-            value={formData.skills}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded-lg"
-            placeholder="Enter skills"
-          /> */}
           <FloatingInput
             name="skills"
+            label="skills"
             value={Array.isArray(formData.skills) ? formData.skills.join(", ") : formData.skills}
             onChange={handleChange}
             className="w-full p-2 border border-gray-300 rounded-lg"
