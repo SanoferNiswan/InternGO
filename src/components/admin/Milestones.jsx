@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 import axios from "../../api/axios";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import EditPlanPopup from "./EditPlanPopup";
-
+import UserList from "./UserList";
 const Milestones = () => {
   const navigate = useNavigate();
   const { planId } = useParams();
@@ -162,16 +162,15 @@ const Milestones = () => {
     );
   };
 
-  const handleUpdateMilestone = async (milestone,planId) => {
+  const handleUpdateMilestone = async (milestone, planId) => {
     console.log("milestone updation called :", milestone);
     console.log(
       `milestone id ${milestone.id} name : ${milestone.name} mentor : ${milestone.mentorName} days:${milestone.milestoneDays}`
     );
 
-    console.log("plan Id : ",planId);
+    console.log("plan Id : ", planId);
 
     try {
-      
       const response = await axios.patch(
         `/api/plans/${planId}/update/milestone`,
         {
@@ -186,7 +185,6 @@ const Milestones = () => {
       );
 
       console.log("patched");
-      
 
       console.log("Milestone updated:", response.data);
     } catch (error) {
@@ -315,14 +313,12 @@ const Milestones = () => {
     }
   };
 
-  // Show loading state while planDetails is null
   if (!planDetails || !planDetails.milestones) {
     return <div>Loading...</div>;
   }
 
   return (
     <div className="shadow-md p-4 rounded-lg bg-white">
-      {/* Plan Header */}
       <div className="flex justify-between items-center p-4 border-b">
         <div className="text-lg font-semibold">
           Plan Name: {planDetails.name}
@@ -330,10 +326,8 @@ const Milestones = () => {
         <div className="text-gray-600">{planDetails.planDays} Days</div>
       </div>
 
-      {/* Description */}
       <p className="text-gray-700 p-4">{planDetails.description}</p>
 
-      {/* Actions */}
       <div className="flex justify-end space-x-4">
         <button
           className="text-blue-600 hover:text-blue-800 flex items-center"
@@ -349,516 +343,409 @@ const Milestones = () => {
         </button>
       </div>
 
-      {/* Milestones */}
-      <div className="mt-6 space-y-4">
-        {(listOfMilestone || []).map((milestone, index) => (
-          <div key={index} className="p-4 border rounded-lg bg-gray-100">
-            {/* Milestone Header */}
-            <div className="bg-white p-2 shadow-lg rounded-lg">
-              <div>
-                <p className="p-2 font-bold">Milestone {milestone.id}</p>
-              </div>
-              <div className="flex justify-between items-center border-b pb-2">
-                {/* Name */}
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={milestone.name}
-                    onChange={(e) =>
-                      handleMilestoneChange(e, milestone.id, "name")
-                    }
-                    onBlur={() => handleUpdateMilestone(milestone,planId)}
-                    className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                  />
-                  <label className="absolute text-md text-gray-500 transform -translate-y-4 scale-75 top-2 z-5 bg-white px-2 ml-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-focus:scale-75 peer-focus:top-2 peer-focus:text-blue-600">
-                    Name
-                  </label>
-                </div>
-
-                {/* Mentor Name */}
-                <div className="relative">
-                  <input
-                    type="text"
-                    value={milestone.mentorName}
-                    onChange={(e) =>
-                      handleMilestoneChange(e, milestone.id, "mentorName")
-                    }
-                    onBlur={() => handleUpdateMilestone(milestone,planId)}
-                    className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                  />
-                  <label className="absolute text-md text-gray-500 transform -translate-y-4 scale-75 top-2 z-5 bg-white px-2 ml-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-focus:scale-75 peer-focus:top-2 peer-focus:text-blue-600">
-                    Mentor Name
-                  </label>
-                </div>
-
-                {/* Number of Days */}
-                <div className="relative">
-                  <input
-                    type="number"
-                    value={milestone.milestoneDays}
-                    onChange={(e) =>
-                      handleMilestoneChange(e, milestone.id, "milestoneDays")
-                    }
-                    onBlur={() => handleUpdateMilestone(milestone,planId)}
-                    className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                  />
-                  <label className="absolute text-md text-gray-500 transform -translate-y-4 scale-75 top-2 z-5 bg-white px-2 ml-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-focus:scale-75 peer-focus:top-2 peer-focus:text-blue-600">
-                    Days
-                  </label>
-                </div>
-
-                {/* Delete Button */}
-                <button
-                  className="text-red-600 hover:text-red-800 pr-10"
-                  onClick={() => handleDeleteMilestone(milestone.id)}
-                >
-                  <FaTrash />
-                </button>
-              </div>
-            </div>
-
-            {/* Objectives Table */}
-            {/* {milestone.objectives.length > 0 && ( */}
-            <div className="p-4 shadow-lg bg-white rounded-lg mt-3">
-              <div>
-                <p className="font-bold">Objectives</p>
-              </div>
-              <table className="w-full mt-2 text-left text-sm border rounded shadow-lg">
-                <thead>
-                  <tr className="border-b bg-gray-200">
-                    <th className="p-2">Name</th>
-                    <th className="p-2">Description</th>
-                    <th className="p-2">Days</th>
-                    <th className="p-2">Interactions</th>
-                    <th className="p-2">Roadmap Type</th>
-                    <th className="p-2">Actions</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {(milestone.objectives || []).map((objective) => (
-                    // <tr key={objective.id} className="border-b">
-                    //   {/* Objective Name */}
-                    //   <td>
-                    //     <input
-                    //       type="text"
-                    //       value={objective.name}
-                    //       onChange={(e) =>
-                    //         handleObjectiveChange(
-                    //           e,
-                    //           milestone.id,
-                    //           objective.id,
-                    //           "name"
-                    //         )
-                    //       }
-                    //       onBlur={() =>
-                    //         handleUpdateObjective(objective)
-                    //       }
-                    //       className="border px-2 py-1 rounded w-full"
-                    //     />
-                    //   </td>
-
-                    //   {/* Description */}
-                    //   <td>
-                    //     <input
-                    //       type="text"
-                    //       value={objective.description}
-                    //       onChange={(e) =>
-                    //         handleObjectiveChange(
-                    //           e,
-                    //           milestone.id,
-                    //           objective.id,
-                    //           "description"
-                    //         )
-                    //       }
-                    //       onBlur={() =>
-                    //         handleUpdateObjective(milestone.id, objective)
-                    //       }
-                    //       className="border px-2 py-1 rounded w-full"
-                    //     />
-                    //   </td>
-
-                    //   {/* Days */}
-                    //   <td>
-                    //     <input
-                    //       type="number"
-                    //       value={objective.objectiveDays}
-                    //       onChange={(e) =>
-                    //         handleObjectiveChange(
-                    //           e,
-                    //           milestone.id,
-                    //           objective.id,
-                    //           "objectiveDays"
-                    //         )
-                    //       }
-                    //       onBlur={() =>
-                    //         handleUpdateObjective(milestone.id, objective)
-                    //       }
-                    //       className="border px-2 py-1 rounded w-full"
-                    //     />
-                    //   </td>
-
-                    //   {/* Number of Interactions */}
-                    //   <td>
-                    //     <input
-                    //       type="number"
-                    //       value={objective.noOfInteractions}
-                    //       onChange={(e) =>
-                    //         handleObjectiveChange(
-                    //           e,
-                    //           milestone.id,
-                    //           objective.id,
-                    //           "noOfInteractions"
-                    //         )
-                    //       }
-                    //       onBlur={() =>
-                    //         handleUpdateObjective(milestone.id, objective)
-                    //       }
-                    //       className="border px-2 py-1 rounded w-full"
-                    //     />
-                    //   </td>
-
-                    //   {/* Roadmap Type Dropdown */}
-                    //   <td>
-                    //     <select
-                    //       value={objective.roadmapType}
-                    //       onChange={(e) =>
-                    //         handleObjectiveChange(
-                    //           e,
-                    //           milestone.id,
-                    //           objective.id,
-                    //           "roadmapType"
-                    //         )
-                    //       }
-                    //       onBlur={() =>
-                    //         handleUpdateObjective(milestone.id, objective)
-                    //       }
-                    //       className="border px-2 py-1 rounded w-full"
-                    //     >
-                    //       <option value="CUSTOM">Custom</option>
-                    //       <option value="DEFAULT">Default</option>
-                    //     </select>
-                    //   </td>
-
-                    //   {/* Delete Button */}
-                    //   <td>
-                    //     <button
-                    //       className="text-red-600 hover:text-red-800 ml-6"
-                    //       onClick={() =>
-                    //         handleDeleteObjective(milestone.id, objective.id)
-                    //       }
-                    //     >
-                    //       <FaTrash />
-                    //     </button>
-                    //   </td>
-                    // </tr>
-                    <tr key={objective.id} className="border-b">
-                      {/* Objective Name */}
-                      <td>
-                        <input
-                          type="text"
-                          value={objective.name}
-                          onChange={(e) =>
-                            handleObjectiveChange(
-                              e,
-                              milestone.id,
-                              objective.id,
-                              "name"
-                            )
-                          }
-                          onBlur={() =>
-                            handleUpdateObjective(milestone.id, objective)
-                          }
-                          className="border px-2 py-1 rounded w-full"
-                        />
-                      </td>
-
-                      {/* Description */}
-                      <td>
-                        <input
-                          type="text"
-                          value={objective.description}
-                          onChange={(e) =>
-                            handleObjectiveChange(
-                              e,
-                              milestone.id,
-                              objective.id,
-                              "description"
-                            )
-                          }
-                          onBlur={() =>
-                            handleUpdateObjective(milestone.id, objective)
-                          }
-                          className="border px-2 py-1 rounded w-full"
-                        />
-                      </td>
-
-                      {/* Days */}
-                      <td>
-                        <input
-                          type="number"
-                          value={objective.objectiveDays}
-                          onChange={(e) =>
-                            handleObjectiveChange(
-                              e,
-                              milestone.id,
-                              objective.id,
-                              "objectiveDays"
-                            )
-                          }
-                          onBlur={() =>
-                            handleUpdateObjective(milestone.id, objective)
-                          } // ✅ Corrected
-                          className="border px-2 py-1 rounded w-full"
-                        />
-                      </td>
-
-                      {/* Number of Interactions */}
-                      <td>
-                        <input
-                          type="number"
-                          value={objective.noOfInteractions}
-                          onChange={(e) =>
-                            handleObjectiveChange(
-                              e,
-                              milestone.id,
-                              objective.id,
-                              "noOfInteractions"
-                            )
-                          }
-                          onBlur={() =>
-                            handleUpdateObjective(milestone.id, objective)
-                          } // ✅ Corrected
-                          className="border px-2 py-1 rounded w-full"
-                        />
-                      </td>
-
-                      {/* Roadmap Type Dropdown */}
-                      <td>
-                        <select
-                          value={objective.roadmapType}
-                          onChange={(e) =>
-                            handleObjectiveChange(
-                              e,
-                              milestone.id,
-                              objective.id,
-                              "roadmapType"
-                            )
-                          }
-                          onBlur={() =>
-                            handleUpdateObjective(milestone.id, objective)
-                          } // ✅ Corrected
-                          className="border px-2 py-1 rounded w-full"
-                        >
-                          <option value="CUSTOM">Custom</option>
-                          <option value="DEFAULT">Default</option>
-                        </select>
-                      </td>
-
-                      {/* Delete Button */}
-                      <td>
-                        <button
-                          className="text-red-600 hover:text-red-800 ml-6"
-                          onClick={() =>
-                            handleDeleteObjective(milestone.id, objective.id)
-                          }
-                        >
-                          <FaTrash />
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-
-                {/* Add Objective Form */}
-                {showObjectiveForm === milestone.id && (
-                  <tbody>
-                    <tr className="border-b">
-                      <td>
-                        <input
-                          type="text"
-                          value={newObjective.name}
-                          onChange={(e) =>
-                            setNewObjective((prev) => ({
-                              ...prev,
-                              name: e.target.value,
-                            }))
-                          }
-                          placeholder="Objective Name"
-                          className="border px-2 py-1 rounded w-full"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="text"
-                          value={newObjective.description}
-                          onChange={(e) =>
-                            setNewObjective((prev) => ({
-                              ...prev,
-                              description: e.target.value,
-                            }))
-                          }
-                          placeholder="Description"
-                          className="border px-2 py-1 rounded w-full"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="number"
-                          value={newObjective.objectiveDays}
-                          onChange={(e) =>
-                            setNewObjective((prev) => ({
-                              ...prev,
-                              objectiveDays: parseInt(e.target.value),
-                            }))
-                          }
-                          placeholder="Days"
-                          className="border px-2 py-1 rounded w-full"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          type="number"
-                          value={newObjective.noOfInteractions}
-                          onChange={(e) =>
-                            setNewObjective((prev) => ({
-                              ...prev,
-                              noOfInteractions: parseInt(e.target.value),
-                            }))
-                          }
-                          placeholder="Interactions"
-                          className="border px-2 py-1 rounded w-full"
-                        />
-                      </td>
-                      <td>
-                        <select
-                          value={newObjective.roadmapType}
-                          onChange={(e) =>
-                            setNewObjective((prev) => ({
-                              ...prev,
-                              roadmapType: e.target.value,
-                            }))
-                          }
-                          className="border px-2 py-1 rounded w-full"
-                        >
-                          <option value="CUSTOM">Custom</option>
-                          <option value="DEFAULT">Default</option>
-                        </select>
-                      </td>
-                      <td>
-                        <button
-                          onClick={() => addObjective(milestone.id)}
-                          className="text-sm bg-gray-700 text-white px-3 py-1 rounded hover:bg-gray-900"
-                        >
-                          Save
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                )}
-              </table>
-            </div>
-            {/* )} */}
-
-            {/* Add Objective Button */}
-            <div className="text-center mt-4">
-              <button
-                className="text-sm bg-gray-700 text-white px-3 py-1 rounded hover:bg-gray-900"
-                onClick={() => setShowObjectiveForm(milestone.id)}
+      <div className="flex gap-2">
+        <div className="w-2/3">
+          {/* Milestones */}
+          <div className="mt-6 space-y-4">
+            {(listOfMilestone || []).map((milestone, index) => (
+              <div
+                key={index}
+                className="p-4 border rounded-lg bg-gray-100"
               >
-                + Add Objective
-              </button>
-            </div>
+                <div className="bg-white p-2 shadow-lg rounded-lg">
+                  <div>
+                    <p className="p-2 font-bold">Milestone {milestone.id}</p>
+                  </div>
+                  <div className="flex justify-between items-center border-b pb-2">
+                    <div className="relative">
+                      <input
+                        type="text"
+                        value={milestone.name}
+                        onChange={(e) =>
+                          handleMilestoneChange(e, milestone.id, "name")
+                        }
+                        onBlur={() => handleUpdateMilestone(milestone, planId)}
+                        className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                      />
+                      <label className="absolute text-md text-gray-500 transform -translate-y-4 scale-75 top-2 z-5 bg-white px-2 ml-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-focus:scale-75 peer-focus:top-2 peer-focus:text-blue-600">
+                        Name
+                      </label>
+                    </div>
+
+                    <div className="relative">
+                      <input
+                        type="text"
+                        value={milestone.mentorName}
+                        onChange={(e) =>
+                          handleMilestoneChange(e, milestone.id, "mentorName")
+                        }
+                        onBlur={() => handleUpdateMilestone(milestone, planId)}
+                        className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                      />
+                      <label className="absolute text-md text-gray-500 transform -translate-y-4 scale-75 top-2 z-5 bg-white px-2 ml-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-focus:scale-75 peer-focus:top-2 peer-focus:text-blue-600">
+                        Mentor Name
+                      </label>
+                    </div>
+
+                    <div className="relative">
+                      <input
+                        type="number"
+                        value={milestone.milestoneDays}
+                        onChange={(e) =>
+                          handleMilestoneChange(
+                            e,
+                            milestone.id,
+                            "milestoneDays"
+                          )
+                        }
+                        onBlur={() => handleUpdateMilestone(milestone, planId)}
+                        className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                      />
+                      <label className="absolute text-md text-gray-500 transform -translate-y-4 scale-75 top-2 z-5 bg-white px-2 ml-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-focus:scale-75 peer-focus:top-2 peer-focus:text-blue-600">
+                        Days
+                      </label>
+                    </div>
+
+                    {/* Delete Button */}
+                    <button
+                      className="text-red-600 hover:text-red-800 pr-8 ml-2"
+                      onClick={() => handleDeleteMilestone(milestone.id)}
+                    >
+                      <FaTrash />
+                    </button>
+                  </div>
+                </div>
+
+                {/* Objectives Table */}
+                {/* {milestone.objectives.length > 0 && ( */}
+                <div className="p-4 shadow-lg bg-white rounded-lg mt-3">
+                  <div>
+                    <p className="font-bold">Objectives</p>
+                  </div>
+                  <table className="w-full mt-2 text-left text-sm border rounded shadow-lg">
+                    <thead>
+                      <tr className="border-b bg-gray-200">
+                        <th className="p-2">Name</th>
+                        <th className="p-2">Description</th>
+                        <th className="p-2">Days</th>
+                        <th className="p-2">Interactions</th>
+                        <th className="p-2">Roadmap Type</th>
+                        <th className="p-2">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {(milestone.objectives || []).map((objective) => (
+                        <tr key={objective.id} className="border-b">
+                          {/* Objective Name */}
+                          <td>
+                            <input
+                              type="text"
+                              value={objective.name}
+                              onChange={(e) =>
+                                handleObjectiveChange(
+                                  e,
+                                  milestone.id,
+                                  objective.id,
+                                  "name"
+                                )
+                              }
+                              onBlur={() =>
+                                handleUpdateObjective(milestone.id, objective)
+                              }
+                              className="border px-2 py-1 rounded w-full"
+                            />
+                          </td>
+
+                          {/* Description */}
+                          <td>
+                            <input
+                              type="text"
+                              value={objective.description}
+                              onChange={(e) =>
+                                handleObjectiveChange(
+                                  e,
+                                  milestone.id,
+                                  objective.id,
+                                  "description"
+                                )
+                              }
+                              onBlur={() =>
+                                handleUpdateObjective(milestone.id, objective)
+                              }
+                              className="border px-2 py-1 rounded w-full"
+                            />
+                          </td>
+
+                          {/* Days */}
+                          <td>
+                            <input
+                              type="number"
+                              value={objective.objectiveDays}
+                              onChange={(e) =>
+                                handleObjectiveChange(
+                                  e,
+                                  milestone.id,
+                                  objective.id,
+                                  "objectiveDays"
+                                )
+                              }
+                              onBlur={() =>
+                                handleUpdateObjective(milestone.id, objective)
+                              }
+                              className="border px-2 py-1 rounded w-full"
+                            />
+                          </td>
+
+                          <td>
+                            <input
+                              type="number"
+                              value={objective.noOfInteractions}
+                              onChange={(e) =>
+                                handleObjectiveChange(
+                                  e,
+                                  milestone.id,
+                                  objective.id,
+                                  "noOfInteractions"
+                                )
+                              }
+                              onBlur={() =>
+                                handleUpdateObjective(milestone.id, objective)
+                              }
+                              className="border px-2 py-1 rounded w-full"
+                            />
+                          </td>
+
+                          <td>
+                            <select
+                              value={objective.roadmapType}
+                              onChange={(e) =>
+                                handleObjectiveChange(
+                                  e,
+                                  milestone.id,
+                                  objective.id,
+                                  "roadmapType"
+                                )
+                              }
+                              onBlur={() =>
+                                handleUpdateObjective(milestone.id, objective)
+                              }
+                              className="border px-2 py-1 rounded w-full"
+                            >
+                              <option value="CUSTOM">Custom</option>
+                              <option value="DEFAULT">Default</option>
+                            </select>
+                          </td>
+
+                          <td>
+                            <button
+                              className="text-red-600 hover:text-red-800 ml-6"
+                              onClick={() =>
+                                handleDeleteObjective(
+                                  milestone.id,
+                                  objective.id
+                                )
+                              }
+                            >
+                              <FaTrash />
+                            </button>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+
+                    {showObjectiveForm === milestone.id && (
+                      <tbody>
+                        <tr className="border-b">
+                          <td>
+                            <input
+                              type="text"
+                              value={newObjective.name}
+                              onChange={(e) =>
+                                setNewObjective((prev) => ({
+                                  ...prev,
+                                  name: e.target.value,
+                                }))
+                              }
+                              placeholder="Objective Name"
+                              className="border px-2 py-1 rounded w-full"
+                            />
+                          </td>
+                          <td>
+                            <input
+                              type="text"
+                              value={newObjective.description}
+                              onChange={(e) =>
+                                setNewObjective((prev) => ({
+                                  ...prev,
+                                  description: e.target.value,
+                                }))
+                              }
+                              placeholder="Description"
+                              className="border px-2 py-1 rounded w-full"
+                            />
+                          </td>
+                          <td>
+                            <input
+                              type="number"
+                              value={newObjective.objectiveDays}
+                              onChange={(e) =>
+                                setNewObjective((prev) => ({
+                                  ...prev,
+                                  objectiveDays: parseInt(e.target.value),
+                                }))
+                              }
+                              placeholder="Days"
+                              className="border px-2 py-1 rounded w-full"
+                            />
+                          </td>
+                          <td>
+                            <input
+                              type="number"
+                              value={newObjective.noOfInteractions}
+                              onChange={(e) =>
+                                setNewObjective((prev) => ({
+                                  ...prev,
+                                  noOfInteractions: parseInt(e.target.value),
+                                }))
+                              }
+                              placeholder="Interactions"
+                              className="border px-2 py-1 rounded w-full"
+                            />
+                          </td>
+                          <td>
+                            <select
+                              value={newObjective.roadmapType}
+                              onChange={(e) =>
+                                setNewObjective((prev) => ({
+                                  ...prev,
+                                  roadmapType: e.target.value,
+                                }))
+                              }
+                              className="border px-2 py-1 rounded w-full"
+                            >
+                              <option value="CUSTOM">Custom</option>
+                              <option value="DEFAULT">Default</option>
+                            </select>
+                          </td>
+                          <td>
+                            <button
+                              onClick={() => addObjective(milestone.id)}
+                              className="text-sm bg-gray-700 text-white px-3 py-1 rounded hover:bg-gray-900"
+                            >
+                              Save
+                            </button>
+                          </td>
+                        </tr>
+                      </tbody>
+                    )}
+                  </table>
+                </div>
+
+                <div className="text-center mt-4">
+                  <button
+                    className="text-sm bg-gray-700 text-white px-3 py-1 rounded hover:bg-gray-900"
+                    onClick={() => setShowObjectiveForm(milestone.id)}
+                  >
+                    + Add Objective
+                  </button>
+                </div>
+              </div>
+            ))}
           </div>
-        ))}
-      </div>
 
-      {/* Add Milestone Form */}
+          {showMilestoneForm && (
+            <div className="mt-6 p-4 border rounded-lg bg-gray-100">
+              <div className="bg-white p-2 shadow-lg rounded-lg">
+                <h1 className="mb-3 ml-3 font-bold">Add Milestone</h1>
+                <div className="flex justify-between items-center border-b pb-2">
+                  <div className="relative">
+                    <input
+                      type="text"
+                      value={newMilestone.name}
+                      onChange={(e) =>
+                        setNewMilestone((prev) => ({
+                          ...prev,
+                          name: e.target.value,
+                        }))
+                      }
+                      className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    />
+                    <label className="absolute text-md text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-5 origin-[0] bg-white px-2 ml-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">
+                      Name
+                    </label>
+                  </div>
 
-      {showMilestoneForm && (
-        <div className="mt-6 p-4 border rounded-lg bg-gray-100">
-          <div className="bg-white p-2 shadow-lg rounded-lg">
-            <h1 className="mb-3 ml-3 font-bold">Add Milestone</h1>
-            <div className="flex justify-between items-center border-b pb-2">
-              <div className="relative">
-                <input
-                  type="text"
-                  value={newMilestone.name}
-                  onChange={(e) =>
-                    setNewMilestone((prev) => ({
-                      ...prev,
-                      name: e.target.value,
-                    }))
-                  }
-                  className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                />
-                <label className="absolute text-md text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-5 origin-[0] bg-white px-2 ml-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">
-                  Name
-                </label>
-              </div>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      value={newMilestone.mentorName}
+                      onChange={(e) =>
+                        setNewMilestone((prev) => ({
+                          ...prev,
+                          mentorName: e.target.value,
+                        }))
+                      }
+                      className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    />
+                    <label className="absolute text-md text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-5 origin-[0] bg-white px-2 ml-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">
+                      Mentor Name
+                    </label>
+                  </div>
+                  <div className="relative">
+                    <input
+                      type="number"
+                      value={newMilestone.milestoneDays}
+                      onChange={(e) =>
+                        setNewMilestone((prev) => ({
+                          ...prev,
+                          milestoneDays: parseInt(e.target.value),
+                        }))
+                      }
+                      className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                    />
+                    <label className="absolute text-md text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-5 origin-[0] bg-white px-2 ml-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">
+                      Days
+                    </label>
+                  </div>
 
-              <div className="relative">
-                <input
-                  type="text"
-                  value={newMilestone.mentorName}
-                  onChange={(e) =>
-                    setNewMilestone((prev) => ({
-                      ...prev,
-                      mentorName: e.target.value,
-                    }))
-                  }
-                  className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                />
-                <label className="absolute text-md text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-5 origin-[0] bg-white px-2 ml-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">
-                  Mentor Name
-                </label>
-              </div>
-              <div className="relative">
-                <input
-                  type="number"
-                  value={newMilestone.milestoneDays}
-                  onChange={(e) =>
-                    setNewMilestone((prev) => ({
-                      ...prev,
-                      milestoneDays: parseInt(e.target.value),
-                    }))
-                  }
-                  className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 appearance-none focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                />
-                <label className="absolute text-md text-gray-500 duration-300 transform -translate-y-4 scale-75 top-2 z-5 origin-[0] bg-white px-2 ml-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">
-                  Days
-                </label>
-              </div>
-
-              <div className="flex justify-around w-1/6">
-                <button
-                  onClick={(e) => {
-                    e.target.disabled = true;
-                    addMilestone();
-                  }}
-                  className="text-sm bg-gray-700 text-white px-3 py-1 rounded hover:bg-gray-900"
-                >
-                  Save
-                </button>
-                <button
-                  onClick={() => setShowMilestoneForm(false)}
-                  className="text-sm bg-gray-700 text-white px-3 py-1 rounded hover:bg-gray-900"
-                >
-                  cancel
-                </button>
+                  <div className="flex justify-around w-1/6">
+                    <button
+                      onClick={(e) => {
+                        e.target.disabled = true;
+                        addMilestone();
+                      }}
+                      className="text-sm bg-gray-700 text-white px-3 py-1 rounded hover:bg-gray-900"
+                    >
+                      Save
+                    </button>
+                    <button
+                      onClick={() => setShowMilestoneForm(false)}
+                      className="text-sm bg-gray-700 text-white px-3 py-1 rounded hover:bg-gray-900"
+                    >
+                      cancel
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
+          )}
+
+          <div className="text-center mt-4">
+            <button
+              className="text-sm bg-gray-700 text-white px-3 py-1 rounded hover:bg-gray-900"
+              onClick={() => setShowMilestoneForm(true)}
+            >
+              + Add Milestone
+            </button>
           </div>
         </div>
-      )}
-
-      <div className="text-center mt-4">
-        <button
-          className="text-sm bg-gray-700 text-white px-3 py-1 rounded hover:bg-gray-900"
-          onClick={() => setShowMilestoneForm(true)}
-        >
-          + Add Milestone
-        </button>
+        
+        <div className="w-1/3">
+        <UserList planId={planId} />
+        </div>
       </div>
+
+     
 
       {/* Edit Popup */}
       {isEditing && (

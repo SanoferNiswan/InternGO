@@ -32,7 +32,6 @@ const EditProfile = () => {
 
   const [profilePhoto, setProfilePhoto] = useState(null);
 
-  // Fetch user data on component load
   useEffect(() => {
     const fetchUserData = async () => {
       try {
@@ -95,7 +94,7 @@ const EditProfile = () => {
     if (name === "skills") {
       setFormData((prev) => ({
         ...prev,
-        skills: value, // Keep it as a string for the input field
+        skills: value, 
       }));
     } else if (name.includes("education") || name.includes("bankDetails")) {
       const [parentKey, childKey] = name.split(".");
@@ -124,7 +123,6 @@ const EditProfile = () => {
           }
         });
       } else if (key === "skills") {
-        // Ensure skills is sent as an array
         updatedData[key] =
           typeof formData.skills === "string"
             ? formData.skills.split(",").map((skill) => skill.trim())

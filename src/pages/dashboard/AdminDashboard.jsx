@@ -12,7 +12,7 @@ const AdminDashboard = () => {
         <div className="p-6 bg-white shadow-md rounded-lg flex items-center gap-4">
           <FaUsers className="text-blue-500 text-4xl" />
           <div>
-            <p className="text-gray-500">Total Users</p>
+            <p className="text-gray-500">Total Interns</p>
             <h2 className="text-2xl font-bold">120</h2>
           </div>
         </div>
@@ -22,7 +22,7 @@ const AdminDashboard = () => {
           <FaClipboardList className="text-green-500 text-4xl" />
           <div>
             <p className="text-gray-500">Active Interns</p>
-            <h2 className="text-2xl font-bold">85</h2>
+            <h2 className="text-2xl font-bold">100</h2>
           </div>
         </div>
 
@@ -30,8 +30,8 @@ const AdminDashboard = () => {
         <div className="p-6 bg-white shadow-md rounded-lg flex items-center gap-4">
           <FaProjectDiagram className="text-purple-500 text-4xl" />
           <div>
-            <p className="text-gray-500">Total Projects</p>
-            <h2 className="text-2xl font-bold">42</h2>
+            <p className="text-gray-500">Non Active Interns</p>
+            <h2 className="text-2xl font-bold">20</h2>
           </div>
         </div>
 
@@ -44,14 +44,14 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        {/* Tasks Completed */}
+        {/* Tasks Completed
         <div className="p-6 bg-white shadow-md rounded-lg flex items-center gap-4">
           <FaTasks className="text-yellow-500 text-4xl" />
           <div>
             <p className="text-gray-500">Tasks Completed</p>
             <h2 className="text-2xl font-bold">230</h2>
           </div>
-        </div>
+        </div> */}
       </div>
 
       {/* Recent Activity */}
@@ -59,28 +59,21 @@ const AdminDashboard = () => {
         <h2 className="text-lg font-bold text-gray-700 mb-4">Recent Activity</h2>
         <ul className="space-y-4">
           <li className="flex items-center justify-between text-gray-600">
-            <span>Admin added a new user</span>
+            <span>New mentor profile added</span>
             <span className="text-sm text-gray-400">5 hours ago</span>
           </li>
           <li className="flex items-center justify-between text-gray-600">
-            <span>Project report reviewed</span>
+            <span>Selvam completed interaction</span>
             <span className="text-sm text-gray-400">1 day ago</span>
           </li>
           <li className="flex items-center justify-between text-gray-600">
-            <span>Interns assigned to new projects</span>
+            <span>Review session completed</span>
             <span className="text-sm text-gray-400">2 days ago</span>
           </li>
         </ul>
       </div>
 
-      {/* Analytics / Graphs Section (Placeholder) */}
-      <div className="mt-8 bg-white p-6 shadow-md rounded-lg">
-        <h2 className="text-lg font-bold text-gray-700 mb-4">Performance Overview</h2>
-        <p className="text-gray-500">Graphical representation of user activity, task completion, and project stats will go here.</p>
-        <div className="mt-4 w-full h-40 bg-gray-200 flex items-center justify-center text-gray-500">
-          [Chart Placeholder]
-        </div>
-      </div>
+
 
       {/* User Management Table */}
       <div className="mt-8 bg-white p-6 shadow-md rounded-lg">

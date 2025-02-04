@@ -68,7 +68,7 @@ const DashboardLayout = () => {
       icon: <FaCalendarAlt />,
     },
     {
-      name: "Interaction Schedule",
+      name: "Schedule",
       permission: "interactions.schedule",
       path: "/dashboard/interaction-schedule",
       icon: <FaCalendarAlt />,

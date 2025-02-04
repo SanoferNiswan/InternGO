@@ -8,7 +8,7 @@ import AddAssetModal from "../admin/AddAssetModal";
 const Profile = ({ userId, token }) => {
   const { role, userId: id } = useSelector((state) => state.auth);
   const [profileData, setProfileData] = useState(null);
-  const [activeTab, setActiveTab] = useState("professional info");
+  const [activeTab, setActiveTab] = useState("personal info");
   const [isProfilePhotoModalOpen, setIsProfilePhotoModalOpen] = useState(false);
   const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
   const [isAssetModalOpen, setIsAssetModalOpen] = useState(false);
@@ -37,6 +37,22 @@ const Profile = ({ userId, token }) => {
       }
     }
   };
+
+  const internTab = [
+    "personal info",
+    "professional info",
+    "education",
+    "bankDetails",
+    "skill",
+    "assets",
+  ];
+
+  const adminTab = [
+    "personal info",
+    "education",
+    "bankDetails",
+    "assets",
+  ]
 
   const handleEdit = async (assetId, newDate) => {
     if (!newDate) {
@@ -355,7 +371,7 @@ const Profile = ({ userId, token }) => {
             {/* Progress Bar */}
             <div className="w-full bg-white rounded-full mt-4">
               <div
-                className="bg-blue-400 text-xs font-medium text-center p-0.5 leading-none rounded-full text-white"
+                className="bg-blue-400 text-xs font-medium text-center p-0.5 leading-none rounded-full text-black"
                 style={{ width: `${profileData.profilePercentage || 0}%` }}
               >
                 {profileData.profilePercentage || 0}%
@@ -402,19 +418,12 @@ const Profile = ({ userId, token }) => {
           </div>
         </div>
       )}
-
+ 
       {/* Main Content */}
       <div className="flex-1 bg-gray-50 p-6 flex-1 ml-1/5 flex flex-col h-screen rounded-lg shadow-lg">
-        {/* Tabs */}
         <div className="flex space-x-3 border-b pb-2">
-          {[
-            "professional info",
-            "personal info",
-            "education",
-            "bankDetails",
-            "skill",
-            "assets",
-          ].map((tab) => (
+          {(role==="Admins" && userId===id?
+          adminTab : internTab).map((tab) => (
             <button
               key={tab}
               className={`px-4 py-2 rounded-t-lg ${
@@ -422,7 +431,9 @@ const Profile = ({ userId, token }) => {
                   ? "bg-blue-500 text-white"
                   : "bg-gray-200 text-gray-700"
               }`}
-              onClick={() => setActiveTab(tab)}
+              onClick={() => {setActiveTab(tab)
+                 console.log();
+              }}
             >
               {tab.charAt(0).toUpperCase() + tab.slice(1)}
             </button>

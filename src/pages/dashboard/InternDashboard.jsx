@@ -4,7 +4,6 @@ import { FaBook, FaTasks, FaCheckCircle, FaBullhorn, FaClock } from "react-icons
 const InternDashboard = () => {
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">Intern Dashboard</h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <div className="p-6 bg-white shadow-md rounded-lg flex items-center gap-4">
@@ -30,7 +29,6 @@ const InternDashboard = () => {
         </div>
       </div>
 
-      {/* Announcements Section */}
       <div className="mt-8 bg-white p-6 shadow-md rounded-lg">
         <h2 className="text-lg font-bold text-gray-700 mb-4 flex items-center gap-2">
           <FaBullhorn className="text-red-500" /> Announcements
@@ -38,7 +36,6 @@ const InternDashboard = () => {
         <p className="text-gray-600">Meeting at 3 PM regarding final project submissions.</p>
       </div>
 
-      {/* Training Status */}
       <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <div className="p-6 bg-white shadow-md rounded-lg">
           <h3 className="text-gray-500">Status</h3>
@@ -50,7 +47,6 @@ const InternDashboard = () => {
         </div>
       </div>
 
-      {/* Today's Tasks */}
       <div className="mt-8 bg-white p-6 shadow-md rounded-lg">
         <h2 className="text-lg font-bold text-gray-700 mb-4 flex items-center gap-2">
           <FaClock className="text-blue-500" /> Today's Tasks
