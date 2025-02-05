@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import axios from '../../api/axios';
+import axios from '../../../api/axios';
 import { useSelector } from 'react-redux';
 
 const AddAssetModal = ({ isAssetModalOpen, setIsAssetModalOpen, userId }) => {

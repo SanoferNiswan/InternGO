@@ -3,7 +3,7 @@ import axios from "../../api/axios";
 import { useSelector } from "react-redux";
 import { FaRegEnvelope, FaPhone, FaMapMarkerAlt } from "react-icons/fa";
 import EditProfileModal from "./EditProfileModal";
-import AddAssetModal from "../admin/AddAssetModal";
+import AddAssetModal from "../admin/profileManagement/AddAssetModal";
 
 const Profile = ({ userId, token }) => {
   const { role, userId: id } = useSelector((state) => state.auth);
@@ -47,12 +47,7 @@ const Profile = ({ userId, token }) => {
     "assets",
   ];
 
-  const adminTab = [
-    "personal info",
-    "education",
-    "bankDetails",
-    "assets",
-  ]
+  const adminTab = ["personal info", "education", "bankDetails", "assets"];
 
   const handleEdit = async (assetId, newDate) => {
     if (!newDate) {
@@ -349,7 +344,7 @@ const Profile = ({ userId, token }) => {
   };
 
   return (
-    <div className="flex h-screen bg-white">
+    <div className="flex h-full w-full bg-white">
       {/* Sidebar */}
       {profileData && (
         <div className="w-1/4 h-screen bg-gray-900 text-white shadow-md p-6 rounded-lg">
@@ -418,26 +413,28 @@ const Profile = ({ userId, token }) => {
           </div>
         </div>
       )}
- 
+
       {/* Main Content */}
       <div className="flex-1 bg-gray-50 p-6 flex-1 ml-1/5 flex flex-col h-screen rounded-lg shadow-lg">
         <div className="flex space-x-3 border-b pb-2">
-          {(role==="Admins" && userId===id?
-          adminTab : internTab).map((tab) => (
-            <button
-              key={tab}
-              className={`px-4 py-2 rounded-t-lg ${
-                activeTab === tab
-                  ? "bg-blue-500 text-white"
-                  : "bg-gray-200 text-gray-700"
-              }`}
-              onClick={() => {setActiveTab(tab)
-                 console.log();
-              }}
-            >
-              {tab.charAt(0).toUpperCase() + tab.slice(1)}
-            </button>
-          ))}
+          {(role === "Admins" && userId === id ? adminTab : internTab).map(
+            (tab) => (
+              <button
+                key={tab}
+                className={`px-4 py-2 rounded-t-lg ${
+                  activeTab === tab
+                    ? "bg-blue-500 text-white"
+                    : "bg-gray-200 text-gray-700"
+                }`}
+                onClick={() => {
+                  setActiveTab(tab);
+                  console.log();
+                }}
+              >
+                {tab.charAt(0).toUpperCase() + tab.slice(1)}
+              </button>
+            )
+          )}
         </div>
 
         {/* Content Section */}

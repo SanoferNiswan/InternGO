@@ -1,12 +1,12 @@
 import { useState, useEffect } from "react";
-import axios from "../../api/axios";
+import axios from "../../../api/axios";
 import { parsePath } from "react-router-dom";
 
 const EditPlanPopup = ({ planDetails, onClose, onUpdate, token }) => {
   const [updatedPlan, setUpdatedPlan] = useState({
     name: "",
     description: "",
-    planDays: "",
+    planDays: "", 
   });
 
   useEffect(() => {

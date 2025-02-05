@@ -26,7 +26,8 @@ const SignIn = () => {
   
         if (token) {
           dispatch(setAuth({ user, userId, name, token, role, permissions }));
-  
+          console.log("role : ",role," permissions : ",permissions);
+          
           navigate('/dashboard', { replace: true });
         }
       } else {

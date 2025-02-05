@@ -1,7 +1,7 @@
 import React from 'react';
 import { useParams } from 'react-router-dom'; 
 import { useSelector } from 'react-redux';
-import Profile from '../common/Profile';
+import Profile from '../../common/Profile';
 
 const UserDetail = () => {
   const { id } = useParams();

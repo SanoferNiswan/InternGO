@@ -6,19 +6,20 @@ import SignUp from './pages/authentication/SignUp';
 import DashboardLayout from './pages/dashboard/DashboardLayout';
 import ProtectedRoute from './components/ProtectedRoute';
 import DailyUpdate from '../src/components/users/DailyUpdate'
+import DailyUpdates from './components/admin/dailyUpdate/DailyUpdates'; 
 import Feedback from '../src/components/users/Feedback'
 import Help from '../src/components/users/Help'
 import Interactions from '../src/components/users/Interactions'
 import Profile from '../src/components/common/Profile'
 import InteractionSchedule from '../src/components/admin/InteractionSchedule'
-import Plan from '../src/components/admin/Plan'
-import Records from './components/admin/Resources'
+import Plan from '../src/components/admin/plans/Plan'
+import Records from './components/admin/profileManagement/Resources'
 import EditProfile from './components/users/EditProfile';
 import Roadmap from './components/common/Roadmap';
-import UserDetail from './components/admin/UserDetail';
+import UserDetail from './components/admin/profileManagement/UserDetail';
 import NotFound from './pages/NotFound';
 import MyProfile from './components/common/MyProfile';
-import Milestones from './components/admin/Milestones';
+import Milestones from './components/admin/plans/Milestones';
 import Dashboard from './pages/dashboard/Dashboard';
  
 const App = () => {
@@ -52,6 +53,7 @@ const App = () => {
                     <Route path="resources/:id" element={<UserDetail />} />
                     <Route path="/dashboard/plans" element={<Plan />}/>
                     <Route path="/dashboard/plans/:planId" element={<Milestones />}/>
+                    <Route path="/dashboard/daily-updates" element={<DailyUpdates />}/>
                 </Route>
             </Routes>
         </Router>

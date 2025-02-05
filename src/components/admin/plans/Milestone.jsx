@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { useSelector } from "react-redux";
-import axios from "../../api/axios";
+import axios from "../../../api/axios";
 import { FaEdit, FaTrash } from "react-icons/fa";
-import EditPlanPopup from "./EditPlanPopup";
-import UserList from "./UserList";
+import EditPlanPopup from "../EditPlanPopup";
+import UserList from "../UserList";
 const Milestones = () => {
   const navigate = useNavigate();
   const { planId } = useParams();
@@ -327,6 +327,7 @@ const Milestones = () => {
       </div>
 
       <p className="text-gray-700 p-4">{planDetails.description}</p>
+      <p className="text-gray-700 p-4">Number of users in current plan: {planDetails.users.length}</p>
 
       <div className="flex justify-end space-x-4">
         <button
@@ -416,8 +417,6 @@ const Milestones = () => {
                   </div>
                 </div>
 
-                {/* Objectives Table */}
-                {/* {milestone.objectives.length > 0 && ( */}
                 <div className="p-4 shadow-lg bg-white rounded-lg mt-3">
                   <div>
                     <p className="font-bold">Objectives</p>

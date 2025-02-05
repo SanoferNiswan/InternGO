@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import axios from "../../api/axios";
+import axios from "../../../api/axios";
 import { useSelector } from "react-redux";
 import Select from "react-select";
 import { FaUserPlus, FaUser } from "react-icons/fa";
@@ -295,4 +295,3 @@ const UserList = ({ planId }) => {
 };
 
 export default UserList;
-

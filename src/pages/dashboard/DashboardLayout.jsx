@@ -44,6 +44,12 @@ const DashboardLayout = () => {
       icon: <FaTasks />,
     },
     {
+      name: "Daily Update",
+      permission: "tasks.view",
+      path: "/dashboard/daily-updates",
+      icon: <FaTasks />,
+    },
+    {
       name: "RoadMap",
       permission: "roadmaps.view",
       path: "/dashboard/roadmap",

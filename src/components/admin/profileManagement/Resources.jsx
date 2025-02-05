@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import Select from "react-select";
-import axios from "../../api/axios";
+import axios from "../../../api/axios";
 import UserCard from "./UserCard";
 import { useRef } from "react";
 
@@ -13,8 +13,8 @@ const Resources = () => {
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const [searchInput, setSearchInput] = useState(""); 
-  const [search, setSearch] = useState(""); 
+  const [searchInput, setSearchInput] = useState("");
+  const [search, setSearch] = useState("");
 
   const [filter, setFilter] = useState({
     year: [],
@@ -44,7 +44,7 @@ const Resources = () => {
         const response = await axios.post(
           "/api/users/",
           {
-            name: search, 
+            name: search,
             year: filter.year,
             batch: filter.batch,
             designation: filter.designation,
@@ -68,17 +68,17 @@ const Resources = () => {
     };
 
     fetchData();
-  }, [search, filter, currentPage]); 
+  }, [search, filter, currentPage]);
 
-    useEffect(() => {
-      const handler = setTimeout(() => {
-        setSearch(searchInput);
-      }, 1000); 
-  
-      return () => {
-        clearTimeout(handler); 
-      };
-    }, [searchInput]);
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setSearch(searchInput);
+    }, 1000);
+
+    return () => {
+      clearTimeout(handler);
+    };
+  }, [searchInput]);
 
   const debounce = (func, delay) => {
     const timerRef = useRef(null);
@@ -143,7 +143,7 @@ const Resources = () => {
         <input
           type="text"
           value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)} 
+          onChange={(e) => setSearchInput(e.target.value)}
           className="mt-1 block w-3/5 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
           placeholder="Search by name"
         />
@@ -264,6 +264,3 @@ const Resources = () => {
 };
 
 export default Resources;
-
-
-
