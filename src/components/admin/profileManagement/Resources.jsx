@@ -18,7 +18,7 @@ const Resources = () => {
 
   const [filter, setFilter] = useState({
     year: [],
-    batch: [],
+    batch: [], 
     designation: [],
     status: [],
   });
@@ -38,37 +38,38 @@ const Resources = () => {
     options.map((option) => ({ value: option, label: option }));
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        setLoading(true);
-        const response = await axios.post(
-          "/api/users/",
-          {
-            name: search,
-            year: filter.year,
-            batch: filter.batch,
-            designation: filter.designation,
-            status: filter.status,
-          },
-          {
-            params: { limit: 8, offset: (currentPage - 1) * 6 },
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-
-        if (response.data) {
-          setUsers(response.data.data.data);
-          setTotalPages(Math.ceil(response.data.data.total_pages));
-        }
-      } catch (err) {
-        setError("Failed to fetch data");
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchData();
   }, [search, filter, currentPage]);
+
+  const fetchData = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.post(
+        "/api/users/",
+        {
+          name: search,
+          year: filter.year,
+          batch: filter.batch,
+          designation: filter.designation,
+          status: filter.status,
+        },
+        {
+          params: { limit: 8, offset: (currentPage - 1) * 6 },
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+
+      if (response.data) {
+        setUsers(response.data.data.data);
+        setTotalPages(Math.ceil(response.data.data.total_pages));
+      }
+    } catch (err) {
+      setError("Failed to fetch data");
+    } finally {
+      setLoading(false);
+    }
+  };
+
 
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -79,18 +80,6 @@ const Resources = () => {
       clearTimeout(handler);
     };
   }, [searchInput]);
-
-  const debounce = (func, delay) => {
-    const timerRef = useRef(null);
-    return (...args) => {
-      if (timerRef.current) clearTimeout(timerRef.current);
-      timerRef.current = setTimeout(() => func(...args), delay);
-    };
-  };
-
-  const debouncedSearch = debounce((query) => {
-    setSearch(query);
-  }, 1000);
 
   const handleFilterChange = (selectedOptions, filterType) => {
     const selectedValues = selectedOptions

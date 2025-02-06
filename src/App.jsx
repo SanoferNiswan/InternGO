@@ -5,7 +5,7 @@ import SignIn from './pages/authentication/SignIn';
 import SignUp from './pages/authentication/SignUp';
 import DashboardLayout from './pages/dashboard/DashboardLayout';
 import ProtectedRoute from './components/ProtectedRoute';
-import DailyUpdate from '../src/components/users/DailyUpdate'
+import DailyUpdate from './components/users/dailyUpdates/DailyUpdate'
 import DailyUpdates from './components/admin/dailyUpdate/DailyUpdates'; 
 import Feedback from '../src/components/users/Feedback'
 import Help from '../src/components/users/Help'
@@ -21,6 +21,8 @@ import NotFound from './pages/NotFound';
 import MyProfile from './components/common/MyProfile';
 import Milestones from './components/admin/plans/Milestones';
 import Dashboard from './pages/dashboard/Dashboard';
+import InternUpdate from './components/users/dailyUpdates/InternUpdate';
+import AdminUpdate from './components/admin/dailyUpdate/AdminUpdate';
  
 const App = () => {
     return (
@@ -51,9 +53,14 @@ const App = () => {
                     <Route path="edit-profile" element={<EditProfile />} />
                     <Route path="roadmap" element={<Roadmap />} />
                     <Route path="resources/:id" element={<UserDetail />} />
-                    <Route path="/dashboard/plans" element={<Plan />}/>
-                    <Route path="/dashboard/plans/:planId" element={<Milestones />}/>
-                    <Route path="/dashboard/daily-updates" element={<DailyUpdates />}/>
+                    <Route path="plans" element={<Plan />}/>
+                    <Route path="plans/:planId" element={<Milestones />}/>
+
+                    <Route path="daily-update/:date" element={<InternUpdate />} />
+                    <Route path="daily-update" element={<DailyUpdate />}/>
+
+                    <Route path="daily-updates/:date" element={<AdminUpdate />}/>
+                    <Route path="daily-updates" element={<DailyUpdates />}/>
                 </Route>
             </Routes>
         </Router>
@@ -61,3 +68,4 @@ const App = () => {
 };
  
 export default App;
+ 

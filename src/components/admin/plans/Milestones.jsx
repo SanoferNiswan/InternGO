@@ -9,7 +9,7 @@ import MilestoneList from "./MilestoneList";
 import AddMilestoneForm from "./AddMilestoneForm";
 
 const Milestones = () => {
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
   const { planId } = useParams();
   const { token } = useSelector((state) => state.auth);
   const [planDetails, setPlanDetails] = useState({

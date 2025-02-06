@@ -13,7 +13,7 @@ const Plan = () => {
   const [planDays, setPlanDays] = useState("");
   const [plans, setPlans] = useState([]);
 
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
 
   useEffect(() => {
     fetchPlans();

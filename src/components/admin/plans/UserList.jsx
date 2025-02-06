@@ -33,7 +33,6 @@ const UserList = ({ planId }) => {
     "EXAMINATION",
     "SHADOWING",
     "DEPLOYED",
-    "LEAVE",
   ];
 
   const createSelectOptions = (options) =>
@@ -183,7 +182,7 @@ const UserList = ({ planId }) => {
         >
           {showFilters ? "Hide Filters" : "Show Filters"}
         </button>
-        {showFilters && (
+        {showFilters && ( 
           <div className="mt-2 space-y-2">
             <Select
               isMulti
