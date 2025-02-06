@@ -16,7 +16,7 @@ const AdminDashboard = () => {
             <h2 className="text-2xl font-bold">120</h2>
           </div>
         </div>
-
+ 
         {/* Active Interns */}
         <div className="p-6 bg-white shadow-md rounded-lg flex items-center gap-4">
           <FaClipboardList className="text-green-500 text-4xl" />

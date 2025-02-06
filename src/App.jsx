@@ -9,9 +9,9 @@ import DailyUpdate from './components/users/dailyUpdates/DailyUpdate'
 import DailyUpdates from './components/admin/dailyUpdate/DailyUpdates'; 
 import Feedback from '../src/components/users/Feedback'
 import Help from '../src/components/users/Help'
-import Interactions from '../src/components/users/Interactions'
+import Interaction from './pages/interaction/Interaction';
 import Profile from '../src/components/common/Profile'
-import InteractionSchedule from '../src/components/admin/InteractionSchedule'
+import InteractionSchedule from './components/admin/interaction/InteractionSchedule'
 import Plan from '../src/components/admin/plans/Plan'
 import Records from './components/admin/profileManagement/Resources'
 import EditProfile from './components/users/EditProfile';
@@ -23,10 +23,13 @@ import Milestones from './components/admin/plans/Milestones';
 import Dashboard from './pages/dashboard/Dashboard';
 import InternUpdate from './components/users/dailyUpdates/InternUpdate';
 import AdminUpdate from './components/admin/dailyUpdate/AdminUpdate';
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
  
 const App = () => {
     return (
         <Router>
+            <ToastContainer />
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/signin" element={<SignIn />} />
@@ -45,7 +48,7 @@ const App = () => {
                     <Route path="daily-update" element={<DailyUpdate />} />
                     <Route path="feedback" element={<Feedback />} />
                     <Route path="help" element={<Help />} />
-                    <Route path="interactions" element={<Interactions />} />
+                    <Route path="interactions" element={<Interaction />} />
                     <Route path="my-profile" element={<MyProfile />} />
                     <Route path="interaction-schedule" element={<InteractionSchedule />} />
                     <Route path="plan" element={<Plan />} />

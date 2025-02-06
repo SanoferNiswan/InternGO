@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from '../../../api/axios';
 import { useSelector } from 'react-redux';
 
-const AddAssetModal = ({ isAssetModalOpen, setIsAssetModalOpen, userId }) => {
+const AddAssetModal = ({ setActiveTab,isAssetModalOpen, setIsAssetModalOpen, userId }) => {
   const { token } = useSelector((state) => state.auth);
   const [assetType, setAssetType] = useState('');
   const [assetName, setAssetName] = useState('');
@@ -15,7 +15,7 @@ const AddAssetModal = ({ isAssetModalOpen, setIsAssetModalOpen, userId }) => {
         assetType,
         assetName,
         givenOn,
-      },
+      }, 
       {
         headers: {
             Authorization: `Bearer ${token}`,
@@ -23,8 +23,9 @@ const AddAssetModal = ({ isAssetModalOpen, setIsAssetModalOpen, userId }) => {
       });
 
       console.log('Asset added:', response.data);
-      setIsAssetModalOpen(false);  
+      setIsAssetModalOpen(false); 
       window.location.reload();
+      setActiveTab("assets");
     } catch (error) {
       console.error('Error adding asset:', error);
     }

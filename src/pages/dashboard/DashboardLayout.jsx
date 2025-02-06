@@ -68,17 +68,23 @@ const DashboardLayout = () => {
       icon: <FaComments />,
     },
     {
+      name: "FeedBack",
+      permission: "feedback.create",
+      path: "/dashboard/feedback",
+      icon: <FaComments />,
+    },
+    {
       name: "Interactions",
       permission: "interactions.view",
       path: "/dashboard/interactions",
       icon: <FaCalendarAlt />,
     },
-    {
-      name: "Schedule",
-      permission: "interactions.schedule",
-      path: "/dashboard/interaction-schedule",
-      icon: <FaCalendarAlt />,
-    },
+    // {
+    //   name: "Schedule",
+    //   permission: "interactions.schedule",
+    //   path: "/dashboard/interaction-schedule",
+    //   icon: <FaCalendarAlt />,
+    // },
     {
       name: "Resources",
       permission: "users.view",

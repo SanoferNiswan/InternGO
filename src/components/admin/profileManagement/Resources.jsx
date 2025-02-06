@@ -21,7 +21,7 @@ const Resources = () => {
     batch: [], 
     designation: [],
     status: [],
-  });
+  }); 
 
   const years = [2023, 2024, 2025];
   const batches = ["Batch 1", "Batch 2", "Batch 3"];
@@ -54,7 +54,7 @@ const Resources = () => {
           status: filter.status,
         },
         {
-          params: { limit: 8, offset: (currentPage - 1) * 6 },
+          params: { limit: 8, offset: (currentPage - 1) * 8 },
           headers: { Authorization: `Bearer ${token}` },
         }
       );
@@ -69,7 +69,6 @@ const Resources = () => {
       setLoading(false);
     }
   };
-
 
   useEffect(() => {
     const handler = setTimeout(() => {

@@ -50,7 +50,7 @@ const UserList = ({ planId }) => {
           name: search,
           year: filter.year,
           batch: filter.batch,
-          designation: filter.designation,
+          designation: filter.designation, 
           status: filter.status,
           planStatus: filter.planStatus,
         },

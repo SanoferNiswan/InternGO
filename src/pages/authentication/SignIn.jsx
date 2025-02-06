@@ -16,6 +16,8 @@ const SignIn = () => {
 
   const navigate = useNavigate();
 
+  const [errmsg,setErrMsg] = useState("");
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -34,8 +36,8 @@ const SignIn = () => {
         alert('Invalid email or password. Please try again.');
       }
     } catch (error) {
-      console.error('Sign In Error:', error);
-      alert(error);
+      console.error('Sign In Error:', error.response.data.message);
+      setErrMsg(error.response?.data?.message || "An error occurred"); 
     }
   };
  
@@ -43,6 +45,7 @@ const SignIn = () => {
     <div className="min-h-screen flex items-center justify-center">
       <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-lg shadow-gray-400">
         <h2 className="text-center text-2xl font-bold mb-4">Sign In</h2>
+        {errmsg && <p className="text-red-700 mb-2">{errmsg}</p>}
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
             <label className="block text-sm font-medium text-gray-700">Email</label>

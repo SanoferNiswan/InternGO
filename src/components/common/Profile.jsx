@@ -482,6 +482,7 @@ const Profile = ({ userId, token }) => {
           isAssetModalOpen={isAssetModalOpen}
           setIsAssetModalOpen={setIsAssetModalOpen}
           userId={userId}
+          setActiveTab={setActiveTab}
         />
       )}
     </div>
