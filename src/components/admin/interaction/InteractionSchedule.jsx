@@ -1,16 +1,19 @@
 import React, { useState, useEffect } from "react";
 import ScheduleModal from "./ScheduleModal";
-import {
-  FaCalendarAlt
-} from "react-icons/fa";
+import { FaCalendarAlt } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import Select from "react-select";
 import axios from "../../../api/axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import InteractionCard from "../../InteractionCard";
+import EditModal from "./EditModal";
+
 
 const InteractionSchedule = () => {
+
+  const [selectedInteraction, setSelectedInteraction] = useState(null);
+
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { token } = useSelector((state) => state.auth);
   const [showFilters, setShowFilters] = useState(false);
@@ -31,7 +34,7 @@ const InteractionSchedule = () => {
   });
 
   const years = [2023, 2024, 2025];
-  const status = ["PENDING","COMPLETED"];
+  const status = ["PENDING", "COMPLETED"];
   const batches = ["Batch 1", "Batch 2", "Batch 3"];
   const designations = ["frontend", "backend", "testing"];
 
@@ -124,15 +127,18 @@ const InteractionSchedule = () => {
             placeholder="Search by name"
           />
           <Select
-              isMulti
-              value={filter.interactionStatus.map((status) => ({ value: status, label: status }))}
-              options={createSelectOptions(status)}
-              onChange={(selectedOptions) =>
-                handleFilterChange(selectedOptions, "interactionStatus")
-              }
-              className="mt-1"
-              placeholder="Select status"
-            />
+            isMulti
+            value={filter.interactionStatus.map((status) => ({
+              value: status,
+              label: status,
+            }))}
+            options={createSelectOptions(status)}
+            onChange={(selectedOptions) =>
+              handleFilterChange(selectedOptions, "interactionStatus")
+            }
+            className="mt-1"
+            placeholder="Select status"
+          />
           <button
             onClick={() => setShowFilters(!showFilters)}
             className="text-sm text-blue-500 hover:underline"
@@ -219,9 +225,17 @@ const InteractionSchedule = () => {
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {interactions.map((interaction) => (
-          <InteractionCard interaction={interaction}/>
+          <InteractionCard interaction={interaction} onEdit={() => setSelectedInteraction(interaction)} />
         ))}
       </div>
+
+      {selectedInteraction && (
+        <EditModal
+          interaction={selectedInteraction}
+          onClose={() => setSelectedInteraction(null)} // Close modal
+          refreshData={fetchData} // Refresh list after update
+        />
+      )}
 
       <div className="flex justify-center gap-4 items-center mt-6">
         <button
@@ -243,7 +257,12 @@ const InteractionSchedule = () => {
         </button>
       </div>
 
-      {isModalOpen && <ScheduleModal onClose={() => setIsModalOpen(false)} />}
+      {isModalOpen && (
+        <ScheduleModal
+          onClose={() => setIsModalOpen(false)}
+          refreshData={fetchData}
+        />
+      )}
     </div>
   );
 };

@@ -1,12 +1,13 @@
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
-import { useState } from "react";
-import axios from "../../../api/axios.js"
+import { useState, useEffect } from "react";
+import axios from "../../../api/axios.js";
 
-const ScheduleModal = ({ onClose,refreshData }) => {
+const EditModal = ({ onClose, interaction, refreshData }) => {
   const { token } = useSelector((state) => state.auth);
   const mentors = ["Arshad", "Gokul"];
+
   const [fields, setFields] = useState({
     interactionName: "",
     internName: "",
@@ -17,12 +18,24 @@ const ScheduleModal = ({ onClose,refreshData }) => {
     time: "",
     duration: "",
   });
-  const [errors, setErrors] = useState({});
-  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  useEffect(() => {
+    if (interaction) { 
+      setFields({
+        interactionName: interaction.name || "",
+        internName: interaction.assignedIntern || "",
+        internEmail: interaction.internEmail || "",
+        mentorName: interaction.assignedMentor || mentors[0],
+        interviewer: interaction.assignedInterviewer || mentors[0],
+        date: interaction.date ? interaction.date.split("T")[0] : "",
+        time: interaction.time ? interaction.time.replace(/(AM|PM)/, "").trim() : "",
+        duration: interaction.duration || "",
+      });
+    }
+  }, [interaction]);
 
   const handleChange = (e) => {
     setFields({ ...fields, [e.target.name]: e.target.value });
-    setErrors({ ...errors, [e.target.name]: "" });
   };
 
   const validateFields = () => {
@@ -39,17 +52,19 @@ const ScheduleModal = ({ onClose,refreshData }) => {
     if (!fields.time) errors.time = "Time is required";
     if (!fields.duration) errors.duration = "Duration is required";
 
-    setErrors(errors);
     return Object.keys(errors).length === 0;
   };
 
   const handleSubmit = async () => {
     if (!validateFields()) return;
 
-    setIsSubmitting(true);
     try {
-      const response = await axios.post(
-        "/api/interactions/schedule",
+        console.log("inside try");
+        console.log(fields);
+        
+        
+      const response = await axios.patch(
+        `/api/interactions/${interaction.id}/update`,
         {
           name: fields.interactionName,
           assignedIntern: fields.internName,
@@ -62,22 +77,21 @@ const ScheduleModal = ({ onClose,refreshData }) => {
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
- 
-      console.log(response.data.message);
+
+      console.log(response);
       
+
       toast.success(response.data.message, {
-        autoClose: 5000, 
+        autoClose: 3000,
         onClose: () => {
-          onClose(),
-          refreshData()
-        } 
+          refreshData();
+          onClose();
+        },
       });
     } catch (error) {
       toast.error(
-        error.response?.data?.message || "Failed to schedule interaction"
-      ); // ✅ Toast error
-    } finally {
-      setIsSubmitting(false);
+        error.response?.data?.message || "Failed to update interaction"
+      );
     }
   };
 
@@ -91,26 +105,19 @@ const ScheduleModal = ({ onClose,refreshData }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-[40%] max-h-[90vh] overflow-y-auto">
-        <h2 className="text-xl font-semibold mb-4">Schedule Interaction</h2>
+        <h2 className="text-xl font-semibold mb-4">Edit Interaction</h2>
 
         <div className="space-y-4">
-          {[
-            { name: "interactionName", label: "Interaction Name", type: "text" },
-            { name: "internName", label: "Intern Name", type: "text" },
-            { name: "internEmail", label: "Intern Email", type: "email" },
-          ].map(({ name, label, type }) => (
-            <div key={name} className="mb-3">
-              <label className="block text-gray-700">{label}</label>
-              <input
-                type={type}
-                name={name}
-                value={fields[name]}
-                onChange={handleChange}
-                className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                required
-              />
-              {errors[name] && <p className="text-red-500 text-sm">{errors[name]}</p>}
-            </div>
+          {["interactionName", "internName", "internEmail"].map((name) => (
+            <input
+              key={name}
+              type="text"
+              name={name}
+              value={fields[name]}
+              onChange={handleChange}
+              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder={name}
+            />
           ))}
 
           <div className="mb-3">
@@ -121,7 +128,9 @@ const ScheduleModal = ({ onClose,refreshData }) => {
               onChange={handleChange}
               className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="" disabled hidden>Select a mentor</option>
+              <option value="" disabled hidden>
+                Select a mentor
+              </option>
               {mentors.map((mentor) => (
                 <option key={mentor} value={mentor}>
                   {mentor}
@@ -138,7 +147,9 @@ const ScheduleModal = ({ onClose,refreshData }) => {
               onChange={handleChange}
               className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="" disabled hidden>Select an interviewer</option>
+              <option value="" disabled hidden>
+                Select an interviewer
+              </option>
               {mentors.map((interviewer) => (
                 <option key={interviewer} value={interviewer}>
                   {interviewer}
@@ -148,47 +159,39 @@ const ScheduleModal = ({ onClose,refreshData }) => {
           </div>
         </div>
 
-        {
-            [{ name: "date", label: "Date", type: "date" },
-            { name: "time", label: "Time ( railway time only )", type: "time" },
-            { name: "duration", label: "Duration", type: "text" }].map(({ name, label, type }) => (
-                <div key={name} className="mb-3">
-                  <label className="block text-gray-700">{label}</label>
-                  <input
-                    type={type}
-                    name={name}
-                    value={fields[name]}
-                    onChange={handleChange}
-                    className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                  />
-                  {errors[name] && <p className="text-red-500 text-sm">{errors[name]}</p>}
-                </div>
-        ))}
+        <div className="mt-4 space-y-4">
+          {["date", "time", "duration"].map((name) => (
+            <input
+              key={name}
+              type="text"
+              name={name}
+              value={fields[name]}
+              onChange={handleChange}
+              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder={name}
+            />
+          ))}
+        </div>
 
         <div className="flex justify-end gap-2 mt-4">
           <button
             onClick={handleSubmit}
-            disabled={isSubmitting}
-            className={`px-4 py-2 text-white rounded ${
-              isSubmitting ? "bg-blue-300 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
-            }`}
+            className="px-4 py-2 bg-blue-500 text-white rounded"
           >
-            {isSubmitting ? "Scheduling..." : "Schedule"}
+            Save
           </button>
           <button
             onClick={onClose}
-            className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded"
+            className="px-4 py-2 bg-gray-500 text-white rounded"
           >
             Cancel
           </button>
         </div>
 
-        {/* 🔹 Add ToastContainer inside component */}
         <ToastContainer position="top-right" autoClose={3000} />
       </div>
     </div>
   );
 };
 
-export default ScheduleModal;
+export default EditModal;

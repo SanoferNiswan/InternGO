@@ -1,9 +1,32 @@
-import React from "react";
+import React, { useState } from "react";
 import { FaEdit, FaCalendar, FaClock, FaHourglassHalf } from "react-icons/fa";
 import { useSelector } from "react-redux";
+import axios from "../api/axios";
 
-const InteractionCard = ({ interaction }) => {
-  const { role } = useSelector((state) => state.auth);
+const InteractionCard = ({ interaction,onEdit }) => {
+  const { role,token } = useSelector((state) => state.auth);
+
+  const [isToggled, setIsToggled] = useState(interaction.isScheduled); 
+  const [isLoading, setIsLoading] = useState(false);
+
+
+  const handleToggle = async (id) => {
+    if (isLoading) return; 
+
+    setIsLoading(true);
+    try {
+      const response = await axios.get(`/api/interactions/toggle/schedule?id=${id}`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });      
+      console.log(response);
+      setIsToggled((prev) => !prev); 
+    } catch (error) {
+      console.error("Error toggling schedule status:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div
       key={interaction.id}
@@ -21,26 +44,35 @@ const InteractionCard = ({ interaction }) => {
           <span className="font-medium text-lg">{interaction.name}</span>
         </div>
 
-        {role == "Admins" && interaction.interactionStatus === "PENDING" && (
-          <label className="flex items-center cursor-pointer text-gray-600">
-            <span className="mr-2">schedule (off) </span>
-            <input
-              type="checkbox"
-              className="hidden"
-              checked={interaction.isToggled}
-              onChange={() => handleToggle(interaction.id)}
-            />
-            <div className="w-10 h-5 bg-gray-300 rounded-full flex items-center p-1 transition-all">
-              <div className="w-4 h-4 bg-white rounded-full shadow-md transform transition-transform duration-300"></div>
-            </div>
-          </label>
-        )}
+        {role === "Admins" && interaction.interactionStatus === "PENDING" && (
+        <label className="flex items-center cursor-pointer text-gray-600">
+          <span className="mr-2">Schedule ({isToggled ? "On" : "Off"})</span>
+          <input
+            type="checkbox"
+            className="hidden"
+            checked={isToggled}
+            onChange={() => handleToggle(interaction.id)}
+            disabled={isLoading} // Disable while API is loading
+          />
+          <div
+            className={`w-10 h-5 flex items-center p-1 rounded-full transition-all ${
+              isToggled ? "bg-blue-500" : "bg-gray-300"
+            }`}
+          >
+            <div
+              className={`w-4 h-4 bg-white rounded-full shadow-md transition-transform duration-300 ${
+                isToggled ? "translate-x-5" : ""
+              }`}
+            ></div>
+          </div>
+        </label>
+      )}
+
       </div>
 
       <div>
         <table className="w-full p-1">
           <tbody>
-            {/* Header Row */}
             <tr className="flex justify-between">
               <td className="flex-1 text-center font-normal text-gray-500">
                 Intern
@@ -52,7 +84,6 @@ const InteractionCard = ({ interaction }) => {
                 Interviewer
               </td>
             </tr>
-            {/* Data Row */}
             <tr className="flex justify-between">
               <td className="flex-1 text-center">
                 {interaction.assignedIntern}
@@ -68,7 +99,6 @@ const InteractionCard = ({ interaction }) => {
         </table>
       </div>
 
-      {/* Date, Time, Duration with Icons */}
       <div className=" text-sm text-gray-600 flex flex-wrap justify-between">
         <div className="flex items-center gap-2">
           <FaCalendar className="text-blue-500" />{" "}
@@ -84,15 +114,15 @@ const InteractionCard = ({ interaction }) => {
         </div>
       </div>
 
-      {role == "Admins" && (
+      {role === "Admins" && (
         <div className="flex justify-end">
-          <button className="text-blue-500 hover:text-blue-600">
+          <button className="text-blue-500 hover:text-blue-600" onClick={onEdit}>
             <FaEdit className="text-lg" />
           </button>
         </div>
       )}
 
-      {role == "Mentors" && interaction.interactionStatus=="PENDING" && (
+      {role == "Mentors" && interaction.interactionStatus == "PENDING" && (
         <div className="flex justify-center">
           <button className="bg-blue-500 hover:bg-blue-600 p-2 rounded-lg text-white">
             Give Feedback
