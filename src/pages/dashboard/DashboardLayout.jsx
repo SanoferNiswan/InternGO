@@ -296,7 +296,7 @@ const DashboardLayout = () => {
       >
         <header className="flex items-center justify-between bg-white px-6 py-4 shadow-md">
           <h1 className="text-2xl font-semibold text-gray-700">
-            {role || ""} Dashboard
+            {role} Dashboard
           </h1>
           <div className="relative flex items-center space-x-4">
             <button

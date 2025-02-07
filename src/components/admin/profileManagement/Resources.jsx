@@ -39,6 +39,8 @@ const Resources = () => {
 
   useEffect(() => {
     fetchData();
+    console.log("called");
+    
   }, [search, filter, currentPage]);
 
   const fetchData = async () => {
@@ -71,6 +73,8 @@ const Resources = () => {
   };
 
   useEffect(() => {
+    console.log("search mounted");
+    
     const handler = setTimeout(() => {
       setSearch(searchInput);
     }, 1000);
