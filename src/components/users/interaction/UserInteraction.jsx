@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "../../../api/axios";
 import { useSelector } from "react-redux";
-import InteractionCard from "../../InteractionCard";
+import InteractionCard from "../../interaction/InteractionCard";
 
 const UserInteraction = () => {
   const { userId, token,name } = useSelector((state) => state.auth);

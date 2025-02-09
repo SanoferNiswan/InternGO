@@ -1,51 +1,65 @@
-import React, { useState } from 'react';
-import axios from '../../api/axios';
+import React, { useState } from "react";
+import axios from "../../../api/axios";
 
-const EditProfileModal = ({ profileData, setIsEditProfileModalOpen, userId, token }) => {
+const EditProfileModal = ({
+  profileData,
+  setIsEditProfileModalOpen,
+  userId,
+  token,
+}) => {
   const [formData, setFormData] = useState({
-    employeeId: profileData.employeeId, 
+    employeeId: profileData.employeeId,
     batch: profileData.batch,
     year: profileData.year,
     phase: profileData.phase,
     dateOfJoining: new Date(profileData.dateOfJoining)
-    .toISOString()
-    .split('T')[0],
+      .toISOString()
+      .split("T")[0],
     status: profileData.status,
-    designation: profileData.designation
+    designation: profileData.designation,
   });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]:name=='year'?Number(value): value,
+      [name]: name == "year" ? Number(value) : value,
     });
   };
 
   const handleSaveChanges = async () => {
     try {
-      await axios.patch(`/api/users/update/${userId}`, {
-        ...formData
-      }, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      alert('Profile updated successfully');
-      setIsEditProfileModalOpen(false);const handleSaveChanges = async () => {
+      await axios.patch(
+        `/api/users/update/${userId}`,
+        {
+          ...formData,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      alert("Profile updated successfully");
+      setIsEditProfileModalOpen(false);
+      const handleSaveChanges = async () => {
         try {
-          await axios.patch(`/api/users/update/${userId}`, {
-            ...formData
-          }, {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          alert('Profile updated successfully');
+          await axios.patch(
+            `/api/users/update/${userId}`,
+            {
+              ...formData,
+            },
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+          alert("Profile updated successfully");
           setIsEditProfileModalOpen(false);
         } catch (error) {
-          console.error('Error updating profile:', error);
+          console.error("Error updating profile:", error);
         }
       };
       window.location.reload();
-    } catch (error) { 
-      console.error('Error updating profile:', error);
+    } catch (error) {
+      console.error("Error updating profile:", error);
     }
   };
 
@@ -64,7 +78,7 @@ const EditProfileModal = ({ profileData, setIsEditProfileModalOpen, userId, toke
 
         <h2 className="text-xl font-semibold mb-4">Edit Profile</h2>
 
-        {/* Input Fields */} 
+        {/* Input Fields */}
 
         <div className="mb-4">
           <label className="block mb-2">Employee Id</label>
@@ -154,16 +168,19 @@ const EditProfileModal = ({ profileData, setIsEditProfileModalOpen, userId, toke
             <option value="DEPLOYED">DEPLOYED</option>
           </select>
         </div>
-        
+
         <div className="mb-4">
           <label className="block mb-2">Date of Joining</label>
           <input
-            name='dateOfJoining'
+            name="dateOfJoining"
             type="date"
-            defaultValue={new Date(formData.dateOfJoining
-              || new Date()).toISOString().split('T')[0]}
+            defaultValue={
+              new Date(formData.dateOfJoining || new Date())
+                .toISOString()
+                .split("T")[0]
+            }
             className="border border-gray-300 rounded px-2 py-1"
-             onChange={handleInputChange}
+            onChange={handleInputChange}
           />
         </div>
 

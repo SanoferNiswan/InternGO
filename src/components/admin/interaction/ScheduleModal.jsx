@@ -48,6 +48,8 @@ const ScheduleModal = ({ onClose,refreshData }) => {
 
     setIsSubmitting(true);
     try {
+      console.log(fields.date,typeof fields.date);
+      
       const response = await axios.post(
         "/api/interactions/schedule",
         {

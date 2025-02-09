@@ -6,7 +6,7 @@ import Select from "react-select";
 import axios from "../../../api/axios";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import InteractionCard from "../../InteractionCard";
+import InteractionCard from "../../interaction/InteractionCard";
 import EditModal from "./EditModal";
 
 

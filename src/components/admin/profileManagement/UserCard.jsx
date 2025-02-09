@@ -8,7 +8,7 @@ const UserCard = ({ user }) => {
     <div
       key={user.id}
       className="relative flex flex-col items-center bg-white shadow-lg p-6 rounded-lg cursor-pointer hover:shadow-xl transition-shadow w-64 h-72 justify-between"
-      onClick={() => navigate(`/dashboard/resources/${user.id}`)}
+      onClick={() => navigate(`/admin/resources/${user.id}`)}
     >
       <div
         className={`absolute top-2 right-2 px-2 py-1 text-xs rounded ${

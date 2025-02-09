@@ -77,13 +77,6 @@ const Plan = () => {
     return <div>Loading...</div>;
   }
 
-  if (role != "Admins") {
-    return (
-      <div className="font-bold text-red-600">
-        You are restricted to access this page
-      </div>
-    );
-  }
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -93,7 +86,7 @@ const Plan = () => {
           <div
             key={plan.id}
             className="relative flex flex-col bg-white shadow-md p-5 rounded-xl cursor-pointer hover:shadow-xl transition-transform transform hover:scale-105 min-h-[180px]"
-            onClick={() => navigate(`/dashboard/plans/${plan.id}`)}
+            onClick={() => navigate(`/admin/plans/${plan.id}`)}
           >
             {/* Plan Name */}
             <h2 className="text-lg font-semibold text-gray-800 flex items-center">

@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import axios from "../../../api/axios";
 import Select from "react-select";
-
+ 
 const AdminUpdate = () => {
   const { date } = useParams();
   const { token } = useSelector((state) => state.auth);
@@ -26,7 +26,7 @@ const AdminUpdate = () => {
   const batches = ["Batch 1", "Batch 2", "Batch 3"];
   const designations = ["frontend", "backend", "testing"];
   const statusOptions = [
-    "ACTIVE",
+    "ACTIVE", 
     "NOT_ACTIVE",
     "EXAMINATION",
     "SHADOWING",

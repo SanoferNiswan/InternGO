@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import axios from "../../../api/axios";
 import { FaTrash } from "react-icons/fa";
 
-const InternUpdate = () => {
+const InternUpdate = () => { 
   const { date } = useParams();
   const { token, userId } = useSelector((state) => state.auth);
   const [tasks, setTasks] = useState([]);

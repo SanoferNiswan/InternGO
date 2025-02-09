@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FaEdit, FaCalendar, FaClock, FaHourglassHalf } from "react-icons/fa";
 import { useSelector } from "react-redux";
-import axios from "../api/axios";
+import axios from "../../api/axios";
 
 const InteractionCard = ({ interaction,onEdit }) => {
   const { role,token } = useSelector((state) => state.auth);
@@ -12,20 +12,28 @@ const InteractionCard = ({ interaction,onEdit }) => {
 
   const handleToggle = async (id) => {
     if (isLoading) return; 
-
+  
+    const newToggleState = !isToggled;
+  
     setIsLoading(true);
     try {
-      const response = await axios.get(`/api/interactions/toggle/schedule?id=${id}`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });      
-      console.log(response);
-      setIsToggled((prev) => !prev); 
+      const response = await axios.get(
+        `/api/interactions/${id}/toggleSchedule?isScheduled=${newToggleState}`, 
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );      
+  
+      console.log("Toggle Response:", response.data);
+      
+      setIsToggled(newToggleState); 
     } catch (error) {
       console.error("Error toggling schedule status:", error);
     } finally {
       setIsLoading(false);
     }
   };
+  
 
   return (
     <div
