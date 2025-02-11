@@ -1,18 +1,18 @@
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
-import { useState } from "react";
-import axios from "../../../api/axios.js"
+import { useEffect, useState } from "react";
+import axios from "../../../api/axios";
 
-const ScheduleModal = ({ onClose,refreshData }) => {
+const ScheduleModal = ({ onClose, refreshData }) => {
   const { token } = useSelector((state) => state.auth);
-  const mentors = ["Arshad", "Gokul"];
+  const [mentors,setMentors] = useState([]);
   const [fields, setFields] = useState({
     interactionName: "",
     internName: "",
     internEmail: "",
-    mentorName: mentors[0],
-    interviewer: mentors[0],
+    mentorName: "",
+    interviewer: "",
     date: "",
     time: "",
     duration: "",
@@ -43,13 +43,36 @@ const ScheduleModal = ({ onClose,refreshData }) => {
     return Object.keys(errors).length === 0;
   };
 
+  useEffect(() => {
+    fetchMentors();
+  }, []);
+
+  const request = ["Mentors", "Admins"];
+
+  const fetchMentors = async () => {
+    try {
+      const response = await axios.get(`/api/users/role/fetch`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+        params: {
+          roleName: ["Mentors"],
+        },
+      });
+      setMentors(response.data.data.map((mentor) => mentor.name));
+      console.log("mentors data :", response.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const handleSubmit = async () => {
     if (!validateFields()) return;
 
     setIsSubmitting(true);
     try {
-      console.log(fields.date,typeof fields.date);
-      
+      console.log(fields.date, typeof fields.date);
+
       const response = await axios.post(
         "/api/interactions/schedule",
         {
@@ -64,20 +87,19 @@ const ScheduleModal = ({ onClose,refreshData }) => {
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
- 
+
       console.log(response.data.message);
-      
+
       toast.success(response.data.message, {
-        autoClose: 5000, 
+        autoClose: 5000,
         onClose: () => {
-          onClose(),
-          refreshData()
-        } 
+          onClose(), refreshData();
+        },
       });
     } catch (error) {
       toast.error(
         error.response?.data?.message || "Failed to schedule interaction"
-      ); // ✅ Toast error
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -97,7 +119,11 @@ const ScheduleModal = ({ onClose,refreshData }) => {
 
         <div className="space-y-4">
           {[
-            { name: "interactionName", label: "Interaction Name", type: "text" },
+            {
+              name: "interactionName",
+              label: "Interaction Name",
+              type: "text",
+            },
             { name: "internName", label: "Intern Name", type: "text" },
             { name: "internEmail", label: "Intern Email", type: "email" },
           ].map(({ name, label, type }) => (
@@ -111,10 +137,12 @@ const ScheduleModal = ({ onClose,refreshData }) => {
                 className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               />
-              {errors[name] && <p className="text-red-500 text-sm">{errors[name]}</p>}
+              {errors[name] && ( 
+                <p className="text-red-500 text-sm">{errors[name]}</p>
+              )}
             </div>
           ))}
-
+          
           <div className="mb-3">
             <label className="block text-gray-700">Mentor Name</label>
             <select
@@ -147,25 +175,28 @@ const ScheduleModal = ({ onClose,refreshData }) => {
                 </option>
               ))}
             </select>
-          </div>
+          </div> 
         </div>
 
-        {
-            [{ name: "date", label: "Date", type: "date" },
-            { name: "time", label: "Time ( railway time only )", type: "time" },
-            { name: "duration", label: "Duration", type: "text" }].map(({ name, label, type }) => (
-                <div key={name} className="mb-3">
-                  <label className="block text-gray-700">{label}</label>
-                  <input
-                    type={type}
-                    name={name}
-                    value={fields[name]}
-                    onChange={handleChange}
-                    className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                    required
-                  />
-                  {errors[name] && <p className="text-red-500 text-sm">{errors[name]}</p>}
-                </div>
+        {[
+          { name: "date", label: "Date", type: "date" },
+          { name: "time", label: "Time ( railway time only )", type: "time" },
+          { name: "duration", label: "Duration", type: "text" },
+        ].map(({ name, label, type }) => (
+          <div key={name} className="mb-3">
+            <label className="block text-gray-700">{label}</label>
+            <input
+              type={type}
+              name={name}
+              value={fields[name]}
+              onChange={handleChange}
+              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+            {errors[name] && (
+              <p className="text-red-500 text-sm">{errors[name]}</p>
+            )}
+          </div>
         ))}
 
         <div className="flex justify-end gap-2 mt-4">
@@ -173,7 +204,9 @@ const ScheduleModal = ({ onClose,refreshData }) => {
             onClick={handleSubmit}
             disabled={isSubmitting}
             className={`px-4 py-2 text-white rounded ${
-              isSubmitting ? "bg-blue-300 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
+              isSubmitting
+                ? "bg-blue-300 cursor-not-allowed"
+                : "bg-blue-500 hover:bg-blue-600"
             }`}
           >
             {isSubmitting ? "Scheduling..." : "Schedule"}

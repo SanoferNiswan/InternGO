@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FaTrash } from "react-icons/fa";
-import axios from "../../../api/axios";
+import axios from "../../../api/axios"; 
 
 const ObjectiveList = ({
   milestone,

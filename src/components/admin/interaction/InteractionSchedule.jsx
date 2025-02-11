@@ -8,10 +8,9 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import InteractionCard from "../../interaction/InteractionCard";
 import EditModal from "./EditModal";
-
+import Loader from "../../Loader";
 
 const InteractionSchedule = () => {
-
   const [selectedInteraction, setSelectedInteraction] = useState(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -114,6 +113,10 @@ const InteractionSchedule = () => {
     const formattedDate = date ? date.toISOString().split("T")[0] : "";
     setSelectedDate(formattedDate);
   };
+
+  if(loading){
+    return <Loader />
+  }
 
   return (
     <div className="p-6 min-h-screen">
@@ -223,17 +226,24 @@ const InteractionSchedule = () => {
         </div>
       )}
 
+      {interactions.length === 0 && (
+        <p className="font-semibold text-gray-600">No interactions found</p>
+      )}
+
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {interactions.map((interaction) => (
-          <InteractionCard interaction={interaction} onEdit={() => setSelectedInteraction(interaction)} />
+          <InteractionCard
+            interaction={interaction}
+            onEdit={() => setSelectedInteraction(interaction)}
+          />
         ))}
-      </div>
+      </div> 
 
       {selectedInteraction && (
         <EditModal
           interaction={selectedInteraction}
-          onClose={() => setSelectedInteraction(null)} // Close modal
-          refreshData={fetchData} // Refresh list after update
+          onClose={() => setSelectedInteraction(null)} 
+          refreshData={fetchData} 
         />
       )}
 

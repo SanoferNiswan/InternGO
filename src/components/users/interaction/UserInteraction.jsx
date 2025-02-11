@@ -2,10 +2,12 @@ import React, { useEffect, useState } from "react";
 import axios from "../../../api/axios";
 import { useSelector } from "react-redux";
 import InteractionCard from "../../interaction/InteractionCard";
+import Loader from "../../Loader";
 
 const UserInteraction = () => {
   const { userId, token,name } = useSelector((state) => state.auth);
   const [interactions, setInteractions] = useState([]);
+   const [loading,setLoading] = useState(true);
 
   useEffect(() => {
     fetchData();
@@ -22,12 +24,22 @@ const UserInteraction = () => {
       console.log(response.data.data.interactionsAttended);
     } catch (err) {
       console.log(err?.response?.data?.message);
+    }finally{
+      setLoading(false);
     }
   };
+
+  if(loading){
+    return <Loader />
+  }
+  
   return (
     <div className="p-2">
       <h1 className="mb-6 text-2xl font-semibold text-center text-blue-500">{name}'s Interaction</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
+        {
+          interactions.length===0 && <p className="font-semibold text-gray-600">No interactions found</p>
+        }
         {interactions.map((interaction) => (
             <InteractionCard key={interaction.id} interaction={interaction} />
         ))}

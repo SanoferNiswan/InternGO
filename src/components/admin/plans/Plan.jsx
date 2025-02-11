@@ -3,9 +3,10 @@ import axios from "../../../api/axios";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { FaCalendarAlt, FaClipboardList } from "react-icons/fa";
+import Loader from "../../Loader";
 
 const Plan = () => {
-  const { token, role } = useSelector((state) => state.auth);
+  const { token } = useSelector((state) => state.auth);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [planName, setPlanName] = useState("");
@@ -28,11 +29,11 @@ const Plan = () => {
       });
       setPlans(response.data.data);
       console.log(response.data.data);
-
-      setLoading(false);
     } catch (err) {
       console.log(err);
       return <div>unauthorized</div>;
+    }finally{
+      setLoading(false);
     }
   };
 
@@ -74,7 +75,7 @@ const Plan = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>;
+    return <Loader />
   }
 
 

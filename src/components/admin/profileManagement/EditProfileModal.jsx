@@ -78,8 +78,6 @@ const EditProfileModal = ({
 
         <h2 className="text-xl font-semibold mb-4">Edit Profile</h2>
 
-        {/* Input Fields */}
-
         <div className="mb-4">
           <label className="block mb-2">Employee Id</label>
           <input

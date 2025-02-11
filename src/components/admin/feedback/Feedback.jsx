@@ -3,10 +3,9 @@ import { useSelector } from "react-redux";
 import Select from "react-select";
 import axios from "../../../api/axios";
 import UserCard from "./UserCard";
-import { useRef } from "react";
 import Loader from "../../Loader";
 
-const Resources = () => {
+const Feedback = () => {
   const { role, token } = useSelector((state) => state.auth);
 
   const [users, setUsers] = useState([]);
@@ -256,4 +255,4 @@ const Resources = () => {
   );
 };
 
-export default Resources;
+export default Feedback;

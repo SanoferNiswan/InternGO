@@ -7,6 +7,7 @@ import EditPlanPopup from "./EditPlanPopup";
 import UserList from "./UserList";
 import MilestoneList from "./MilestoneList";
 import AddMilestoneForm from "./AddMilestoneForm";
+import Loader from "../../Loader";
 
 const Milestones = () => {
   const navigate = useNavigate(); 
@@ -20,6 +21,7 @@ const Milestones = () => {
   const [listOfMilestone, setListOfMilestone] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [showMilestoneForm, setShowMilestoneForm] = useState(false);
+  const [loading,setLoading] = useState(true);
 
   // Fetch plan details
   useEffect(() => {
@@ -34,6 +36,8 @@ const Milestones = () => {
         setListOfMilestone(response.data.data.milestones);
       } catch (error) {
         console.error("Error fetching plan details:", error);
+      }finally{
+        setLoading(false);
       }
     };
 
@@ -56,8 +60,8 @@ const Milestones = () => {
     }
   };
 
-  if (!planDetails || !planDetails.milestones) {
-    return <div>Loading...</div>;
+  if(loading){
+    return <Loader />
   }
 
   return (

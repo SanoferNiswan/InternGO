@@ -6,7 +6,7 @@ let socket;
 
 export const connectSocket = (userId) => {
   socket = io(SOCKET_SERVER_URL);
-
+ 
   socket.on("connect", () => {
     console.log("Connected to WebSocket server");
     socket.emit("join", { userId });

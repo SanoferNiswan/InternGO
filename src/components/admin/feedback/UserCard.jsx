@@ -3,13 +3,13 @@ import { useNavigate } from "react-router-dom";
 
 const UserCard = ({ user }) => {
   const navigate = useNavigate();
-  
+
   return (
     <div
       key={user.id}
       className="relative flex flex-col items-center bg-white shadow-lg p-6 rounded-lg cursor-pointer 
              hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 w-64 h-72 justify-between"
-      onClick={() => navigate(`/admin/resources/${user.id}`)}
+      onClick={() => navigate(`/admin/feedback/user/${user.id}`)}
     >
       <div
         className={`absolute top-2 right-2 px-2 py-1 text-xs rounded ${
@@ -52,14 +52,12 @@ const UserCard = ({ user }) => {
 
 export default UserCard;
 
-
 // import React from "react";
 // import { useNavigate } from "react-router-dom";
 
 // const UserCard = ({ user }) => {
 //   const navigate = useNavigate();
 //   console.log("user details",user);
-  
 
 //   return (
 //     <div

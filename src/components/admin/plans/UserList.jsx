@@ -3,6 +3,7 @@ import axios from "../../../api/axios";
 import { useSelector } from "react-redux";
 import Select from "react-select";
 import { FaUserPlus, FaUser } from "react-icons/fa";
+import Loader from "../../Loader";
 
 const UserList = ({ planId }) => {
   const { token } = useSelector((state) => state.auth);
@@ -13,6 +14,7 @@ const UserList = ({ planId }) => {
   const [search, setSearch] = useState("");
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [showFilters, setShowFilters] = useState(false);
+  const [loading,setLoading] = useState(false);
   const limit = 5;
   const topRef = useRef();
 
@@ -44,6 +46,7 @@ const UserList = ({ planId }) => {
 
   const fetchUsers = async () => {
     try {
+      setLoading(true);
       const response = await axios.post(
         `/api/plans/${planId}/users`,
         {
@@ -73,6 +76,8 @@ const UserList = ({ planId }) => {
     } catch (error) {
       console.error("Error fetching users:", error);
       setUsers([]);
+    }finally{
+      setLoading(false);
     }
   };
 
@@ -137,6 +142,9 @@ const UserList = ({ planId }) => {
     }
   };
 
+  if(loading){
+    return <Loader />
+  }
   return (
     <div
       className="w-full p-4 bg-gray-100 rounded-lg shadow-md mt-6"

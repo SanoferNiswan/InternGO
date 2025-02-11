@@ -1,11 +1,28 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams,Navigate } from "react-router-dom";
 import axios from "../../../api/axios";
 import Select from "react-select";
- 
+import { addDays, isAfter, parseISO, isValid } from "date-fns";
+import Loader from "../../Loader";
+
 const AdminUpdate = () => {
   const { date } = useParams();
+  
+  const inputDate = parseISO(date);
+  if (!isValid(inputDate)) {
+    return <Navigate to="/not-found" replace />;
+  }
+
+  // Get today's date and tomorrow's date
+  const today = new Date();
+  const tomorrow = addDays(today, 1);
+
+  // If the input date is after tomorrow, redirect to 404
+  if (isAfter(inputDate, tomorrow)) {
+    return <Navigate to="/not-found" replace />;
+  }
+
   const { token } = useSelector((state) => state.auth);
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
@@ -83,94 +100,9 @@ const AdminUpdate = () => {
     }));
   }, []);
 
-  //   return (
-  //     <div className="p-4">
-  //       <h2 className="text-2xl mb-2 font-bold text-blue-600">All Updates On {date}</h2>
-
-  //       <input
-  //         type="text"
-  //         value={searchInput}
-  //         onChange={(e) => setSearchInput(e.target.value)}
-  //         className="mb-4 px-3 py-2 border border-gray-300 rounded-md w-full"
-  //         placeholder="Search by name"
-  //       />
-
-  //       <div className="mt-4 grid grid-cols-3 gap-4">
-  //         <Select
-  //           isMulti
-  //           value={createSelectOptions(filter.designation)}
-  //           options={createSelectOptions(designations)}
-  //           onChange={(selectedOptions) => handleFilterChange(selectedOptions, "designation")}
-  //           placeholder="Filter by Designation"
-  //         />
-  //         <Select
-  //           isMulti
-  //           value={createSelectOptions(filter.year)}
-  //           options={createSelectOptions(years)}
-  //           onChange={(selectedOptions) => handleFilterChange(selectedOptions, "year")}
-  //           placeholder="Filter by Year"
-  //         />
-  //         <Select
-  //           isMulti
-  //           value={createSelectOptions(filter.batch)}
-  //           options={createSelectOptions(batches)}
-  //           onChange={(selectedOptions) => handleFilterChange(selectedOptions, "batch")}
-  //           placeholder="Filter by Batch"
-  //         />
-  //       </div>
-
-  //       {loading ? (
-  //         <p className="mt-4">Loading updates...</p>
-  //       ) : (
-  //         <div className="grid grid-cols-3 gap-4 mt-4">
-  //           {dailyUpdates.length > 0 ? (
-  //             dailyUpdates.map((update) => (
-  //               <div key={update.id} className="bg-white p-4 shadow-md rounded-lg">
-  //                 <h3 className="text-lg font-semibold text-blue-600">
-  //                   {update.user.name} ({update.user.designation})
-  //                 </h3>
-  //                 <div className="mt-2">
-  //                   {update.tasks.map((task) => (
-  //                     <div key={task.id} className="border-t mt-2 pt-2">
-  //                       <p className="font-medium text-gray-800">{task.taskName}</p>
-  //                       <p className="text-sm text-gray-600">Planned: {task.activitiesPlanned || "N/A"}</p>
-  //                       <p className="text-sm text-gray-600">Completed: {task.activitiesCompleted || "N/A"}</p>
-  //                       <p className="text-sm text-gray-600">
-  //                         Estimated: {task.estimatedTime || "-"} hrs, Actual: {task.actualTime || "-"} hrs
-  //                       </p>
-  //                       <p className="text-sm font-semibold text-blue-600">Progress: {task.taskProgress}</p>
-  //                     </div>
-  //                   ))}
-  //                 </div>
-  //               </div>
-  //             ))
-  //           ) : (
-  //             <p className="col-span-3 text-center text-gray-500">No updates found.</p>
-  //           )}
-  //         </div>
-  //       )}
-
-  //       <div className="flex justify-center items-center mt-4 space-x-4">
-  //         <button
-  //           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-  //           disabled={currentPage === 1}
-  //           className="px-4 py-2 bg-blue-500 text-white rounded-lg disabled:bg-gray-300"
-  //         >
-  //           Previous
-  //         </button>
-  //         <span>
-  //           Page {currentPage} of {totalPages}
-  //         </span>
-  //         <button
-  //           onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
-  //           disabled={currentPage === totalPages}
-  //           className="px-4 py-2 bg-blue-500 text-white rounded-lg disabled:bg-gray-300"
-  //         >
-  //           Next
-  //         </button>
-  //       </div>
-  //     </div>
-  //   );
+  if(loading){
+    return <Loader />
+  }
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
       <h2 className="text-3xl font-bold text-center text-gray-700 mb-6">
@@ -215,9 +147,7 @@ const AdminUpdate = () => {
       </div>
 
       {/* Tables by User */}
-      {loading ? (
-        <p className="text-center text-lg">Loading updates...</p>
-      ) : dailyUpdates.length > 0 ? (
+      {dailyUpdates.length > 0 ? (
         dailyUpdates.map((update) => (
           <div key={update.user.id} className="mb-8">
             <h3 className="text-xl font-bold text-gray-700 mb-2 p-3 rounded-md">

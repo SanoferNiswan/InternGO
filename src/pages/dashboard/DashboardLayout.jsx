@@ -3,6 +3,7 @@ import axios from "../../api/axios";
 import { useSelector } from "react-redux";
 import { Outlet, NavLink } from "react-router-dom";
 import { useLocation } from "react-router-dom";
+import AddUserModal from "../../components/admin/profileManagement/AddUserModal";
 import NotificationBell from "../../components/notification/NotificationBell";
 import { connectSocket, getSocket } from "../../services/socketService";
 import {
@@ -17,6 +18,9 @@ import {
   FaTicketAlt,
   FaBullhorn,
   FaChartLine,
+  FaUserEdit, FaUserPlus,
+  FaEdgeLegacy,
+  FaEdit
 } from "react-icons/fa";
 import GLogout from "../../components/authentication/GLogout";
 import logo from "../../assets/logo2.png";
@@ -25,7 +29,6 @@ const DashboardLayout = () => {
   const { name, userId, role, permissions,token } = useSelector(
     (state) => state.auth
   );
-  console.log(role,permissions);
 
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -38,6 +41,12 @@ const DashboardLayout = () => {
       permission: "profile.update",
       path: "/dashboard/my-profile",
       icon: <FaUser />,
+    },
+    {
+      name:"Add user",
+      permission:"users.manage",
+      path: "/admin/add-users",
+      icon: <FaUserPlus />,
     },
     {
       name: "Plans",
@@ -57,12 +66,12 @@ const DashboardLayout = () => {
       path: "/intern/daily-update",
       icon: <FaTasks />,
     },
-    {
-      name: "RoadMap",
-      permission: "roadmaps.view",
-      path: "/dashboard/roadmap",
-      icon: <FaMapMarkedAlt />,
-    },
+    // {
+    //   name: "RoadMap",
+    //   permission: "roadmaps.view",
+    //   path: "/dashboard/roadmap",
+    //   icon: <FaMapMarkedAlt />,
+    // },
     {
       name: "Help",
       permission: "announcements.view",
@@ -112,6 +121,7 @@ const DashboardLayout = () => {
   );
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [isModalOpen , setIsModalOpen] = useState(false);
 
   useEffect(() => {
     if (!userId) return;
@@ -137,7 +147,6 @@ const DashboardLayout = () => {
           Authorization:`Bearer ${token}`
         }
       });
-      console.log("old notifications : ",response.data);
       
       setNotifications(response.data.data);
     } catch (error) {
@@ -151,7 +160,7 @@ const DashboardLayout = () => {
       <header className="flex items-center justify-between bg-white p-2 pr-6 py-2 shadow-md top-0 left-0 right-0">
         <div className="flex items-center">
           <img src={logo} alt="InternGO" className="w-10 h-10 mr-2" />
-          <span className="font-bold text-xl text-gray-700">INTERNGO </span>
+          <span className="font-bold text-xl text-gray-700">InternGO </span>
         </div>
 
         <div className="relative flex items-center space-x-4">
@@ -170,21 +179,26 @@ const DashboardLayout = () => {
 
             {dropdownOpen && (
               <div className="absolute right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg w-48 z-50">
-                <ul className="py-2">
+                <ul className="py-2 flex flex-col ">
                   <li
-                    className="px-4 py-2 hover:bg-blue-50 cursor-pointer"
+                    className="px-4 py-2 hover:bg-blue-50 cursor-pointer flex items-center gap-2"
                     onClick={() =>
                       (window.location.href = "/dashboard/edit-profile")
                     }
                   >
-                    Edit Profile
-                  </li>
+                   <FaEdit /> Edit Profile
+                  </li> <hr />
+                  <li className="px-4 py-2 hover:bg-blue-50 cursor-pointer flex items-center gap-2" onClick={()=>setIsModalOpen(true)}>
+                  <FaUserPlus />Add users
+                  </li><hr />
                   <li className="px-4 py-2 hover:bg-blue-50 cursor-pointer">
                     <GLogout />
                   </li>
                 </ul>
               </div>
             )}
+
+            {isModalOpen && <AddUserModal onClose={() => setIsModalOpen(false)} />}
           </div>
         </div>
       </header>

@@ -2,38 +2,38 @@ import React, { useState } from "react";
 import { FaEdit, FaCalendar, FaClock, FaHourglassHalf } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import axios from "../../api/axios";
+import { useNavigate } from "react-router-dom";
 
-const InteractionCard = ({ interaction,onEdit }) => {
-  const { role,token } = useSelector((state) => state.auth);
+const InteractionCard = ({ interaction, onEdit }) => {
+  const { role, token } = useSelector((state) => state.auth);
+  const navigate = useNavigate();
 
-  const [isToggled, setIsToggled] = useState(interaction.isScheduled); 
+  const [isToggled, setIsToggled] = useState(interaction.isScheduled);
   const [isLoading, setIsLoading] = useState(false);
 
-
   const handleToggle = async (id) => {
-    if (isLoading) return; 
-  
+    if (isLoading) return;
+
     const newToggleState = !isToggled;
-  
+
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `/api/interactions/${id}/toggleSchedule?isScheduled=${newToggleState}`, 
+        `/api/interactions/${id}/toggleSchedule?isScheduled=${newToggleState}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
-      );      
-  
+      );
+
       console.log("Toggle Response:", response.data);
-      
-      setIsToggled(newToggleState); 
+
+      setIsToggled(newToggleState);
     } catch (error) {
       console.error("Error toggling schedule status:", error);
     } finally {
       setIsLoading(false);
     }
   };
-  
 
   return (
     <div
@@ -53,29 +53,28 @@ const InteractionCard = ({ interaction,onEdit }) => {
         </div>
 
         {role === "Admins" && interaction.interactionStatus === "PENDING" && (
-        <label className="flex items-center cursor-pointer text-gray-600">
-          <span className="mr-2">Schedule ({isToggled ? "On" : "Off"})</span>
-          <input
-            type="checkbox"
-            className="hidden"
-            checked={isToggled}
-            onChange={() => handleToggle(interaction.id)}
-            disabled={isLoading} // Disable while API is loading
-          />
-          <div
-            className={`w-10 h-5 flex items-center p-1 rounded-full transition-all ${
-              isToggled ? "bg-blue-500" : "bg-gray-300"
-            }`}
-          >
+          <label className="flex items-center cursor-pointer text-gray-600">
+            <span className="mr-2">Schedule ({isToggled ? "On" : "Off"})</span>
+            <input
+              type="checkbox"
+              className="hidden"
+              checked={isToggled}
+              onChange={() => handleToggle(interaction.id)}
+              disabled={isLoading}
+            />
             <div
-              className={`w-4 h-4 bg-white rounded-full shadow-md transition-transform duration-300 ${
-                isToggled ? "translate-x-5" : ""
+              className={`w-10 h-5 flex items-center p-1 rounded-full transition-all ${
+                isToggled ? "bg-blue-500" : "bg-gray-300"
               }`}
-            ></div>
-          </div>
-        </label>
-      )}
-
+            >
+              <div
+                className={`w-4 h-4 bg-white rounded-full shadow-md transition-transform duration-300 ${
+                  isToggled ? "translate-x-5" : ""
+                }`}
+              ></div>
+            </div>
+          </label>
+        )}
       </div>
 
       <div>
@@ -122,9 +121,25 @@ const InteractionCard = ({ interaction,onEdit }) => {
         </div>
       </div>
 
-      {role === "Admins" && (
+      {role === "Admins" && interaction.interactionStatus === "COMPLETED" && (
+        <div className="flex justify-center">
+          <button
+            className="text-white bg-blue-500 hover:bg-blue-600 p-2 rounded-lg"
+            onClick={() => {
+              navigate(`/admin/feedback/${interaction.id}`);
+            }}
+          >
+            Feedback and Analytics
+          </button>
+        </div>
+      )}
+
+      {role === "Admins" && interaction.interactionStatus === "PENDING" && (
         <div className="flex justify-end">
-          <button className="text-blue-500 hover:text-blue-600" onClick={onEdit}>
+          <button
+            className="text-blue-500 hover:text-blue-600"
+            onClick={onEdit}
+          >
             <FaEdit className="text-lg" />
           </button>
         </div>
@@ -132,8 +147,30 @@ const InteractionCard = ({ interaction,onEdit }) => {
 
       {role == "Mentors" && interaction.interactionStatus == "PENDING" && (
         <div className="flex justify-center">
-          <button className="bg-blue-500 hover:bg-blue-600 p-2 rounded-lg text-white">
+          <button
+            className="bg-green-500 hover:bg-green-600 p-2 rounded-lg text-white"
+            onClick={() =>
+              navigate(`/mentor/feedback/create/${interaction.id}`, {
+                state: { interaction },
+              })
+            }
+          >
             Give Feedback
+          </button>
+        </div>
+      )}
+
+      {role == "Mentors" && interaction.interactionStatus == "COMPLETED" && (
+        <div className="flex justify-center">
+          <button
+            className="bg-blue-500 hover:bg-blue-600 p-2 rounded-lg text-white"
+            onClick={() =>
+              navigate(`/mentor/feedback/view/${interaction.id}`, {
+                state: { interaction },
+              })
+            }
+          >
+            View Feedback
           </button>
         </div>
       )}

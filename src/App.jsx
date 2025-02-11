@@ -1,22 +1,17 @@
 import React from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter as Router,Routes,Route,Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import SignIn from "./pages/authentication/SignIn";
 import SignUp from "./pages/authentication/SignUp";
 import DashboardLayout from "./pages/dashboard/DashboardLayout";
 import ProtectedRoute from "./components/protectedRoutes/ProtectedRoute";
 import RoleProtectedRoute from "./components/protectedRoutes/RoleProtectedRoute";
-import Feedback from "./components/users/Feedback";
+import Feedback from "./components/admin/feedback/Feedback";
 import Help from "./components/users/Help";
 import Interaction from "./pages/interaction/Interaction";
 import Plan from "./components/admin/plans/Plan";
 import Resources from "./components/admin/profileManagement/Resources";
-import EditProfile from "./components/users/EditProfile";
+import EditProfile from "./components/users/profile/EditProfile";
 import Roadmap from "./components/common/Roadmap";
 import UserDetail from "./components/admin/profileManagement/UserDetail";
 import NotFound from "./pages/NotFound";
@@ -30,18 +25,20 @@ import DailyUpdate from "./components/users/dailyUpdate/DailyUpdate";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Forbidden from "./pages/Forbidden";
+import AddUser from "./components/admin/profileManagement/AddUser";
+import CreateFeedback from "./components/mentor/feedback/CreateFeedback";
+import InteractionFeedback from "./components/admin/feedback/InteractionFeedback";
+import UserFeedback from "./components/admin/feedback/UserFeedback";
 
 const App = () => {
   return (
     <Router>
       <ToastContainer />
       <Routes>
-        {/* Public Routes */}
         <Route path="/" element={<Home />} />
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
 
-        {/* Protected Dashboard Routes */}
         <Route
           path="/dashboard/*"
           element={
@@ -68,15 +65,15 @@ const App = () => {
           <Route path="daily-update/:date" element={<InternUpdate />} />
         </Route>
 
-        {/* /* Mentor Routes (Only Mentors can access) */}
         <Route
           path="/mentor/*"
           element={<RoleProtectedRoute allowedRoles={["Mentors"]} />}
         >
-          <Route path="feedback" element={<Feedback />} />
+          {/* <Route path="feedback" element={<CreateFeedback />} /> */}
+          <Route path="feedback/create/:interactionID" element={<CreateFeedback />} />
+          <Route path="feedback/view/:interactionId" element={<InteractionFeedback />} />
         </Route>
 
-        {/* Admin Routes (Only Admins can access) */}
         <Route
           path="/admin/*"
           element={<RoleProtectedRoute allowedRoles={["Admins"]} />}
@@ -88,8 +85,11 @@ const App = () => {
           <Route path="daily-update" element={<DailyUpdates />} />
           <Route path="daily-update/:date" element={<AdminUpdate />} />
           <Route path="feedback" element={<Feedback />} />
+          <Route path="add-users" element={<AddUser />} />
+          <Route path="feedback/:interactionId" element={<InteractionFeedback />} />
+          <Route path="feedback/user/:userId" element={<UserFeedback />} />
         </Route>
-        {/* Redirect to NotFound for unknown routes */}
+
         <Route path="*" element={<Navigate to="/not-found" replace />} />
         <Route path="/not-found" element={<NotFound />} />
         <Route path="/403" element={<Forbidden />} />

@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import { FaRegEnvelope, FaPhone, FaMapMarkerAlt } from "react-icons/fa";
 import EditProfileModal from "../admin/profileManagement/EditProfileModal";
 import AddAssetModal from "../admin/profileManagement/AddAssetModal";
+import Loader from "../Loader";
 
 const Profile = ({ userId, token }) => {
   const { role, userId: id } = useSelector((state) => state.auth);
@@ -13,6 +14,7 @@ const Profile = ({ userId, token }) => {
   const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
   const [isAssetModalOpen, setIsAssetModalOpen] = useState(false);
   const [error, setError] = useState(null);
+  const [loading,setLoading] = useState(true);
 
   useEffect(() => {
     if (userId && token) {
@@ -35,6 +37,9 @@ const Profile = ({ userId, token }) => {
       } else {
         setError("Error fetching profile data");
       }
+    }
+    finally{
+      setLoading(false);
     }
   };
 
@@ -124,7 +129,6 @@ const Profile = ({ userId, token }) => {
 
   const renderTabContent = () => {
     if (error) return <p className="text-red-600 text-center">{error}</p>;
-    if (!profileData) return <p>Loading...</p>;
 
     const renderField = (title, value) => (
       <div className="mb-4 mt-2">
@@ -342,6 +346,10 @@ const Profile = ({ userId, token }) => {
         return <p>Select a tab to view details.</p>;
     }
   };
+
+  if(loading){
+    return <Loader />
+  }
 
   return (
     <div className="flex h-full w-full bg-white">
