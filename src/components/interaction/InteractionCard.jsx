@@ -10,7 +10,7 @@ const InteractionCard = ({ interaction, onEdit }) => {
 
   const [isToggled, setIsToggled] = useState(interaction.isScheduled);
   const [isLoading, setIsLoading] = useState(false);
-
+ 
   const handleToggle = async (id) => {
     if (isLoading) return;
 

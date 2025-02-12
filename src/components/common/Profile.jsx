@@ -32,8 +32,7 @@ const Profile = ({ userId, token }) => {
         },
       });
       setProfileData(response.data.data);
-      setAssets(response.data.data.assets)
-      console.log(response.data.data.assets);
+      setAssets(response.data.data.assets);
     } catch (error) {
       if (error.response && error.response.status === 403) {
         setError("You are restricted from accessing this page.");
@@ -56,7 +55,6 @@ const Profile = ({ userId, token }) => {
 
   const adminTab = ["personal info", "education", "bankDetails", "skill"];
 
-  // Handle field updates locally
   const handleFieldChange = (assetId, field, value) => {
     setAssets((prevAssets) =>
       prevAssets.map((asset) =>
@@ -69,19 +67,26 @@ const Profile = ({ userId, token }) => {
   const handleUpdate = async (assetId, field, value) => {
     const assetToUpdate = assets.find((asset) => asset.id === assetId);
 
-    if (field === "returnedOn" && new Date(value) < new Date(assetToUpdate.givenOn)) {
+    if (
+      field === "returnedOn" &&
+      new Date(value) < new Date(assetToUpdate.givenOn)
+    ) {
       toast.error("Returned On date cannot be earlier than Provided On date.");
       return;
     }
 
     try {
-      await axios.patch(`/api/users/update/asset/${assetId}`, {
-        [field]: value,
-      },{
-        headers:{
-          Authorization:`Bearer ${token}`
+      await axios.patch(
+        `/api/users/update/asset/${assetId}`,
+        {
+          [field]: value,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
         }
-      });
+      );
 
       setAssets((prevAssets) =>
         prevAssets.map((asset) =>
@@ -91,7 +96,7 @@ const Profile = ({ userId, token }) => {
     } catch (error) {
       console.error("Update failed:", error);
     }
-  }
+  };
 
   const renderTabContent = () => {
     if (error) return <p className="text-red-600 text-center">{error}</p>;
@@ -237,11 +242,13 @@ const Profile = ({ userId, token }) => {
                       <td className="border border-gray-300 px-4 py-2">
                         {asset.id}
                       </td>
+
                       <td className="border border-gray-300 px-4 py-2">
                         <input
                           type="text"
                           value={asset.assetName}
                           className="w-full px-2 py-1 border rounded"
+                          disabled={role !== "Admins"} // Disable input if role is not "Admins"
                           onChange={(e) =>
                             handleFieldChange(
                               asset.id,
@@ -254,11 +261,13 @@ const Profile = ({ userId, token }) => {
                           }
                         />
                       </td>
+
                       <td className="border border-gray-300 px-4 py-2">
                         <input
                           type="text"
                           value={asset.assetType}
                           className="w-full px-2 py-1 border rounded"
+                          disabled={role !== "Admins"}
                           onChange={(e) =>
                             handleFieldChange(
                               asset.id,
@@ -271,6 +280,7 @@ const Profile = ({ userId, token }) => {
                           }
                         />
                       </td>
+
                       <td className="border border-gray-300 px-4 py-2">
                         <input
                           type="date"
@@ -282,6 +292,7 @@ const Profile = ({ userId, token }) => {
                               : ""
                           }
                           className="w-full px-2 py-1 border rounded"
+                          disabled={role !== "Admins"}
                           onChange={(e) =>
                             handleFieldChange(
                               asset.id,
@@ -294,6 +305,7 @@ const Profile = ({ userId, token }) => {
                           }
                         />
                       </td>
+
                       <td className="border border-gray-300 px-4 py-2">
                         <input
                           type="date"
@@ -305,6 +317,7 @@ const Profile = ({ userId, token }) => {
                               : ""
                           }
                           className="w-full px-2 py-1 border rounded"
+                          disabled={role !== "Admins"}
                           onChange={(e) =>
                             handleFieldChange(
                               asset.id,
@@ -429,7 +442,6 @@ const Profile = ({ userId, token }) => {
               }`}
               onClick={() => {
                 setActiveTab(tab);
-                console.log();
               }}
             >
               {tab.charAt(0).toUpperCase() + tab.slice(1)}

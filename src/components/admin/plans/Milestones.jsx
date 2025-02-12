@@ -13,6 +13,7 @@ const Milestones = () => {
   const navigate = useNavigate();
   const { planId } = useParams();
   const { token } = useSelector((state) => state.auth);
+  const [showUserList, setShowUserList] = useState(false);
   const [planDetails, setPlanDetails] = useState({
     name: "",
     planDays: null,
@@ -22,7 +23,7 @@ const Milestones = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [showMilestoneForm, setShowMilestoneForm] = useState(false);
   const [loading, setLoading] = useState(true);
-  const [error,setError] = useState(null);
+  const [error, setError] = useState(null);
 
   // Fetch plan details
   useEffect(() => {
@@ -40,7 +41,10 @@ const Milestones = () => {
       setPlanDetails(response.data.data);
       setListOfMilestone(response.data.data.milestones);
     } catch (error) {
-      console.log("Error fetching plan details:", error.response.data.statusCode);
+      console.log(
+        "Error fetching plan details:",
+        error.response.data.statusCode
+      );
       setError(error.response.data.message);
     } finally {
       setLoading(false);
@@ -71,7 +75,6 @@ const Milestones = () => {
       </div>
     );
   }
-  
 
   return (
     <div className="shadow-md p-4 rounded-lg bg-white">
@@ -102,8 +105,22 @@ const Milestones = () => {
         </button>
       </div>
 
-      <div className="flex gap-2">
-        <div className="w-2/3">
+      {/* Toggle Button for User List */}
+      <div className="text-center mt-4">
+        <button
+          className={`text-sm px-3 py-1 rounded ${
+            showUserList
+              ? "bg-red-600 hover:bg-red-800 text-white"
+              : "bg-blue-600 hover:bg-blue-800 text-white"
+          }`}
+          onClick={() => setShowUserList(!showUserList)}
+        >
+          {showUserList ? "Hide Users List" : "Add Users to Plan"}
+        </button>
+      </div>
+
+      {/* <div className="flex gap-2">
+        <div className={showUserList ? "w-full md:w-2/3" : "w-full"}>
           <MilestoneList
             listOfMilestone={listOfMilestone}
             setListOfMilestone={setListOfMilestone}
@@ -115,7 +132,7 @@ const Milestones = () => {
             <AddMilestoneForm
               setShowMilestoneForm={setShowMilestoneForm}
               // setListOfMilestone={setListOfMilestone}
-              refreshData = {fetchPlanDetails}
+              refreshData={fetchPlanDetails}
               planId={planId}
               currentMilestones={listOfMilestone} // Pass existing milestones
               planDays={planDetails.planDays} // Pass planDays for validation
@@ -132,9 +149,49 @@ const Milestones = () => {
           </div>
         </div>
 
-        <div className="w-1/3">
-          <UserList planId={planId} />
+        {showUserList && (
+          <div className="w-1/3">
+            <UserList planId={planId} />
+          </div>
+        )}
+      </div> */}
+
+      <div className={`flex flex-col md:flex-row gap-4 mt-4`}>
+        {/* Milestone Section */}
+        <div className={`${showUserList ? "md:w-2/3 w-full" : "w-full"}`}>
+          <MilestoneList
+            listOfMilestone={listOfMilestone}
+            setListOfMilestone={setListOfMilestone}
+            planId={planId}
+            planDays={planDetails.planDays}
+          />
+
+          {showMilestoneForm && (
+            <AddMilestoneForm
+              setShowMilestoneForm={setShowMilestoneForm}
+              refreshData={fetchPlanDetails}
+              planId={planId}
+              currentMilestones={listOfMilestone}
+              planDays={planDetails.planDays}
+            />
+          )}
+
+          <div className="text-center mt-4">
+            <button
+              className="text-sm bg-gray-700 text-white px-3 py-1 rounded hover:bg-gray-900"
+              onClick={() => setShowMilestoneForm(true)}
+            >
+              + Add Milestone
+            </button>
+          </div>
         </div>
+
+        {/* User List Section - Moves below on smaller screens */}
+        {showUserList && (
+          <div className={`w-full ${showUserList ? "md:w-1/3" : ""}`}>
+            <UserList planId={planId} />
+          </div>
+        )}
       </div>
 
       {isEditing && (

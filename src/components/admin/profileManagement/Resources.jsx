@@ -19,10 +19,10 @@ const Resources = () => {
 
   const [filter, setFilter] = useState({
     year: [],
-    batch: [], 
+    batch: [],
     designation: [],
     status: [],
-  }); 
+  });
 
   const years = [2023, 2024, 2025];
   const batches = ["Batch 1", "Batch 2", "Batch 3"];
@@ -41,7 +41,6 @@ const Resources = () => {
   useEffect(() => {
     fetchData();
     console.log("called");
-    
   }, [search, filter, currentPage]);
 
   const fetchData = async () => {
@@ -75,7 +74,7 @@ const Resources = () => {
 
   useEffect(() => {
     console.log("search mounted");
-    
+
     const handler = setTimeout(() => {
       setSearch(searchInput);
     }, 1000);
@@ -115,7 +114,7 @@ const Resources = () => {
   }
 
   if (loading) {
-    return <Loader />
+    return <Loader />;
   }
 
   if (error) {
@@ -128,99 +127,95 @@ const Resources = () => {
 
   return (
     <div className="p-6 flex flex-wrap gap-4 justify-center items-center">
-      {/* Search Section */}
-      <div className="mb-6">
-        <label className="block text-sm font-medium text-gray-700">
-          Search
-        </label>
-        <input
-          type="text"
-          value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
-          className="mt-1 block w-3/5 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-          placeholder="Search by name"
-        />
+      <div className="flex flex-col lg:flex-row lg:justify-between lg:gap-4">
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-gray-700">
+            Search
+          </label>
+          <input
+            type="text"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            className="mt-1 block w-3/5 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            placeholder="Search by name"
+          />
+        </div>
+
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-gray-700">
+            Filter by Year
+          </label>
+          <Select
+            isMulti
+            value={filter.year.map((year) => ({ value: year, label: year }))}
+            options={createSelectOptions(years)}
+            onChange={(selectedOptions) =>
+              handleFilterChange(selectedOptions, "year")
+            }
+            className="mt-1 block w-full"
+            placeholder="Select Year"
+          />
+        </div>
+
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-gray-700">
+            Filter by Batch
+          </label>
+          <Select
+            isMulti
+            value={filter.batch.map((batch) => ({
+              value: batch,
+              label: batch,
+            }))}
+            options={createSelectOptions(batches)}
+            onChange={(selectedOptions) =>
+              handleFilterChange(selectedOptions, "batch")
+            }
+            className="mt-1 block w-full"
+            placeholder="Select Batch"
+          />
+        </div>
+
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-gray-700">
+            Filter by Designation
+          </label>
+          <Select
+            isMulti
+            value={filter.designation.map((designation) => ({
+              value: designation,
+              label: designation,
+            }))}
+            options={createSelectOptions(designations)}
+            onChange={(selectedOptions) =>
+              handleFilterChange(selectedOptions, "designation")
+            }
+            className="mt-1 block w-full"
+            placeholder="Select Designation"
+          />
+        </div>
+
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-gray-700">
+            Filter by Status
+          </label>
+          <Select
+            isMulti
+            value={filter.status.map((status) => ({
+              value: status,
+              label: status,
+            }))}
+            options={createSelectOptions(statusOptions)}
+            onChange={(selectedOptions) =>
+              handleFilterChange(selectedOptions, "status")
+            }
+            className="mt-1 block w-full"
+            placeholder="Select Status"
+          />
+          {/* </div> */}
+        </div>
       </div>
 
-      {/* Filters Section */}
-      {/* Year Filter */}
-      <div className="mb-6">
-        <label className="block text-sm font-medium text-gray-700">
-          Filter by Year
-        </label>
-        <Select
-          isMulti
-          value={filter.year.map((year) => ({ value: year, label: year }))}
-          options={createSelectOptions(years)}
-          onChange={(selectedOptions) =>
-            handleFilterChange(selectedOptions, "year")
-          }
-          className="mt-1 block w-full"
-          placeholder="Select Year"
-        />
-      </div>
-
-      {/* Batch Filter */}
-      <div className="mb-6">
-        <label className="block text-sm font-medium text-gray-700">
-          Filter by Batch
-        </label>
-        <Select
-          isMulti
-          value={filter.batch.map((batch) => ({
-            value: batch,
-            label: batch,
-          }))}
-          options={createSelectOptions(batches)}
-          onChange={(selectedOptions) =>
-            handleFilterChange(selectedOptions, "batch")
-          }
-          className="mt-1 block w-full"
-          placeholder="Select Batch"
-        />
-      </div>
-
-      {/* Designation Filter */}
-      <div className="mb-6">
-        <label className="block text-sm font-medium text-gray-700">
-          Filter by Designation
-        </label>
-        <Select
-          isMulti
-          value={filter.designation.map((designation) => ({
-            value: designation,
-            label: designation,
-          }))}
-          options={createSelectOptions(designations)}
-          onChange={(selectedOptions) =>
-            handleFilterChange(selectedOptions, "designation")
-          }
-          className="mt-1 block w-full"
-          placeholder="Select Designation"
-        />
-      </div>
-
-      {/* Status Filter */}
-      <div className="mb-6">
-        <label className="block text-sm font-medium text-gray-700">
-          Filter by Status
-        </label>
-        <Select
-          isMulti
-          value={filter.status.map((status) => ({
-            value: status,
-            label: status,
-          }))}
-          options={createSelectOptions(statusOptions)}
-          onChange={(selectedOptions) =>
-            handleFilterChange(selectedOptions, "status")
-          }
-          className="mt-1 block w-full"
-          placeholder="Select Status"
-        />
-        {/* </div> */}
-      </div>
- 
       {users.length > 0 ? (
         <div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 justify-items-center ">

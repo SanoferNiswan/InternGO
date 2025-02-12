@@ -23,10 +23,10 @@ const SignIn = () => {
       const response = await axios.post(SIGNIN_URL, formData);
       if (response.data) {
         const user = response.data.data;
-        const { userId, name, token, role, permissions } = user;
+        const { userId, name, token, role, permissions,profilePhoto } = user;
 
         if (token) {
-          dispatch(setAuth({ user, userId, name, token, role, permissions }));
+          dispatch(setAuth({ user, userId, name, token, role, permissions, profilePhoto }));
           console.log("role : ", role, " permissions : ", permissions);
 
           navigate("/dashboard", { replace: true });

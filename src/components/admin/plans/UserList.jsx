@@ -25,7 +25,7 @@ const UserList = ({ planId }) => {
     status: [],
     planStatus: "Present",
   });
-
+ 
   const years = [2023, 2024, 2025];
   const batches = ["Batch 1", "Batch 2", "Batch 3"];
   const designations = ["frontend", "backend", "testing"];

@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { FaTrash } from "react-icons/fa";
 import ObjectiveList from "./ObjectiveList";
 import axios from "../../../api/axios";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux"; 
+import { fetchMentors } from "../../../redux/slices/dataSlice";
 import { toast } from "react-toastify";
 
 const MilestoneList = ({ listOfMilestone, setListOfMilestone, planId,planDays }) => {

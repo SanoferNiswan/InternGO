@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setAuth } from "../../../redux/slices/authSlice"
 import axios from "../../../api/axios";
 import { useNavigate } from "react-router-dom";
 import FloatingInput from "../../FloatingInput";
-import Loader from "../../Loader";
 
 const EditProfile = () => {
   const { userId, token, name } = useSelector((state) => state.auth);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
     personalEmail: "",
@@ -143,7 +144,7 @@ const EditProfile = () => {
     try {
       console.log("inside try block");
 
-      const response = await axios.patch(
+      const response = await axios.patch( 
         `/api/users/update/${userId}`,
         updatedData,
         {
@@ -153,6 +154,7 @@ const EditProfile = () => {
         }
       );
       console.log("Profile updated successfully:", response.data);
+      dispatch(setAuth({profilePhoto:response.data.data.data.profilePhoto }));
       alert("Profile updated successfully");
       navigate("/dashboard/my-profile");
     } catch (error) {

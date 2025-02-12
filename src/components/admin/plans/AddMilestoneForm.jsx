@@ -111,7 +111,7 @@ const AddMilestoneForm = ({
           </div>
 
           {/* Milestone Days Field */}
-          <div className="relative">
+          <div className="relative"> 
             <input
               type="number"
               value={newMilestone.milestoneDays}

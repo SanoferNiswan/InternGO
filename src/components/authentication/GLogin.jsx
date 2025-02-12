@@ -35,10 +35,10 @@ function GLogin() {
       const user = response.data?.data;
 
       if (user?.token) {
-        const { userId, role, permissions, token } = user;
+        const { userId, role, permissions, token,profilePhoto } = user;
         console.log(user);
 
-        dispatch(setAuth({ user, userId, name, token, role, permissions }));
+        dispatch(setAuth({ user, userId, name, token, role, permissions,profilePhoto }));
 
         navigate("/dashboard");
       } else {

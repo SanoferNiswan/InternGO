@@ -1,7 +1,7 @@
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchMentors, fetchFilters } from "../../../redux/slices/dataSlice";
+import { fetchMentors } from "../../../redux/slices/dataSlice";
 import { useEffect, useState } from "react";
 import axios from "../../../api/axios";
 
@@ -11,7 +11,7 @@ const ScheduleModal = ({ onClose, refreshData }) => {
   const { mentors } = useSelector(
     (state) => state.data
   );
-
+ 
   useEffect(() => {
     if (mentors.length === 0) {
       dispatch(fetchMentors());

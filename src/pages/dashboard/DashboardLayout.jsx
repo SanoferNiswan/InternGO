@@ -5,11 +5,10 @@ import { Outlet, NavLink } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import AddUserModal from "../../components/admin/profileManagement/AddUserModal";
 import NotificationBell from "../../components/notification/NotificationBell";
-import { connectSocket, getSocket } from "../../services/socketService";
+import { connectSocket } from "../../services/socketService";
 import {
   FaUser,
   FaTasks,
-  FaHandsHelping,
   FaComments,
   FaCalendarAlt,
   FaPlusSquare,
@@ -17,16 +16,14 @@ import {
   FaTicketAlt,
   FaBullhorn,
   FaChartLine,
-  FaUserEdit,
   FaUserPlus,
-  FaEdgeLegacy,
   FaEdit,
 } from "react-icons/fa";
 import GLogout from "../../components/authentication/GLogout";
 import logo from "../../assets/logo2.png";
 
 const DashboardLayout = () => {
-  const { name, userId, role, permissions, token, user } = useSelector(
+  const { name, userId, permissions, token, profilePhoto,role } = useSelector(
     (state) => state.auth
   );
 
@@ -58,12 +55,6 @@ const DashboardLayout = () => {
       permission: "tasks.update",
       path: "/intern/daily-update",
       icon: <FaTasks />,
-    },
-    {
-      name: "Help",
-      permission: "announcements.view",
-      path: "/dashboard/help",
-      icon: <FaHandsHelping />,
     },
     {
       name: "FeedBack",
@@ -111,6 +102,12 @@ const DashboardLayout = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
+    if (isModalOpen) {
+      setDropdownOpen(false);
+    }
+  }, [isModalOpen]); 
+
+  useEffect(() => {
     if (!userId) return;
     fetchNotifications();
 
@@ -120,10 +117,6 @@ const DashboardLayout = () => {
         newNotification.createdNotification,
         ...prev,
       ]);
-      console.log(
-        "new notification",
-        newNotification.createdNotification.message
-      );
     });
 
     return () => {
@@ -167,9 +160,13 @@ const DashboardLayout = () => {
               className="flex items-center space-x-2 shadow-md text-blue-600 px-4 py-2 rounded-full cursor-pointer hover:bg-gray-200 font-bold text-lg"
             >
               <span>{name}</span>
-              <div className="w-8 h-8 text-white bg-blue-500 flex items-center justify-center rounded-full">
-                {name?.[0]?.toUpperCase()}
-              </div>
+              {profilePhoto ? (
+                <img src={profilePhoto} className="w-9 h-9 rounded-full" />
+              ) : (
+                <div className="w-9 h-9 rounded-full bg-white flex items-center justify-center text-lg font-bold text-blue-500">
+                  {name?.charAt(0).toUpperCase()}
+                </div>
+              )}
             </button>
 
             {dropdownOpen && (
@@ -184,13 +181,15 @@ const DashboardLayout = () => {
                     <FaEdit /> Edit Profile
                   </li>{" "}
                   <hr />
-                  <li
-                    className="px-4 py-2 hover:bg-blue-50 cursor-pointer flex items-center gap-2"
-                    onClick={() => setIsModalOpen(true)}
-                  >
-                    <FaUserPlus />
-                    Add users
-                  </li>
+                  {role === "Admins" && (
+                    <li
+                      className="px-4 py-2 hover:bg-blue-50 cursor-pointer flex items-center gap-2"
+                      onClick={() => setIsModalOpen(true)}
+                    >
+                      <FaUserPlus />
+                      Add users
+                    </li>
+                  )}
                   <hr />
                   <li className="px-4 py-2 hover:bg-blue-50 cursor-pointer">
                     <GLogout />

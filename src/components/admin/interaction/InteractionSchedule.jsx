@@ -114,13 +114,13 @@ const InteractionSchedule = () => {
     setSelectedDate(formattedDate);
   };
 
-  if(loading){
-    return <Loader />
+  if (loading) {
+    return <Loader />;
   }
 
   return (
     <div className="p-6 min-h-screen">
-      <div className="flex justify-between items-center mb-6">
+      {/* <div className="flex justify-between items-center mb-6">
         <div className="flex items-center gap-4 w-2/3">
           <input
             type="text"
@@ -224,6 +224,115 @@ const InteractionSchedule = () => {
             />
           </div>
         </div>
+      )} */}
+
+      <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
+        {/* Search & Filters Section */}
+        <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-2/3">
+          <input
+            type="text"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            className="w-full sm:w-1/2 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            placeholder="Search by name"
+          />
+          <Select
+            isMulti
+            value={filter.interactionStatus.map((status) => ({
+              value: status,
+              label: status,
+            }))}
+            options={createSelectOptions(status)}
+            onChange={(selectedOptions) =>
+              handleFilterChange(selectedOptions, "interactionStatus")
+            }
+            className="w-full sm:w-auto"
+            placeholder="Select status"
+          />
+          <button
+            onClick={() => setShowFilters(!showFilters)}
+            className="text-sm text-blue-500 hover:underline"
+          >
+            {showFilters ? "Hide Filters" : "Show Filters"}
+          </button>
+        </div>
+
+        {/* Schedule Button */}
+        <button
+          onClick={() => setIsModalOpen(true)}
+          className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-3xl flex items-center gap-2"
+        >
+          <FaCalendarAlt className="text-lg" />
+          Schedule Interaction
+        </button>
+      </div>
+
+      {/* Filters Section */}
+      {showFilters && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Filter by Year
+            </label>
+            <Select
+              isMulti
+              value={filter.year.map((year) => ({ value: year, label: year }))}
+              options={createSelectOptions(years)}
+              onChange={(selectedOptions) =>
+                handleFilterChange(selectedOptions, "year")
+              }
+              className="mt-1"
+              placeholder="Select Year"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Filter by Batch
+            </label>
+            <Select
+              isMulti
+              value={filter.batch.map((batch) => ({
+                value: batch,
+                label: batch,
+              }))}
+              options={createSelectOptions(batches)}
+              onChange={(selectedOptions) =>
+                handleFilterChange(selectedOptions, "batch")
+              }
+              className="mt-1"
+              placeholder="Select Batch"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Filter by Designation
+            </label>
+            <Select
+              isMulti
+              value={filter.designation.map((designation) => ({
+                value: designation,
+                label: designation,
+              }))}
+              options={createSelectOptions(designations)}
+              onChange={(selectedOptions) =>
+                handleFilterChange(selectedOptions, "designation")
+              }
+              className="mt-1"
+              placeholder="Select Designation"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Filter by Date
+            </label>
+            <DatePicker
+              selected={selectedDate}
+              onChange={handleDateChange}
+              className="mt-1 block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+              placeholderText="Select Date"
+            />
+          </div>
+        </div>
       )}
 
       {interactions.length === 0 && (
@@ -237,13 +346,13 @@ const InteractionSchedule = () => {
             onEdit={() => setSelectedInteraction(interaction)}
           />
         ))}
-      </div> 
+      </div>
 
       {selectedInteraction && (
         <EditModal
           interaction={selectedInteraction}
-          onClose={() => setSelectedInteraction(null)} 
-          refreshData={fetchData} 
+          onClose={() => setSelectedInteraction(null)}
+          refreshData={fetchData}
         />
       )}
 

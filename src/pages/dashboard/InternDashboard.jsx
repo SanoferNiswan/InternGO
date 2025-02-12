@@ -11,9 +11,11 @@ import { useSelector } from "react-redux";
 import axios from "../../api/axios";
 
 const InternDashboard = () => {
-  const { user, token, userId } = useSelector((state) => state.auth);
+  const { user, token, userId, profilePhoto, name } = useSelector(
+    (state) => state.auth
+  );
+
   const [planDetails, setPlanDetails] = useState(null);
-  console.log("zone:", user.zone);
 
   useEffect(() => {
     fetchPlanDetails();
@@ -27,7 +29,6 @@ const InternDashboard = () => {
         },
       });
       setPlanDetails(response.data.data);
-      console.log("plan details:", response.data.data);
     } catch (error) {
       console.log(error);
     }
@@ -35,6 +36,28 @@ const InternDashboard = () => {
 
   return (
     <div className="p-2">
+      <div className="bg-blue-500 text-white p-6 rounded-lg flex  gap-6 shadow-md mb-6 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+        {profilePhoto ? (
+          <img
+            src={profilePhoto}
+            alt="Admin"
+            className="w-28 h-28 rounded-full"
+          />
+        ) : (
+          <div className="w-24 h-24 rounded-full bg-white flex items-center justify-center text-lg font-bold text-blue-500">
+            {name?.charAt(0).toUpperCase()}
+          </div>
+        )}
+        <div className="flex flex-col gap-4">
+          <h2 className="text-2xl font-bold">Welcome, {name}!</h2>
+          <p className="text-md text-gray-200">
+            Update your daily tasks, track your progress, and stay engaged with
+            the latest updates. Receive real-time notifications, important
+            announcements, and insights to stay ahead and maximize productivity.
+          </p>
+        </div>
+      </div>
+
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <div className="p-6 bg-white shadow-md rounded-lg flex items-center gap-4">
           <FaBook className="text-blue-500 text-4xl" />
