@@ -1,15 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaTrash } from "react-icons/fa";
 import ObjectiveList from "./ObjectiveList";
 import axios from "../../../api/axios";
+import { useSelector, useDispatch } from "react-redux";
+import { toast } from "react-toastify";
 
-const MilestoneList = ({
-  listOfMilestone,
-  setListOfMilestone,
-  planId,
-  token,
-}) => {
+const MilestoneList = ({ listOfMilestone, setListOfMilestone, planId,planDays }) => {
   const [showObjectiveForm, setShowObjectiveForm] = useState(null);
+  const dispatch = useDispatch();
+  const { mentors } = useSelector((state) => state.data);
+  const { token } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (mentors.length === 0) {
+      dispatch(fetchMentors());
+    }
+  }, [token, dispatch]);
+
+  const totalMilestoneDays = listOfMilestone.reduce(
+    (sum, milestone) => sum + milestone.milestoneDays,
+    0
+  );
 
   const handleMilestoneChange = (e, milestoneId, field) => {
     const { value } = e.target;
@@ -24,6 +35,11 @@ const MilestoneList = ({
 
   const handleUpdateMilestone = async (milestone, planId) => {
     try {
+      if (totalMilestoneDays + parseInt(milestone.milestoneDays) > planDays) {
+            toast.error(`Total milestone days cannot exceed ${planDays}!`);
+            return;
+          }
+
       await axios.patch(
         `/api/plans/${planId}/update/milestone`,
         {
@@ -43,13 +59,6 @@ const MilestoneList = ({
   };
 
   const handleDeleteMilestone = async (milestoneId) => {
-    if (
-      !window.confirm(
-        `Are you sure you want to delete this milestone? ${milestoneId}`
-      )
-    )
-      return;
-
     try {
       await axios.delete(`/api/plans/delete/milestone/${milestoneId}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -59,9 +68,9 @@ const MilestoneList = ({
         prevMilestones.filter((milestone) => milestone.id !== milestoneId)
       );
 
-      alert(`Milestone ${milestoneId} deleted successfully`);
+      toast.success(`Milestone ${milestoneId} deleted successfully`);
     } catch (error) {
-      console.error("Error deleting milestone:", error);
+      toast.error("Error deleting milestone:", error);
     }
   };
 
@@ -90,17 +99,25 @@ const MilestoneList = ({
               </div>
 
               <div className="relative">
-                <input
-                  type="text"
+                <select
                   value={milestone.mentorName}
                   onChange={(e) =>
                     handleMilestoneChange(e, milestone.id, "mentorName")
                   }
                   onBlur={() => handleUpdateMilestone(milestone, planId)}
-                  className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
-                />
+                  className="block px-2.5 pb-2.5 pt-4 w-full w-72 text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 focus:outline-none focus:ring-0 focus:border-blue-600 peer appearance-none"
+                >
+                  <option value="" disabled hidden>
+                    Select a mentor
+                  </option>
+                  {mentors.map((mentor) => (
+                    <option key={mentor} value={mentor}>
+                      {mentor}
+                    </option>
+                  ))}
+                </select>
                 <label className="absolute text-md text-gray-500 transform -translate-y-4 scale-75 top-2 z-5 bg-white px-2 ml-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:top-1/2 peer-focus:scale-75 peer-focus:top-2 peer-focus:text-blue-600">
-                  Mentor Name
+                  Mentor
                 </label>
               </div>
 
@@ -132,7 +149,6 @@ const MilestoneList = ({
             milestone={milestone}
             setListOfMilestone={setListOfMilestone}
             planId={planId}
-            token={token}
             showObjectiveForm={showObjectiveForm}
             setShowObjectiveForm={setShowObjectiveForm}
           />

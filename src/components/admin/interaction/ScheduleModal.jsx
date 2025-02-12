@@ -1,12 +1,23 @@
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchMentors, fetchFilters } from "../../../redux/slices/dataSlice";
 import { useEffect, useState } from "react";
 import axios from "../../../api/axios";
 
 const ScheduleModal = ({ onClose, refreshData }) => {
   const { token } = useSelector((state) => state.auth);
-  const [mentors,setMentors] = useState([]);
+  const dispatch = useDispatch();
+  const { mentors } = useSelector(
+    (state) => state.data
+  );
+
+  useEffect(() => {
+    if (mentors.length === 0) {
+      dispatch(fetchMentors());
+    }
+  }, [token, dispatch]);
+
   const [fields, setFields] = useState({
     interactionName: "",
     internName: "",
@@ -43,28 +54,6 @@ const ScheduleModal = ({ onClose, refreshData }) => {
     return Object.keys(errors).length === 0;
   };
 
-  useEffect(() => {
-    fetchMentors();
-  }, []);
-
-  const request = ["Mentors", "Admins"];
-
-  const fetchMentors = async () => {
-    try {
-      const response = await axios.get(`/api/users/role/fetch`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-        params: {
-          roleName: ["Mentors"],
-        },
-      });
-      setMentors(response.data.data.map((mentor) => mentor.name));
-      console.log("mentors data :", response.data.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   const handleSubmit = async () => {
     if (!validateFields()) return;
@@ -137,12 +126,12 @@ const ScheduleModal = ({ onClose, refreshData }) => {
                 className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 required
               />
-              {errors[name] && ( 
+              {errors[name] && (
                 <p className="text-red-500 text-sm">{errors[name]}</p>
               )}
             </div>
           ))}
-          
+
           <div className="mb-3">
             <label className="block text-gray-700">Mentor Name</label>
             <select
@@ -151,7 +140,9 @@ const ScheduleModal = ({ onClose, refreshData }) => {
               onChange={handleChange}
               className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="" disabled hidden>Select a mentor</option>
+              <option value="" disabled hidden>
+                Select a mentor
+              </option>
               {mentors.map((mentor) => (
                 <option key={mentor} value={mentor}>
                   {mentor}
@@ -168,14 +159,16 @@ const ScheduleModal = ({ onClose, refreshData }) => {
               onChange={handleChange}
               className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
-              <option value="" disabled hidden>Select an interviewer</option>
+              <option value="" disabled hidden>
+                Select an interviewer
+              </option>
               {mentors.map((interviewer) => (
                 <option key={interviewer} value={interviewer}>
                   {interviewer}
                 </option>
               ))}
             </select>
-          </div> 
+          </div>
         </div>
 
         {[

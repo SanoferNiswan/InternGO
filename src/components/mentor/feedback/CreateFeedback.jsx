@@ -5,30 +5,8 @@ import axios from "../../../api/axios";
 import { useSelector } from "react-redux";
 import "react-toastify/dist/ReactToastify.css";
 import { toast } from "react-toastify";
+import { predefinedKPIs } from "../../../utils/kpis";
 
-const predefinedKPIs = [
-  "Communication",
-  "Learning Curve",
-  "Understanding",
-  "Capability",
-  "Task Completion",
-  "Requirement Gathering",
-  "Coding Skill",
-  "In-depth Knowledge",
-  "Experience",
-  "Problem Solving",
-  "Presentation",
-  "Code Quality",
-  "Concepts",
-  "Contribution",
-  "Logical Thinking",
-  "Technical Proficiency",
-  "Project Presentation",
-  "Scenario-Based Questions",
-  "Documentation",
-  "QA Evaluation",
-  "Code Complexity",
-];
 
 const CreateFeedback = () => {
   const { token } = useSelector((state) => state.auth);
@@ -193,7 +171,6 @@ const CreateFeedback = () => {
           {errors.feedback && <p className="text-red-500 text-sm">{errors.feedback}</p>}
         </div>
 
-        {/* Submit Button */}
         <button
           className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition"
           onClick={handleSubmit}

@@ -1,12 +1,12 @@
 import React from "react";
-import { FaUsers, FaClipboardList, FaTasks, FaChartBar, FaProjectDiagram, FaFileAlt } from "react-icons/fa";
+import { FaUsers, FaClipboardList, FaTasks, FaChartBar, FaProjectDiagram, FaFileAlt, FaBullhorn } from "react-icons/fa";
+import Announcement from "../../components/Announcement";
 
 const AdminDashboard = () => {
   return (
-    <div className="p-6">
+    <div className="p-2">
       <h1 className="text-2xl font-bold text-gray-800 mb-6">Analytics</h1>
 
-      {/* Overview Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         {/* Total Users */}
         <div className="p-6 bg-white shadow-md rounded-lg flex items-center gap-4">
@@ -35,7 +35,6 @@ const AdminDashboard = () => {
           </div>
         </div>
 
-        {/* Reports Generated */}
         <div className="p-6 bg-white shadow-md rounded-lg flex items-center gap-4">
           <FaFileAlt className="text-red-500 text-4xl" />
           <div>
@@ -43,34 +42,12 @@ const AdminDashboard = () => {
             <h2 className="text-2xl font-bold">58</h2>
           </div>
         </div>
-
-        {/* Tasks Completed
-        <div className="p-6 bg-white shadow-md rounded-lg flex items-center gap-4">
-          <FaTasks className="text-yellow-500 text-4xl" />
-          <div>
-            <p className="text-gray-500">Tasks Completed</p>
-            <h2 className="text-2xl font-bold">230</h2>
-          </div>
-        </div> */}
       </div>
 
       {/* Recent Activity */}
       <div className="mt-8 bg-white p-6 shadow-md rounded-lg">
-        <h2 className="text-lg font-bold text-gray-700 mb-4">Recent Activity</h2>
-        <ul className="space-y-4">
-          <li className="flex items-center justify-between text-gray-600">
-            <span>New mentor profile added</span>
-            <span className="text-sm text-gray-400">5 hours ago</span>
-          </li>
-          <li className="flex items-center justify-between text-gray-600">
-            <span>Selvam completed interaction</span>
-            <span className="text-sm text-gray-400">1 day ago</span>
-          </li>
-          <li className="flex items-center justify-between text-gray-600">
-            <span>Review session completed</span>
-            <span className="text-sm text-gray-400">2 days ago</span>
-          </li>
-        </ul>
+        <h2 className="text-lg font-bold text-gray-700 mb-4 flex gap-4"><FaBullhorn /> Announcements</h2>
+        <Announcement />
       </div>
 
 

@@ -29,6 +29,7 @@ import AddUser from "./components/admin/profileManagement/AddUser";
 import CreateFeedback from "./components/mentor/feedback/CreateFeedback";
 import InteractionFeedback from "./components/admin/feedback/InteractionFeedback";
 import UserFeedback from "./components/admin/feedback/UserFeedback";
+import CreateAnnouncement from "./components/admin/announcement/CreateAnnouncement";
 
 const App = () => {
   return (
@@ -79,6 +80,7 @@ const App = () => {
           element={<RoleProtectedRoute allowedRoles={["Admins"]} />}
         >
           <Route path="plans" element={<Plan />} />
+          <Route path="create-announcement" element={<CreateAnnouncement />} />
           <Route path="plans/:planId" element={<Milestones />} />
           <Route path="resources" element={<Resources />} />
           <Route path="resources/:id" element={<UserDetail />} />

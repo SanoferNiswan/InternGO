@@ -8,7 +8,7 @@ const initialState = {
   token: Cookies.get('token') || null,  
   role: Cookies.get('role') || null,
   permissions: JSON.parse(Cookies.get('permissions') || '[]'),
-};
+}; 
 
 const authSlice = createSlice({
   name: 'auth',

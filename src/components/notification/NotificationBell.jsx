@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import axios from "../../api/axios";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
-
+ 
 const NotificationBell = ({ notifications, setNotifications }) => {
   const { token, userId } = useSelector((state) => state.auth);
   const [isOpen, setIsOpen] = useState(false);

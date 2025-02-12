@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import axios from "../../../api/axios";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { FaCalendarAlt, FaClipboardList } from "react-icons/fa";
+import { useSelector } from "react-redux";
+import axios from "../../../api/axios";
+import { FaClipboardList, FaCalendarAlt } from "react-icons/fa";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Loader from "../../Loader";
 
 const Plan = () => {
@@ -13,8 +15,9 @@ const Plan = () => {
   const [description, setDescription] = useState("");
   const [planDays, setPlanDays] = useState("");
   const [plans, setPlans] = useState([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchPlans();
@@ -23,16 +26,13 @@ const Plan = () => {
   const fetchPlans = async () => {
     try {
       const response = await axios.get("/api/plans", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+        headers: { Authorization: `Bearer ${token}` },
       });
       setPlans(response.data.data);
-      console.log(response.data.data);
     } catch (err) {
       console.log(err);
-      return <div>unauthorized</div>;
-    }finally{
+      toast.error("Unauthorized access");
+    } finally {
       setLoading(false);
     }
   };
@@ -40,25 +40,26 @@ const Plan = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (parseInt(planDays) > 180) {
+      toast.error("Plan days must be less than 180!");
+      return;
+    }
+
     const planDetails = {
       name: planName,
       description: description,
       planDays: parseInt(planDays),
     };
 
-    console.log("Plan Details:", planDetails);
-
     try {
+      setIsSubmitting(true);
       const response = await axios.post("/api/plans/create", planDetails, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
       if (response.status === 201) {
         const data = response.data.data;
-        console.log("Plan created successfully:", data);
-        alert("Updated successfully");
-        console.log(data);
-
+        toast.success("Plan created successfully!");
         setPlans((prev) => [...prev, data]);
 
         // Clear the form
@@ -67,46 +68,42 @@ const Plan = () => {
         setDescription("");
         setIsModalOpen(false);
       } else {
-        console.error("Failed to create plan");
+        toast.error("Failed to create plan");
       }
     } catch (error) {
       console.error("Error submitting plan:", error);
+      toast.error("Error creating plan");
+    }finally{
+      setIsSubmitting(false);
     }
   };
 
   if (loading) {
-    return <Loader />
+    return <Loader />;
   }
-
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
       {/* Dynamic Plan Cards */}
-      {Array.isArray(plans) &&
-        plans.map((plan) => (
-          <div
-            key={plan.id}
-            className="relative flex flex-col bg-white shadow-md p-5 rounded-xl cursor-pointer hover:shadow-xl transition-transform transform hover:scale-105 min-h-[180px]"
-            onClick={() => navigate(`/admin/plans/${plan.id}`)}
-          >
-            {/* Plan Name */}
-            <h2 className="text-lg font-semibold text-gray-800 flex items-center">
-              <FaClipboardList className="text-blue-500 mr-2 text-xl" />{" "}
-              {plan.name}
-            </h2>
-
-            {/* Description with Truncation */}
-            <p className="text-gray-600 mt-2 text-sm line-clamp-2">
-              {plan.description}
-            </p>
-
-            {/* Plan Duration */}
-            <p className="text-gray-700 font-medium mt-auto flex items-center text-sm">
-              <FaCalendarAlt className="text-green-500 mr-2" />
-              {plan.planDays} Days
-            </p>
-          </div>
-        ))}
+      {plans.map((plan) => (
+        <div
+          key={plan.id}
+          className="relative flex flex-col bg-white shadow-md p-5 rounded-xl cursor-pointer hover:shadow-xl transition-transform transform hover:scale-105 min-h-[180px]"
+          onClick={() => navigate(`/admin/plans/${plan.id}`)}
+        >
+          <h2 className="text-lg font-semibold text-gray-800 flex items-center">
+            <FaClipboardList className="text-blue-500 mr-2 text-xl" />{" "}
+            {plan.name}
+          </h2>
+          <p className="text-gray-600 mt-2 text-sm line-clamp-2">
+            {plan.description}
+          </p>
+          <p className="text-gray-700 font-medium mt-auto flex items-center text-sm">
+            <FaCalendarAlt className="text-green-500 mr-2" />
+            {plan.planDays} Days
+          </p>
+        </div>
+      ))}
 
       {/* Add New Plan Button */}
       <div
@@ -170,14 +167,21 @@ const Plan = () => {
                   className="w-full px-3 py-2 border border-gray-300 rounded-md text-sm focus:ring-blue-500 focus:border-blue-500"
                   required
                 />
+                {parseInt(planDays) > 180 && (
+                  <p className="text-red-500 text-sm mt-1">
+                    Plan days must be less than 180!
+                  </p>
+                )}
               </div>
 
               <div className="flex justify-end gap-3">
                 <button
                   type="submit"
-                  className="bg-blue-500 text-white px-4 py-2 rounded-md text-sm hover:bg-blue-600 transition"
+                  className={`bg-blue-500 text-white px-4 py-2 rounded-md text-sm transition 
+    ${isSubmitting ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-600"}`}
+                  disabled={isSubmitting} // Button disabled when submitting
                 >
-                  Create
+                  {isSubmitting ? "Creating..." : "Create"}
                 </button>
                 <button
                   type="button"

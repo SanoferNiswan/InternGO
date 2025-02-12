@@ -1,12 +1,13 @@
 import { useState, useEffect } from "react";
 import axios from "../../../api/axios";
-import { parsePath } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const EditPlanPopup = ({ planDetails, onClose, onUpdate, token }) => {
   const [updatedPlan, setUpdatedPlan] = useState({
     name: "",
     description: "",
-    planDays: "", 
+    planDays: "",
   });
 
   useEffect(() => {
@@ -21,17 +22,24 @@ const EditPlanPopup = ({ planDetails, onClose, onUpdate, token }) => {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setUpdatedPlan((prev) => ({ ...prev, [name]:name==="planDays"?parseInt(value,10)||0: value }));
+    setUpdatedPlan((prev) => ({
+      ...prev,
+      [name]: name === "planDays" ? parseInt(value, 10) || 0 : value,
+    }));
   };
 
   const handleUpdate = async () => {
     try {
+      if (parseInt(updatedPlan.planDays) > 180) {
+        toast.error("Plan days must be less than 180!");
+        return;
+      }
       console.log(planDetails);
-      
+
       const response = await axios.patch(
         `/api/plans/${planDetails?.id}/update`,
         { ...updatedPlan },
-        { 
+        {
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
@@ -40,12 +48,13 @@ const EditPlanPopup = ({ planDetails, onClose, onUpdate, token }) => {
       );
 
       if (response.status === 200) {
-        alert("Plan updated successfully!");
+        toast.success("Plan updated successfully!");
         onUpdate(updatedPlan);
         window.location.reload();
         onClose();
+        onUpdate(updatedPlan);
       } else {
-        alert("Failed to update plan.");
+        toast.error("Failed to update plan.");
       }
     } catch (error) {
       console.error("Error updating plan:", error);
@@ -107,7 +116,10 @@ const EditPlanPopup = ({ planDetails, onClose, onUpdate, token }) => {
           <button className="px-4 py-2 bg-gray-300 rounded" onClick={onClose}>
             Cancel
           </button>
-          <button className="px-4 py-2 bg-blue-600 text-white rounded" onClick={handleUpdate}>
+          <button
+            className="px-4 py-2 bg-blue-600 text-white rounded"
+            onClick={handleUpdate}
+          >
             Update
           </button>
         </div>

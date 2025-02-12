@@ -1,6 +1,6 @@
-import { useDispatch } from 'react-redux';
-import { clearAuth } from '../../redux/authSlice';
-import { useNavigate } from 'react-router-dom';
+import { useDispatch } from "react-redux";
+import { clearAuth } from "../../redux/slices/authSlice";
+import { useNavigate } from "react-router-dom";
 
 const GLogout = () => {
   const dispatch = useDispatch();
@@ -8,12 +8,14 @@ const GLogout = () => {
 
   const onLogout = () => {
     dispatch(clearAuth());
-    navigate('/'); 
-    
+    navigate("/");
   };
 
   return (
-    <button onClick={onLogout} className="bg-red-600 text-white px-4 py-2 rounded">
+    <button
+      onClick={onLogout}
+      className="bg-red-600 text-white px-4 py-2 rounded"
+    >
       Logout
     </button>
   );

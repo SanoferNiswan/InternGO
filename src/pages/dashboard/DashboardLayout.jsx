@@ -9,7 +9,6 @@ import { connectSocket, getSocket } from "../../services/socketService";
 import {
   FaUser,
   FaTasks,
-  FaMapMarkedAlt,
   FaHandsHelping,
   FaComments,
   FaCalendarAlt,
@@ -26,10 +25,9 @@ import GLogout from "../../components/authentication/GLogout";
 import logo from "../../assets/logo2.png";
 
 const DashboardLayout = () => {
-  const { name, userId, role, permissions,token } = useSelector(
+  const { name, userId, role, permissions,token,user } = useSelector(
     (state) => state.auth
-  );
-
+  );  
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
@@ -66,12 +64,6 @@ const DashboardLayout = () => {
       path: "/intern/daily-update",
       icon: <FaTasks />,
     },
-    // {
-    //   name: "RoadMap",
-    //   permission: "roadmaps.view",
-    //   path: "/dashboard/roadmap",
-    //   icon: <FaMapMarkedAlt />,
-    // },
     {
       name: "Help",
       permission: "announcements.view",
@@ -84,12 +76,12 @@ const DashboardLayout = () => {
       path: "/admin/feedback",
       icon: <FaComments />,
     },
-    {
-      name: "FeedBack",
-      permission: "feedback.create",
-      path: "/mentor/feedback",
-      icon: <FaComments />,
-    },
+    // {
+    //   name: "FeedBack",
+    //   permission: "feedback.create",
+    //   path: "/mentor/feedback",
+    //   icon: <FaComments />,
+    // },
     {
       name: "Interactions",
       permission: "interactions.view",
@@ -112,6 +104,12 @@ const DashboardLayout = () => {
       name: "Create Announcement",
       permission: "announcements.create",
       path: "/dashboard/create-announcement",
+      icon: <FaBullhorn />,
+    },
+    {
+      name: "Create announcement",
+      permission: "users.manage",
+      path: "/admin/create-announcement",
       icon: <FaBullhorn />,
     },
   ];

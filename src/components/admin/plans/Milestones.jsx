@@ -10,7 +10,7 @@ import AddMilestoneForm from "./AddMilestoneForm";
 import Loader from "../../Loader";
 
 const Milestones = () => {
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
   const { planId } = useParams();
   const { token } = useSelector((state) => state.auth);
   const [planDetails, setPlanDetails] = useState({
@@ -21,28 +21,29 @@ const Milestones = () => {
   const [listOfMilestone, setListOfMilestone] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
   const [showMilestoneForm, setShowMilestoneForm] = useState(false);
-  const [loading,setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   // Fetch plan details
   useEffect(() => {
-    const fetchPlanDetails = async () => {
-      try {
-        const response = await axios.get(`/api/plans/${planId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setPlanDetails(response.data.data);
-        setListOfMilestone(response.data.data.milestones);
-      } catch (error) {
-        console.error("Error fetching plan details:", error);
-      }finally{
-        setLoading(false);
-      }
-    };
-
     fetchPlanDetails();
   }, [planId, token]);
+
+  const fetchPlanDetails = async () => {
+    try {
+      // setLoading(false);
+      const response = await axios.get(`/api/plans/${planId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      setPlanDetails(response.data.data);
+      setListOfMilestone(response.data.data.milestones);
+    } catch (error) {
+      console.error("Error fetching plan details:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const deletePlan = async () => {
     if (!window.confirm(`Are you sure you want to delete this plan ${planId}`))
@@ -54,28 +55,28 @@ const Milestones = () => {
       });
 
       console.log("Plan deleted successfully");
-      navigate("/dashboard/plans");
+      navigate("/admin/plans");
     } catch (error) {
       console.error("Error deleting plan:", error);
     }
   };
 
-  if(loading){
-    return <Loader />
+  if (loading) {
+    return <Loader />;
   }
 
   return (
     <div className="shadow-md p-4 rounded-lg bg-white">
       <div className="flex justify-between items-center p-4 border-b">
         <div className="text-lg font-semibold">
-          Plan Name: {planDetails.name}
+          Plan Name: {planDetails?.name}
         </div>
-        <div className="text-gray-600">{planDetails.planDays} Days</div>
+        <div className="text-gray-600">{planDetails?.planDays} Days</div>
       </div>
 
-      <p className="text-gray-700 p-4">{planDetails.description}</p>
+      <p className="text-gray-700 p-4">{planDetails?.description}</p>
       <p className="text-gray-700 p-4">
-        Number of users in current plan: {planDetails.users.length}
+        Number of users in current plan: {planDetails?.users.length}
       </p>
 
       <div className="flex justify-end space-x-4">
@@ -99,15 +100,17 @@ const Milestones = () => {
             listOfMilestone={listOfMilestone}
             setListOfMilestone={setListOfMilestone}
             planId={planId}
-            token={token}
+            planDays={planDetails.planDays} // Pass planDays for validation
           />
 
           {showMilestoneForm && (
             <AddMilestoneForm
               setShowMilestoneForm={setShowMilestoneForm}
-              setListOfMilestone={setListOfMilestone}
+              // setListOfMilestone={setListOfMilestone}
+              refreshData = {fetchPlanDetails}
               planId={planId}
-              token={token}
+              currentMilestones={listOfMilestone} // Pass existing milestones
+              planDays={planDetails.planDays} // Pass planDays for validation
             />
           )}
 

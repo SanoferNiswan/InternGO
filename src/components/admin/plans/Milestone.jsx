@@ -8,7 +8,7 @@ import UserList from "../UserList";
 const Milestones = () => {
   const navigate = useNavigate();
   const { planId } = useParams();
-  const { token } = useSelector((state) => state.auth);
+  const { token } = useSelector((state) => state.auth); 
   const [planDetails, setPlanDetails] = useState({
     name: "",
     planDays: null,

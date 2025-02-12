@@ -5,6 +5,7 @@ import { FaRegEnvelope, FaPhone, FaMapMarkerAlt } from "react-icons/fa";
 import EditProfileModal from "../admin/profileManagement/EditProfileModal";
 import AddAssetModal from "../admin/profileManagement/AddAssetModal";
 import Loader from "../Loader";
+import { toast } from "react-toastify";
 
 const Profile = ({ userId, token }) => {
   const { role, userId: id } = useSelector((state) => state.auth);
@@ -14,7 +15,8 @@ const Profile = ({ userId, token }) => {
   const [isEditProfileModalOpen, setIsEditProfileModalOpen] = useState(false);
   const [isAssetModalOpen, setIsAssetModalOpen] = useState(false);
   const [error, setError] = useState(null);
-  const [loading,setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
+  const [assets, setAssets] = useState([]);
 
   useEffect(() => {
     if (userId && token) {
@@ -30,15 +32,15 @@ const Profile = ({ userId, token }) => {
         },
       });
       setProfileData(response.data.data);
-      console.log(response.data.data);
+      setAssets(response.data.data.assets)
+      console.log(response.data.data.assets);
     } catch (error) {
       if (error.response && error.response.status === 403) {
         setError("You are restricted from accessing this page.");
       } else {
         setError("Error fetching profile data");
       }
-    }
-    finally{
+    } finally {
       setLoading(false);
     }
   };
@@ -52,80 +54,44 @@ const Profile = ({ userId, token }) => {
     "assets",
   ];
 
-  const adminTab = ["personal info", "education", "bankDetails", "assets"];
+  const adminTab = ["personal info", "education", "bankDetails", "skill"];
 
-  const handleEdit = async (assetId, newDate) => {
-    if (!newDate) {
-      alert("Please select a valid return date.");
+  // Handle field updates locally
+  const handleFieldChange = (assetId, field, value) => {
+    setAssets((prevAssets) =>
+      prevAssets.map((asset) =>
+        asset.id === assetId ? { ...asset, [field]: value } : asset
+      )
+    );
+  };
+
+  // Handle onBlur API call using Axios
+  const handleUpdate = async (assetId, field, value) => {
+    const assetToUpdate = assets.find((asset) => asset.id === assetId);
+
+    if (field === "returnedOn" && new Date(value) < new Date(assetToUpdate.givenOn)) {
+      toast.error("Returned On date cannot be earlier than Provided On date.");
       return;
     }
 
     try {
-      console.log("inside asset update try blcokj");
-
-      const response = await axios.patch(
-        `/api/users/update/asset/${assetId}`,
-        { returnedOn: newDate },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
+      await axios.patch(`/api/users/update/asset/${assetId}`, {
+        [field]: value,
+      },{
+        headers:{
+          Authorization:`Bearer ${token}`
         }
+      });
+
+      setAssets((prevAssets) =>
+        prevAssets.map((asset) =>
+          asset.id === assetId ? { ...asset, [field]: value } : asset
+        )
       );
-      console.log("response", response.data);
-
-      if (response.status === 200 || response.status === 201) {
-        alert("Returned On date updated successfully!");
-        updateReturnedOn(assetId, newDate);
-      } else {
-        alert("Failed to update the Returned On date.");
-      }
     } catch (error) {
-      console.error("Error updating asset:", error);
-      alert("An error occurred. Please try again.");
+      console.error("Update failed:", error);
     }
-  };
-
-  const toggleEdit = (assetId, isEditing) => {
-    setProfileData((prev) => ({
-      ...prev,
-      assets: prev.assets.map((asset) =>
-        asset.id === assetId
-          ? {
-              ...asset,
-              editing: isEditing,
-              newReturnedOn: asset.returnedOn || "",
-            }
-          : asset
-      ),
-    }));
-  };
-
-  const updateReturnedOn = (assetId, newDate) => {
-    setProfileData((prev) => ({
-      ...prev,
-      assets: prev.assets.map((asset) =>
-        asset.id === assetId
-          ? {
-              ...asset,
-              returnedOn: newDate,
-              editing: false,
-              newReturnedOn: undefined,
-            }
-          : asset
-      ),
-    }));
-  };
-
-  const handleDateChange = (assetId, newDate) => {
-    setProfileData((prev) => ({
-      ...prev,
-      assets: prev.assets.map((asset) =>
-        asset.id === assetId ? { ...asset, newReturnedOn: newDate } : asset
-      ),
-    }));
-  };
+  }
 
   const renderTabContent = () => {
     if (error) return <p className="text-red-600 text-center">{error}</p>;
@@ -246,7 +212,7 @@ const Profile = ({ userId, token }) => {
           <div className="flex flex-col">
             <h2 className="text-lg font-semibold text-blue-600 mb-2">Assets</h2>
             <hr />
-            {profileData.assets?.length ? (
+            {assets && (
               <table className="w-full border-collapse border border-gray-300 mt-4">
                 <thead>
                   <tr className="bg-gray-100">
@@ -266,70 +232,95 @@ const Profile = ({ userId, token }) => {
                   </tr>
                 </thead>
                 <tbody>
-                  {profileData.assets.map((asset) => (
+                  {assets.map((asset) => (
                     <tr key={asset.id}>
                       <td className="border border-gray-300 px-4 py-2">
                         {asset.id}
                       </td>
                       <td className="border border-gray-300 px-4 py-2">
-                        {asset.assetName}
+                        <input
+                          type="text"
+                          value={asset.assetName}
+                          className="w-full px-2 py-1 border rounded"
+                          onChange={(e) =>
+                            handleFieldChange(
+                              asset.id,
+                              "assetName",
+                              e.target.value
+                            )
+                          }
+                          onBlur={(e) =>
+                            handleUpdate(asset.id, "assetName", e.target.value)
+                          }
+                        />
                       </td>
                       <td className="border border-gray-300 px-4 py-2">
-                        {asset.assetType}
+                        <input
+                          type="text"
+                          value={asset.assetType}
+                          className="w-full px-2 py-1 border rounded"
+                          onChange={(e) =>
+                            handleFieldChange(
+                              asset.id,
+                              "assetType",
+                              e.target.value
+                            )
+                          }
+                          onBlur={(e) =>
+                            handleUpdate(asset.id, "assetType", e.target.value)
+                          }
+                        />
                       </td>
                       <td className="border border-gray-300 px-4 py-2">
-                        {new Date(asset.givenOn).toISOString().split("T")[0]}
+                        <input
+                          type="date"
+                          value={
+                            asset.givenOn
+                              ? new Date(asset.givenOn)
+                                  .toISOString()
+                                  .split("T")[0]
+                              : ""
+                          }
+                          className="w-full px-2 py-1 border rounded"
+                          onChange={(e) =>
+                            handleFieldChange(
+                              asset.id,
+                              "givenOn",
+                              e.target.value
+                            )
+                          }
+                          onBlur={(e) =>
+                            handleUpdate(asset.id, "givenOn", e.target.value)
+                          }
+                        />
                       </td>
-                      <td className="border border-gray-300 px-4 py-2 flex items-center space-x-2">
-                        {asset.editing ? (
-                          <>
-                            <input
-                              type="date"
-                              value={asset.newReturnedOn || ""}
-                              className="border border-gray-300 rounded px-2 py-1"
-                              onChange={(e) =>
-                                handleDateChange(asset.id, e.target.value)
-                              }
-                            />
-                            <button
-                              className="text-blue-500"
-                              onClick={() =>
-                                handleEdit(asset.id, asset.newReturnedOn)
-                              }
-                            >
-                              Save
-                            </button>
-                            <button
-                              className="text-red-500"
-                              onClick={() => toggleEdit(asset.id, false)}
-                            >
-                              Cancel
-                            </button>
-                          </>
-                        ) : (
-                          <>
-                            {asset.returnedOn
+                      <td className="border border-gray-300 px-4 py-2">
+                        <input
+                          type="date"
+                          value={
+                            asset.returnedOn
                               ? new Date(asset.returnedOn)
                                   .toISOString()
                                   .split("T")[0]
-                              : "Not Returned"}
-                            {role === "Admins" && userId !== id && (
-                              <button
-                                className="text-gray-500 hover:text-blue-500"
-                                onClick={() => toggleEdit(asset.id, true)}
-                              >
-                                ✏️
-                              </button>
-                            )}
-                          </>
-                        )}
+                              : ""
+                          }
+                          className="w-full px-2 py-1 border rounded"
+                          onChange={(e) =>
+                            handleFieldChange(
+                              asset.id,
+                              "returnedOn",
+                              e.target.value
+                            )
+                          }
+                          onBlur={(e) =>
+                            handleUpdate(asset.id, "returnedOn", e.target.value)
+                          }
+                        />
                       </td>
                     </tr>
                   ))}
                 </tbody>
               </table>
-            ) : (
-              "---"
             )}
             {role === "Admins" && userId !== id && (
               <button
@@ -347,8 +338,8 @@ const Profile = ({ userId, token }) => {
     }
   };
 
-  if(loading){
-    return <Loader />
+  if (loading) {
+    return <Loader />;
   }
 
   return (
@@ -425,24 +416,25 @@ const Profile = ({ userId, token }) => {
       {/* Main Content */}
       <div className="flex-1 bg-gray-50 p-6 flex-1 ml-1/5 flex flex-col h-screen rounded-lg shadow-lg">
         <div className="flex space-x-3 border-b pb-2">
-          {(role === "Admins" && userId === id ? adminTab : internTab).map(
-            (tab) => (
-              <button
-                key={tab}
-                className={`px-4 py-2 rounded-t-lg ${
-                  activeTab === tab
-                    ? "bg-blue-500 text-white"
-                    : "bg-gray-200 text-gray-700"
-                }`}
-                onClick={() => {
-                  setActiveTab(tab);
-                  console.log();
-                }}
-              >
-                {tab.charAt(0).toUpperCase() + tab.slice(1)}
-              </button>
-            )
-          )}
+          {((role === "Admins" && userId === id) || role === "Mentors"
+            ? adminTab
+            : internTab
+          ).map((tab) => (
+            <button
+              key={tab}
+              className={`px-4 py-2 rounded-t-lg ${
+                activeTab === tab
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-200 text-gray-700"
+              }`}
+              onClick={() => {
+                setActiveTab(tab);
+                console.log();
+              }}
+            >
+              {tab.charAt(0).toUpperCase() + tab.slice(1)}
+            </button>
+          ))}
         </div>
 
         {/* Content Section */}

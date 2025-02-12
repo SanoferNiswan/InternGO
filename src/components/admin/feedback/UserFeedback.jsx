@@ -106,7 +106,7 @@ const UserFeedback = () => {
     ],
   };
 
-  const handleDownload = async (id) => {
+  const handleDownload = async () => {
     try {
       const response = await axios.get(`/api/feedbacks/${userId}/download`, {
         responseType: "blob",
@@ -160,7 +160,7 @@ const UserFeedback = () => {
 
         <button
           className="text-blue-500 hover:text-blue-600 text-xl flex gap-2 "
-          onClick={() => handleDownload(userId)}
+          onClick={() => handleDownload()}
         >
           <FaDownload /><span className="text-sm">download</span>
         </button>
