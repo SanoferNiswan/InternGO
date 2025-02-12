@@ -9,7 +9,7 @@ const jwt_decode = import("jwt-decode").then((module) => module.default);
 const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
 console.log(clientId);
 
-function GLogin() {
+function GLogin() { 
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
