@@ -179,7 +179,7 @@ const Plan = () => {
                   type="submit"
                   className={`bg-blue-500 text-white px-4 py-2 rounded-md text-sm transition 
     ${isSubmitting ? "opacity-50 cursor-not-allowed" : "hover:bg-blue-600"}`}
-                  disabled={isSubmitting} // Button disabled when submitting
+                  disabled={isSubmitting} 
                 >
                   {isSubmitting ? "Creating..." : "Create"}
                 </button>

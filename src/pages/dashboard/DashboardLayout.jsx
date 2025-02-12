@@ -17,17 +17,18 @@ import {
   FaTicketAlt,
   FaBullhorn,
   FaChartLine,
-  FaUserEdit, FaUserPlus,
+  FaUserEdit,
+  FaUserPlus,
   FaEdgeLegacy,
-  FaEdit
+  FaEdit,
 } from "react-icons/fa";
 import GLogout from "../../components/authentication/GLogout";
 import logo from "../../assets/logo2.png";
 
 const DashboardLayout = () => {
-  const { name, userId, role, permissions,token,user } = useSelector(
+  const { name, userId, role, permissions, token, user } = useSelector(
     (state) => state.auth
-  );  
+  );
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
@@ -39,12 +40,6 @@ const DashboardLayout = () => {
       permission: "profile.update",
       path: "/dashboard/my-profile",
       icon: <FaUser />,
-    },
-    {
-      name:"Add user",
-      permission:"users.manage",
-      path: "/admin/add-users",
-      icon: <FaUserPlus />,
     },
     {
       name: "Plans",
@@ -76,12 +71,6 @@ const DashboardLayout = () => {
       path: "/admin/feedback",
       icon: <FaComments />,
     },
-    // {
-    //   name: "FeedBack",
-    //   permission: "feedback.create",
-    //   path: "/mentor/feedback",
-    //   icon: <FaComments />,
-    // },
     {
       name: "Interactions",
       permission: "interactions.view",
@@ -119,7 +108,7 @@ const DashboardLayout = () => {
   );
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [isModalOpen , setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     if (!userId) return;
@@ -127,25 +116,30 @@ const DashboardLayout = () => {
 
     const socket = connectSocket(userId);
     socket.on("notification", (newNotification) => {
-      setNotifications((prev) => [newNotification.createdNotification, ...prev]);
-      console.log("new notification",newNotification.createdNotification.message);
-      
+      setNotifications((prev) => [
+        newNotification.createdNotification,
+        ...prev,
+      ]);
+      console.log(
+        "new notification",
+        newNotification.createdNotification.message
+      );
     });
 
     return () => {
+      socket.off("notification");
       socket.disconnect();
     };
   }, [userId]);
 
-
   const fetchNotifications = async () => {
     try {
-      const response = await axios.get(`api/notifications/${userId}`,{
-        headers:{
-          Authorization:`Bearer ${token}`
-        }
+      const response = await axios.get(`api/notifications/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
-      
+
       setNotifications(response.data.data);
     } catch (error) {
       console.error("Error fetching notifications:", error);
@@ -162,7 +156,10 @@ const DashboardLayout = () => {
         </div>
 
         <div className="relative flex items-center space-x-4">
-          <NotificationBell notifications={notifications} setNotifications={setNotifications}/>
+          <NotificationBell
+            notifications={notifications}
+            setNotifications={setNotifications}
+          />
 
           <div className="relative">
             <button
@@ -184,11 +181,17 @@ const DashboardLayout = () => {
                       (window.location.href = "/dashboard/edit-profile")
                     }
                   >
-                   <FaEdit /> Edit Profile
-                  </li> <hr />
-                  <li className="px-4 py-2 hover:bg-blue-50 cursor-pointer flex items-center gap-2" onClick={()=>setIsModalOpen(true)}>
-                  <FaUserPlus />Add users
-                  </li><hr />
+                    <FaEdit /> Edit Profile
+                  </li>{" "}
+                  <hr />
+                  <li
+                    className="px-4 py-2 hover:bg-blue-50 cursor-pointer flex items-center gap-2"
+                    onClick={() => setIsModalOpen(true)}
+                  >
+                    <FaUserPlus />
+                    Add users
+                  </li>
+                  <hr />
                   <li className="px-4 py-2 hover:bg-blue-50 cursor-pointer">
                     <GLogout />
                   </li>
@@ -196,7 +199,9 @@ const DashboardLayout = () => {
               </div>
             )}
 
-            {isModalOpen && <AddUserModal onClose={() => setIsModalOpen(false)} />}
+            {isModalOpen && (
+              <AddUserModal onClose={() => setIsModalOpen(false)} />
+            )}
           </div>
         </div>
       </header>

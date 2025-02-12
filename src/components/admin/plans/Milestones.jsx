@@ -22,6 +22,7 @@ const Milestones = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [showMilestoneForm, setShowMilestoneForm] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [error,setError] = useState(null);
 
   // Fetch plan details
   useEffect(() => {
@@ -39,16 +40,14 @@ const Milestones = () => {
       setPlanDetails(response.data.data);
       setListOfMilestone(response.data.data.milestones);
     } catch (error) {
-      console.error("Error fetching plan details:", error);
+      console.log("Error fetching plan details:", error.response.data.statusCode);
+      setError(error.response.data.message);
     } finally {
       setLoading(false);
     }
   };
 
   const deletePlan = async () => {
-    if (!window.confirm(`Are you sure you want to delete this plan ${planId}`))
-      return;
-
     try {
       await axios.delete(`/api/plans/delete/${planId}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -64,6 +63,15 @@ const Milestones = () => {
   if (loading) {
     return <Loader />;
   }
+
+  if (error) {
+    return (
+      <div className="flex justify-center items-center h-20 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-md shadow-md">
+        ❌ No plan found
+      </div>
+    );
+  }
+  
 
   return (
     <div className="shadow-md p-4 rounded-lg bg-white">

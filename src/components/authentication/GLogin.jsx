@@ -17,7 +17,7 @@ function GLogin() {
     const { credential } = credentialResponse;
     try {
       const decode = await jwt_decode;
-      const decodedData = decode(credential);
+      const decodedData = decode(credential); 
 
       const { email, name, picture } = decodedData;
       const allowedDomain = "finestcoder.com";
@@ -30,9 +30,7 @@ function GLogin() {
       }
 
       const response = await axios.post("/api/auth/oauth", {
-        name,
-        email,
-        picture,
+        credential
       });
       const user = response.data?.data;
 

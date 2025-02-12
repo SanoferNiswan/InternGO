@@ -1,10 +1,13 @@
 import { io } from "socket.io-client";
 
-const SOCKET_SERVER_URL = "http://localhost:8080";
+const SOCKET_SERVER_URL = "https://interngo.onrender.com";
 
 let socket;
 
 export const connectSocket = (userId) => {
+  if(socket){
+    return socket;
+  }
   socket = io(SOCKET_SERVER_URL);
  
   socket.on("connect", () => {
