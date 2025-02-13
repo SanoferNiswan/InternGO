@@ -18,7 +18,7 @@ function GLogin() {
       const decode = await jwt_decode;
       const decodedData = decode(credential); 
 
-      const { email, name, picture } = decodedData;
+      const { email, name } = decodedData;
       const allowedDomain = "finestcoder.com";
 
       if (email.split("@")[1] !== allowedDomain) {
@@ -32,11 +32,13 @@ function GLogin() {
         credential
       });
       const user = response.data?.data;
+      console.log("response:",response.data);
+      
 
       if (user?.token) {
-        const { userId, role, permissions, token,profilePhoto } = user;
+        const { userId, role, permissions,zone, token,profilePhoto } = user;
 
-        dispatch(setAuth({ user, userId, name, token, role, permissions,profilePhoto }));
+        dispatch(setAuth({ user, userId, name, zone, token, role, permissions,profilePhoto }));
 
         navigate("/dashboard");
       } else {

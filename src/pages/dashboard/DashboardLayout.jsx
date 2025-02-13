@@ -163,7 +163,7 @@ const DashboardLayout = () => {
               {profilePhoto ? (
                 <img src={profilePhoto} className="w-9 h-9 rounded-full" />
               ) : (
-                <div className="w-9 h-9 rounded-full bg-white flex items-center justify-center text-lg font-bold text-blue-500">
+                <div className="w-9 h-9 rounded-full bg-gray-100 flex items-center justify-center text-lg font-bold text-blue-500">
                   {name?.charAt(0).toUpperCase()}
                 </div>
               )}

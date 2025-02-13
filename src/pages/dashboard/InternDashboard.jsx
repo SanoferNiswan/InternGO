@@ -34,7 +34,7 @@ const InternDashboard = () => {
         {profilePhoto ? (
           <img
             src={profilePhoto}
-            alt="Admin"
+            alt={name}
             className="w-28 h-28 rounded-full"
           />
         ) : (
@@ -86,7 +86,7 @@ const InternDashboard = () => {
                 : user?.zone === "RED ZONE"
                 ? "text-red-500"
                 : user?.zone === "YELLOW ZONE"
-                ? "text-yellow-500"
+                ? "text-blue-500"
                 : "text-gray-500"
             }`}
           >
