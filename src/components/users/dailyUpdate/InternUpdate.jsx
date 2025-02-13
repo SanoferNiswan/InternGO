@@ -5,10 +5,12 @@ import axios from "../../../api/axios";
 import { FaTrash } from "react-icons/fa";
 import { addDays, isAfter, parseISO, isValid } from "date-fns";
 import Loader from "../../Loader";
+import { toast } from "react-toastify";
 
 const InternUpdate = () => { 
   const { date } = useParams();
   const [loading,setLoading] = useState(false);
+  const [saving, setSaving] = useState(false);
 
   const inputDate = parseISO(date);
   if (!isValid(inputDate)) {
@@ -74,29 +76,51 @@ const InternUpdate = () => {
   };
 
   const saveChanges = async () => {
+    const hasEmptyFields = tasks.some(
+      (task) =>
+        !task.activitiesPlanned.trim() ||  
+        !task.estimatedTime
+    );
+  
+    if (hasEmptyFields) {
+      toast.error("tasks, Planned activities and estimated time are required!");
+      return;
+    }
+  
     try {
+      setSaving(true); 
+  
       const formattedTasks = tasks.map((task) => ({
         taskData: {
           taskName: task.taskName,
           activitiesPlanned: task.activitiesPlanned,
-          activitiesCompleted: task.activitiesCompleted,
+          activitiesCompleted: task.activitiesCompleted || "",
           estimatedTime: Number(task.estimatedTime),
-          actualTime: Number(task.actualTime),
+          actualTime: Number(task.actualTime) || 0,
           taskProgress: task.taskProgress || "PENDING",
         },
         ...(task.id && { taskId: task.id }), 
       }));
-
-      await axios.post(`/api/dailyUpdates/${userId}/create`, { date, tasks: formattedTasks }, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      fetchDailyUpdates(); 
+  
+      await axios.post(
+        `/api/dailyUpdates/${userId}/create`,
+        { date, tasks: formattedTasks },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+  
+      toast.success("Daily updates saved successfully!");
+      fetchDailyUpdates();
     } catch (error) {
       console.error("Error saving daily updates:", error);
+      toast.error("Failed to save daily updates. Please try again.");
+    } finally {
+      setSaving(false); 
     }
   };
 
+  
   const deleteTask = async (taskId, index) => {
     try {
       if (taskId) {
@@ -127,7 +151,7 @@ const InternUpdate = () => {
             <th className="border p-2">Estimated Time (hrs)</th>
             <th className="border p-2">Actual Time (hrs)</th>
             <th className="border p-2">Progress</th>
-            {isEditable() && <th className="border p-2">Action</th>}
+            <th className="border p-2">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -139,7 +163,6 @@ const InternUpdate = () => {
                     type="text"
                     value={task.taskName}
                     className="border w-full p-1"
-                    readOnly={!isEditable()}
                     onChange={(e) => handleInputChange(index, "taskName", e.target.value)}
                   />
                 </td>
@@ -148,7 +171,6 @@ const InternUpdate = () => {
                     type="text"
                     value={task.activitiesPlanned}
                     className="border w-full p-1"
-                    readOnly={!isEditable()}
                     onChange={(e) => handleInputChange(index, "activitiesPlanned", e.target.value)}
                   />
                 </td>
@@ -157,7 +179,6 @@ const InternUpdate = () => {
                     type="text"
                     value={task.activitiesCompleted}
                     className="border w-full p-1"
-                    readOnly={!isEditable()}
                     onChange={(e) => handleInputChange(index, "activitiesCompleted", e.target.value)}
                   />
                 </td>
@@ -166,7 +187,6 @@ const InternUpdate = () => {
                     type="number"
                     value={task.estimatedTime}
                     className="border w-full p-1"
-                    readOnly={!isEditable()}
                     onChange={(e) => handleInputChange(index, "estimatedTime", e.target.value)}
                   />
                 </td>
@@ -175,7 +195,6 @@ const InternUpdate = () => {
                     type="number"
                     value={task.actualTime}
                     className="border w-full p-1"
-                    readOnly={!isEditable()}
                     onChange={(e) => handleInputChange(index, "actualTime", e.target.value)}
                   />
                 </td>
@@ -183,20 +202,20 @@ const InternUpdate = () => {
                   <select
                     className="border w-full p-1"
                     value={task.taskProgress}
-                    disabled={!isEditable()}
                     onChange={(e) => handleInputChange(index, "taskProgress", e.target.value)}
                   >
                     <option value="PENDING">PENDING</option>
                     <option value="COMPLETED">COMPLETED</option>
                   </select>
                 </td>
-                {isEditable() && (
-                  <td className="border p-2">
-                    <button onClick={() => deleteTask(task.id, index)} className="px-2 py-1 text-red-500 rounded-md hover:text-red-600">
-                      <FaTrash />
-                    </button>
-                  </td>
-                )}
+                <td className="border p-2">
+                  <button
+                    onClick={() => deleteTask(task.id, index)}
+                    className="px-2 py-1 text-red-500 rounded-md hover:text-red-600"
+                  >
+                    <FaTrash />
+                  </button>
+                </td>
               </tr>
             ))
           ) : (
@@ -208,17 +227,125 @@ const InternUpdate = () => {
           )}
         </tbody>
       </table>
-      {isEditable() && (
-        <div className="mt-4 flex justify-end gap-2">
-          <button onClick={addNewTask} className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">
-            Add Task
-          </button>
-          <button onClick={saveChanges} className="bg-green-500 text-white px-4 py-2 rounded-md hover:bg-green-600">
-            Save Changes
-          </button>
-        </div>
-      )}
+      <div className="mt-4 flex justify-end gap-2">
+        <button onClick={addNewTask} className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">
+          Add Task
+        </button>
+        <button
+          onClick={saveChanges}
+          className={`px-4 py-2 rounded-md text-white ${
+            saving ? "bg-gray-400 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
+          }`}
+          disabled={saving}
+        >
+          {saving ? "Saving..." : "Save Changes"}
+        </button>
+      </div>
     </div>
+    // <div className="container mx-auto p-4">
+    //   <h2 className="text-xl font-bold mb-4">Daily Updates - {date}</h2>
+
+    //   <table className="w-full shadow-md rounded-lg border-collapse border border-gray-300">
+    //     <thead>
+    //       <tr className="bg-gray-200">
+    //         <th className="border p-2">Task Name</th>
+    //         <th className="border p-2">Planned Activities</th>
+    //         <th className="border p-2">Completed Activities</th>
+    //         <th className="border p-2">Estimated Time (hrs)</th>
+    //         <th className="border p-2">Actual Time (hrs)</th>
+    //         <th className="border p-2">Progress</th>
+    //         {isEditable() && <th className="border p-2">Action</th>}
+    //       </tr>
+    //     </thead>
+    //     <tbody>
+    //       {tasks.length > 0 ? (
+    //         tasks.map((task, index) => (
+    //           <tr key={index} className="text-center">
+    //             <td className="border p-2">
+    //               <input
+    //                 type="text"
+    //                 value={task.taskName}
+    //                 className="border w-full p-1"
+    //                 readOnly={!isEditable()}
+    //                 onChange={(e) => handleInputChange(index, "taskName", e.target.value)}
+    //               />
+    //             </td>
+    //             <td className="border p-2">
+    //               <input
+    //                 type="text"
+    //                 value={task.activitiesPlanned}
+    //                 className="border w-full p-1"
+    //                 readOnly={!isEditable()}
+    //                 onChange={(e) => handleInputChange(index, "activitiesPlanned", e.target.value)}
+    //               />
+    //             </td>
+    //             <td className="border p-2">
+    //               <input
+    //                 type="text"
+    //                 value={task.activitiesCompleted}
+    //                 className="border w-full p-1"
+    //                 readOnly={!isEditable()}
+    //                 onChange={(e) => handleInputChange(index, "activitiesCompleted", e.target.value)}
+    //               />
+    //             </td>
+    //             <td className="border p-2">
+    //               <input
+    //                 type="number"
+    //                 value={task.estimatedTime}
+    //                 className="border w-full p-1"
+    //                 readOnly={!isEditable()}
+    //                 onChange={(e) => handleInputChange(index, "estimatedTime", e.target.value)}
+    //               />
+    //             </td>
+    //             <td className="border p-2">
+    //               <input
+    //                 type="number"
+    //                 value={task.actualTime}
+    //                 className="border w-full p-1"
+    //                 readOnly={!isEditable()}
+    //                 onChange={(e) => handleInputChange(index, "actualTime", e.target.value)}
+    //               />
+    //             </td>
+    //             <td className="border p-2">
+    //               <select
+    //                 className="border w-full p-1"
+    //                 value={task.taskProgress}
+    //                 disabled={!isEditable()}
+    //                 onChange={(e) => handleInputChange(index, "taskProgress", e.target.value)}
+    //               >
+    //                 <option value="PENDING">PENDING</option>
+    //                 <option value="COMPLETED">COMPLETED</option>
+    //               </select>
+    //             </td>
+    //             {isEditable() && (
+    //               <td className="border p-2">
+    //                 <button onClick={() => deleteTask(task.id, index)} className="px-2 py-1 text-red-500 rounded-md hover:text-red-600">
+    //                   <FaTrash />
+    //                 </button>
+    //               </td>
+    //             )}
+    //           </tr>
+    //         ))
+    //       ) : (
+    //         <tr>
+    //           <td colSpan="7" className="border p-2 text-center">
+    //             No tasks found
+    //           </td>
+    //         </tr>
+    //       )}
+    //     </tbody>
+    //   </table>
+    //   {isEditable() && (
+    //     <div className="mt-4 flex justify-end gap-2">
+    //       <button onClick={addNewTask} className="bg-gray-500 text-white px-4 py-2 rounded-md hover:bg-gray-600">
+    //         Add Task
+    //       </button>
+    //       <button onClick={saveChanges} className="bg-blue-500 text-white px-4 py-2 rounded-md hover:bg-blue-600">
+    //         Save Changes
+    //       </button>
+    //     </div>
+    //   )}
+    // </div>
   );
 };
 

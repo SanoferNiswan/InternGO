@@ -101,12 +101,11 @@ const Profile = ({ userId, token }) => {
     if (error) return <p className="text-red-600 text-center">{error}</p>;
 
     const renderField = (title, value) => (
-
-      <div className="mb-4 mt-2">
-        <span className="font-bold text-gray-600 text-sm inline-block w-36">
+      <div className="flex items-center mb-4 mt-2">
+        <span className="font-semibold text-gray-700 text-sm w-40">
           {title}:
         </span>
-        <span className="text-lg">{value || "---"}</span>
+        <span className="text-base text-gray-900">{value || "—"}</span>
       </div>
     );
 
@@ -195,7 +194,7 @@ const Profile = ({ userId, token }) => {
       case "skill":
         return (
           <div>
-            <h2 className="text-xl font-semibold mb-4">Skills</h2>
+            <h2 className="text-lg font-semibold text-blue-600 mb-2">Skills</h2>
             <div className="flex flex-wrap gap-2">
               {profileData.skills?.length
                 ? profileData.skills.map((skill, index) => (
@@ -218,7 +217,7 @@ const Profile = ({ userId, token }) => {
             {assets && (
               <table className="w-full border-collapse border border-gray-300 mt-4">
                 <thead>
-                  <tr className="bg-gray-100">
+                  <tr className="bg-gray-100 text-gray-700 text-sm font-semibold">
                     <th className="border border-gray-300 px-4 py-2">
                       Asset ID
                     </th>
@@ -236,17 +235,16 @@ const Profile = ({ userId, token }) => {
                 </thead>
                 <tbody>
                   {assets.map((asset) => (
-                    <tr key={asset.id}>
+                    <tr key={asset.id} className="text-gray-900 text-base">
                       <td className="border border-gray-300 px-4 py-2">
                         {asset.id}
                       </td>
-
                       <td className="border border-gray-300 px-4 py-2">
                         <input
                           type="text"
                           value={asset.assetName}
-                          className="w-full px-2 py-1 border rounded"
-                          disabled={role !== "Admins"} 
+                          className="w-full px-3 py-1.5 border rounded text-gray-700"
+                          disabled={role !== "Admins"}
                           onChange={(e) =>
                             handleFieldChange(
                               asset.id,
@@ -259,12 +257,11 @@ const Profile = ({ userId, token }) => {
                           }
                         />
                       </td>
-
                       <td className="border border-gray-300 px-4 py-2">
                         <input
                           type="text"
                           value={asset.assetType}
-                          className="w-full px-2 py-1 border rounded"
+                          className="w-full px-3 py-1.5 border rounded text-gray-700"
                           disabled={role !== "Admins"}
                           onChange={(e) =>
                             handleFieldChange(
@@ -278,7 +275,6 @@ const Profile = ({ userId, token }) => {
                           }
                         />
                       </td>
-
                       <td className="border border-gray-300 px-4 py-2">
                         <input
                           type="date"
@@ -289,7 +285,7 @@ const Profile = ({ userId, token }) => {
                                   .split("T")[0]
                               : ""
                           }
-                          className="w-full px-2 py-1 border rounded"
+                          className="w-full px-3 py-1.5 border rounded text-gray-700"
                           disabled={role !== "Admins"}
                           onChange={(e) =>
                             handleFieldChange(
@@ -303,7 +299,6 @@ const Profile = ({ userId, token }) => {
                           }
                         />
                       </td>
-
                       <td className="border border-gray-300 px-4 py-2">
                         <input
                           type="date"
@@ -314,7 +309,7 @@ const Profile = ({ userId, token }) => {
                                   .split("T")[0]
                               : ""
                           }
-                          className="w-full px-2 py-1 border rounded"
+                          className="w-full px-3 py-1.5 border rounded text-gray-700"
                           disabled={role !== "Admins"}
                           onChange={(e) =>
                             handleFieldChange(
@@ -335,7 +330,7 @@ const Profile = ({ userId, token }) => {
             )}
             {role === "Admins" && userId !== id && (
               <button
-                className="mt-3 ml-64 w-1/5 items-center px-4 py-2 rounded-lg bg-blue-500 text-white hover:bg-blue-600"
+                className="mt-4 ml-auto w-40 px-4 py-2 rounded-lg bg-blue-500 text-white text-sm font-semibold hover:bg-blue-600"
                 onClick={() => setIsAssetModalOpen(true)}
               >
                 Add Asset
@@ -353,7 +348,7 @@ const Profile = ({ userId, token }) => {
     return <Loader />;
   }
 
-  return ( 
+  return (
     <div className="flex flex-col md:flex-row h-full w-full bg-white">
       {profileData && (
         <div className="w-full md:w-1/4 h-auto md:h-screen bg-gray-900 text-white shadow-md p-6 rounded-lg">

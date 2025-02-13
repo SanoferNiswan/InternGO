@@ -1,6 +1,6 @@
 import { io } from "socket.io-client";
 
-const SOCKET_SERVER_URL = "https://interngo.onrender.com";
+const SOCKET_SERVER_URL = "http://192.168.0.141:8080";
 
 let socket;
 

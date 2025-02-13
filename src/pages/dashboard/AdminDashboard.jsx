@@ -2,11 +2,7 @@ import React, { useEffect, useState } from "react";
 import {
   FaUsers,
   FaClipboardList,
-  FaTasks,
-  FaChartBar,
   FaProjectDiagram,
-  FaFileAlt,
-  FaBullhorn,
   FaGift,
 } from "react-icons/fa";
 import Announcement from "../../components/Announcement";

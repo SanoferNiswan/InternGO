@@ -8,7 +8,7 @@ const initialState = {
     statuses: [],
     designations: [],
     batches: [],
-  },
+  }, 
   loading: false,
   error: null,
 };

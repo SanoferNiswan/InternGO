@@ -8,23 +8,24 @@ const Announcement = () => {
   const [announcements, setAnnouncements] = useState([]);
 
   useEffect(() => {
-    const fetchAnnouncements = async () => {
-      try {
-        const response = await axios.get("/api/notifications/get/announcements",{
-          headers:{
-            Authorization:`Bearer ${token}`
-          }
-        });
-        if (response.data?.statusCode === 200) {
-          setAnnouncements(response.data.data); 
-        }
-      } catch (error) {
-        console.error("Error fetching announcements:", error);
-      }
-    };
-
     fetchAnnouncements();
   }, []);
+
+  const fetchAnnouncements = async () => {
+    try {
+      const response = await axios.get("/api/notifications/get/announcements",{
+        headers:{
+          Authorization:`Bearer ${token}`
+        }
+      });
+      if (response.data?.statusCode === 200) {
+        setAnnouncements(response.data.data); 
+      }
+    } catch (error) {
+      console.error("Error fetching announcements:", error);
+    }
+  };
+
 
   useEffect(() => {
     if (!userId) return;
@@ -37,7 +38,9 @@ const Announcement = () => {
     });
 
     return () => { 
-      socket.disconnect();
+      socket.off("announcement");
+      console.log("announcement off");
+      
     };
   }, [userId]);
 

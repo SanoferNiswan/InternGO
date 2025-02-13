@@ -53,7 +53,6 @@ const UserFeedback = () => {
     }
   };
 
-  // Prepare Line Chart Data
   const lineChartData = {
     labels: feedback.map((data) => data.interaction.name),
     datasets: [
@@ -108,8 +107,8 @@ const UserFeedback = () => {
     try {
       const response = await axios.get(`/api/feedbacks/${userId}/download`, {
         responseType: "blob",
-        headers: {
-          Authorization: `Bearer ${token}`,
+        params: {
+          token: token
         },
       });
 
@@ -158,7 +157,7 @@ const UserFeedback = () => {
           className="text-blue-500 hover:text-blue-600 text-xl flex gap-2 "
           onClick={() => handleDownload()}
         >
-          <FaDownload /><span className="text-sm">download</span>
+          <FaDownload /><span className="text-sm">Download</span>
         </button>
         
       </div>
@@ -254,7 +253,6 @@ const UserFeedback = () => {
         </div>
       )}
 
-      {/* Attended Interactions */}
       <div className="bg-white p-5 rounded-lg shadow-lg mb-6">
         <h2 className="font-semibold text-blue-500 text-center text-xl">
           Attended Interactions

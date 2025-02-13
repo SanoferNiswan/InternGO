@@ -1,14 +1,14 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { FaBell, FaChartBar, FaUsers, FaClipboardList, FaLaptopCode, FaPlusSquare } from "react-icons/fa";
-
+import logo from "../assets/Intern (3).png"
 const Home = () => {
   const navigate = useNavigate(); 
   
   return (
     <div className="min-h-screen bg-gray-100">
-      <nav className="bg-white shadow-md p-4 flex justify-between items-center px-8">
-        <h1 className="text-2xl font-bold text-blue-600">InternGO</h1>
+      <nav className="bg-white shadow-md p-4 flex justify-between items-center px-4">
+        <img src={logo} alt="InternGO" className="w-40 h-12"/>
         <div className="space-x-4">
           <button
             className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
@@ -57,7 +57,7 @@ const Home = () => {
 
 const FeatureCard = ({ icon, title, description }) => {
   return (
-    <div className="p-6 bg-white rounded-lg shadow-md flex flex-col items-center">
+    <div className="p-6 bg-white rounded-lg shadow-md flex flex-col items-center transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
       <div className="text-blue-600 text-4xl mb-4">{icon}</div>
       <h4 className="text-xl font-semibold mb-2">{title}</h4>
       <p className="text-gray-600">{description}</p>

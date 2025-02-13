@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "../../api/axios";
 import { useSelector } from "react-redux";
-import { Outlet, NavLink } from "react-router-dom";
+import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import AddUserModal from "../../components/admin/profileManagement/AddUserModal";
 import NotificationBell from "../../components/notification/NotificationBell";
@@ -20,7 +20,7 @@ import {
   FaEdit,
 } from "react-icons/fa";
 import GLogout from "../../components/authentication/GLogout";
-import logo from "../../assets/logo2.png";
+import logo from "../../assets/interngo logo.png";
 
 const DashboardLayout = () => {
   const { name, userId, permissions, token, profilePhoto,role } = useSelector(
@@ -30,6 +30,7 @@ const DashboardLayout = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);
   const location = useLocation();
+  const navigate = useNavigate();
 
   const tabs = [
     {
@@ -102,6 +103,12 @@ const DashboardLayout = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
+    if (isModalOpen) {
+      setDropdownOpen(false);
+    }
+  }, [isModalOpen]); 
+
+  useEffect(() => {
     if (!userId) return;
     fetchNotifications();
 
@@ -115,7 +122,8 @@ const DashboardLayout = () => {
 
     return () => {
       socket.off("notification");
-      socket.disconnect();
+      console.log("socket off");
+      
     };
   }, [userId]);
 
@@ -133,18 +141,11 @@ const DashboardLayout = () => {
     }
   };
 
-  useEffect(() => {
-    if (isModalOpen) {
-      setDropdownOpen(false);
-    }
-  }, [isModalOpen]); 
-
   return (
     <div className="flex flex-col h-screen bg-gray-100">
       <header className="flex items-center justify-between bg-white p-2 pr-6 py-2 shadow-md top-0 left-0 right-0">
         <div className="flex items-center">
-          <img src={logo} alt="InternGO" className="w-10 h-10 mr-2" />
-          <span className="font-bold text-xl text-gray-700">InternGO </span>
+          <img src={logo} alt="InternGO" className="w-36 h-9 ml-2" onClick={()=>navigate("/dashboard")}/>
         </div>
 
         <div className="relative flex items-center space-x-4">

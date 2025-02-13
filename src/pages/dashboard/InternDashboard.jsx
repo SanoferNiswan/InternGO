@@ -30,9 +30,9 @@ const InternDashboard = () => {
 
   return (
     <div className="p-2">
-      <div className="bg-blue-500 text-white p-6 rounded-lg flex  gap-6 shadow-md mb-6 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+      <div className="bg-blue-500 text-white p-6 rounded-lg flex flex-col sm:flex-row items-center gap-4 sm:gap-6 shadow-md mb-6 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
         {profilePhoto ? (
-          <img 
+          <img
             src={profilePhoto}
             alt="Admin"
             className="w-28 h-28 rounded-full"
@@ -76,7 +76,7 @@ const InternDashboard = () => {
         </div>
       </div> */}
 
-<div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <div className="p-6 bg-white shadow-md rounded-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
           <h3 className="text-gray-500 mb-2">Current Zone</h3>
           <p
@@ -96,7 +96,7 @@ const InternDashboard = () => {
         <div className="p-6 bg-white shadow-md rounded-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
           <h3 className="text-gray-500 mb-3">Training Phase</h3>
           <p className="text-lg font-bold text-blue-500">
-            {planDetails?.name || "No plans available"}
+            {planDetails?.name || "No plans assigned"}
           </p>
         </div>
         <div className="p-6 bg-white shadow-md rounded-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
