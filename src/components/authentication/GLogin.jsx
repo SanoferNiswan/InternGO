@@ -41,6 +41,8 @@ function GLogin() {
         dispatch(setAuth({ user, userId, name, zone, token, role, permissions,profilePhoto }));
 
         navigate("/dashboard");
+        console.log(user);
+        
       } else {
         alert("Authentication failed: Unable to retrieve user details.");
       }

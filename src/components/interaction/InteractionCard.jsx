@@ -35,7 +35,7 @@ const InteractionCard = ({ interaction, onEdit }) => {
     }
   };
 
-  return (
+  return ( 
     <div
       key={interaction.id}
       className="p-4 rounded-lg bg-gray-50 shadow-gray-400 shadow-lg flex flex-col gap-6 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2"
@@ -46,7 +46,7 @@ const InteractionCard = ({ interaction, onEdit }) => {
             className={`w-3 h-3 rounded-full mr-2 ${
               interaction.interactionStatus === "PENDING"
                 ? "bg-red-500"
-                : "bg-green-500"
+                : interaction.interactionStatus === "COMPLETED"? "bg-green-500": "bg-yellow-500"
             }`}
           ></div>
           <span className="font-medium text-lg">{interaction.name}</span>
@@ -54,7 +54,6 @@ const InteractionCard = ({ interaction, onEdit }) => {
 
         {role === "Admins" && interaction.interactionStatus === "PENDING" && (
           <label className="flex items-center cursor-pointer text-gray-600">
-            <span className="mr-2">Schedule ({isToggled ? "On" : "Off"})</span>
             <input
               type="checkbox"
               className="hidden"

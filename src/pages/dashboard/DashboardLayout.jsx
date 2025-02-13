@@ -159,7 +159,7 @@ const DashboardLayout = () => {
               onClick={() => setDropdownOpen(!dropdownOpen)}
               className="flex items-center space-x-2 shadow-md text-blue-600 px-4 py-2 rounded-full cursor-pointer hover:bg-gray-200 font-bold text-lg"
             >
-              <span>{name}</span>
+              <span className="truncate">{name}</span>
               {profilePhoto ? (
                 <img src={profilePhoto} className="w-9 h-9 rounded-full" />
               ) : (
@@ -170,7 +170,7 @@ const DashboardLayout = () => {
             </button>
 
             {dropdownOpen && (
-              <div className="absolute right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg w-48 z-50">
+              <div className="absolute right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg w-48 z-50 ">
                 <ul className="py-2 flex flex-col ">
                   <li
                     className="px-4 py-2 hover:bg-blue-50 cursor-pointer flex items-center gap-2"

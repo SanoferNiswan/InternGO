@@ -30,6 +30,8 @@ const SignIn = () => {
 
           navigate("/dashboard", { replace: true });
         }
+        console.log(user);
+        
       } else {
         alert("Invalid email or password. Please try again.");
       }

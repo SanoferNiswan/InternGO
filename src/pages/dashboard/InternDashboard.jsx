@@ -9,6 +9,9 @@ const InternDashboard = () => {
     (state) => state.auth
   );
 
+  console.log(profilePhoto);
+  
+
   const [planDetails, setPlanDetails] = useState(null);
 
   useEffect(() => {

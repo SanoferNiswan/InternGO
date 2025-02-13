@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "../../api/axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setAuth } from "../../redux/slices/authSlice";
 import { FaRegEnvelope, FaPhone, FaMapMarkerAlt } from "react-icons/fa";
 import EditProfileModal from "../admin/profileManagement/EditProfileModal";
 import AddAssetModal from "../admin/profileManagement/AddAssetModal";
@@ -18,6 +19,8 @@ const Profile = ({ userId, token }) => {
   const [loading, setLoading] = useState(true);
   const [assets, setAssets] = useState([]);
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     if (userId && token) {
       fetchProfileData();
@@ -33,6 +36,8 @@ const Profile = ({ userId, token }) => {
       });
       setProfileData(response.data.data);
       setAssets(response.data.data.assets);
+      console.log(response.data.data);
+      
     } catch (error) {
       if (error.response && error.response.status === 403) {
         setError("You are restricted from accessing this page.");
@@ -359,10 +364,12 @@ const Profile = ({ userId, token }) => {
                   profileData.profilePhoto ||
                   "https://cdn-icons-png.flaticon.com/512/9203/9203764.png"
                 }
+                onError={(e)=>console.log(e)}
                 alt="Profile"
                 className="w-24 h-24 rounded-full object-cover mb-4 border-4 border-white cursor-pointer bg-white"
                 onClick={() => setIsProfilePhotoModalOpen(true)}
               />
+              {console.log("photo",profileData.profilePhoto,token)}
               <h1 className="text-lg font-bold">{profileData.name}</h1>
               <p className="text-sm text-gray-200">{profileData.designation}</p>
             </div>
