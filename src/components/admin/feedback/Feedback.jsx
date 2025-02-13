@@ -202,7 +202,7 @@ const Feedback = () => {
           <Select
             isMulti
             value={filter.status.map((status) => ({
-              value: status,
+              value: status, 
               label: status,
             }))}
             options={createSelectOptions(statusOptions)}

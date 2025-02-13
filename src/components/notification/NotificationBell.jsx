@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { FaBell, FaTrash, FaCheck } from "react-icons/fa";
 import { toast } from "react-toastify";
 import axios from "../../api/axios";
-import "react-toastify/dist/ReactToastify.css";
+import "react-toastify/dist/ReactToastify.css"; 
 import { useSelector } from "react-redux";
  
 const NotificationBell = ({ notifications, setNotifications }) => {
@@ -38,7 +38,6 @@ const NotificationBell = ({ notifications, setNotifications }) => {
     }
   };
 
-  // Mark all notifications as read
   const markAllAsRead = async () => {
     try {
       await axios.patch(

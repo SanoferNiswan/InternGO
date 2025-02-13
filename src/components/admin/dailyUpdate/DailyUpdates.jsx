@@ -30,7 +30,7 @@ const DailyUpdates = () => {
     <div className="flex flex-col items-center justify-start h-full p-4 relative">
       <h1 className="text-2xl font-bold text-blue-600 mb-4">Daily Task Updates</h1>
       
-      <div className="mb-4">
+      <div className="mb-4"> 
         <DatePicker
           selected={currentDate}
           onChange={(date) => setCurrentDate(date)}

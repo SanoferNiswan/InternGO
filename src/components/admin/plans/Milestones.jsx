@@ -191,7 +191,7 @@ const Milestones = () => {
           <div className={`w-full ${showUserList ? "md:w-1/3" : ""}`}>
             <UserList planId={planId} />
           </div>
-        )}
+        )} 
       </div>
 
       {isEditing && (

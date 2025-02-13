@@ -16,7 +16,7 @@ const MilestoneList = ({ listOfMilestone, setListOfMilestone, planId,planDays })
     if (mentors.length === 0) {
       dispatch(fetchMentors());
     }
-  }, [token, dispatch]);
+  }, [token, dispatch]); 
 
   const totalMilestoneDays = listOfMilestone.reduce(
     (sum, milestone) => sum + milestone.milestoneDays,

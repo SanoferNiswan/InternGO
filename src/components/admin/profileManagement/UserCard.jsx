@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 const UserCard = ({ user }) => {
   const navigate = useNavigate();
-  
+   
   return (
     <div
       key={user.id}

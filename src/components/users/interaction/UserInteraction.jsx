@@ -26,7 +26,7 @@ const UserInteraction = () => {
       console.log(err?.response?.data?.message);
     }finally{
       setLoading(false);
-    }
+    } 
   };
 
   if(loading){

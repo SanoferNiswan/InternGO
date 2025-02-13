@@ -37,7 +37,7 @@ const EditModal = ({ onClose, interaction, refreshData }) => {
   const handleChange = (e) => {
     setFields({ ...fields, [e.target.name]: e.target.value });
   };
-
+ 
   const validateFields = () => {
     let errors = {};
     if (!fields.interactionName)

@@ -35,7 +35,7 @@ const store = configureStore({
   preloadedState: {
     auth: persistedAuthState.auth,
     data: persistedDataState,
-  },
+  }, 
 });
 
 // Subscribe to store changes & save to localStorage

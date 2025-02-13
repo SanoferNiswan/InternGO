@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 const GLogout = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-
+ 
   const onLogout = () => {
     dispatch(clearAuth());
     navigate("/");

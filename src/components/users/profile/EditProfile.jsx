@@ -202,7 +202,7 @@ const EditProfile = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FloatingInput
               id="personalEmail"
-              label="Personal Email"
+              label="Personal Email" 
               name="personalEmail"
               value={formData.personalEmail}
               onChange={handleChange}

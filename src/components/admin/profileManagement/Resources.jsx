@@ -125,7 +125,7 @@ const Resources = () => {
     );
   }
 
-  return (
+  return ( 
     <div className="p-6 flex flex-wrap gap-4 justify-center items-center">
       <div className="flex flex-col lg:flex-row lg:justify-between lg:gap-4">
         <div className="mb-6">

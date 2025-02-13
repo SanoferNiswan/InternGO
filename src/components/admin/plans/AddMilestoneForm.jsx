@@ -33,7 +33,7 @@ const AddMilestoneForm = ({
     if (!newMilestone.name || !newMilestone.mentorName || milestoneDays <= 0) {
       toast.error("Please fill all fields and ensure days are greater than 0.");
       return;
-    }
+    } 
 
     if (totalMilestoneDays + milestoneDays > planDays) {
       toast.error(`Total milestone days cannot exceed ${planDays}!`);

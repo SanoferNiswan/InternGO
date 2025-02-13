@@ -7,7 +7,6 @@ const Announcement = () => {
   const { userId , token } = useSelector((state) => state.auth);
   const [announcements, setAnnouncements] = useState([]);
 
-  // Fetch older announcements from API
   useEffect(() => {
     const fetchAnnouncements = async () => {
       try {
@@ -27,7 +26,6 @@ const Announcement = () => {
     fetchAnnouncements();
   }, []);
 
-  // Listen for new announcements via WebSocket
   useEffect(() => {
     if (!userId) return;
 
@@ -39,7 +37,7 @@ const Announcement = () => {
       setAnnouncements((prev) => [newAnnouncement.createdNotification, ...prev]);
     });
 
-    return () => {
+    return () => { 
       socket.disconnect();
     };
   }, [userId]);

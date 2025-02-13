@@ -63,7 +63,7 @@ const DailyUpdate = () => {
               {format(date, 'd')}
             </div>
           );
-        })}
+        })} 
       </div>
     </div>
   );

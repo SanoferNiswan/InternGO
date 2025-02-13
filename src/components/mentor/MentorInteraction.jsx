@@ -8,7 +8,7 @@ const MentorInteraction = () => {
   const { userId, token, name } = useSelector((state) => state.auth);
   const [interactions, setInteractions] = useState([]);
   const [loading,setLoading] = useState(true);
-
+  
   useEffect(() => {
     fetchData();
   }, []);
@@ -21,7 +21,6 @@ const MentorInteraction = () => {
         },
       });
       setInteractions(response.data.data.interactionsTaken);
-      console.log(response.data.data.interactionsTaken, "hi");
     } catch (err) {
       console.log(err?.response?.data?.message);
     }finally{
@@ -30,7 +29,7 @@ const MentorInteraction = () => {
   };
 
   if(loading){
-    return <Loader />
+    return <Loader />  
   }
   return (
     <div className="p-2">

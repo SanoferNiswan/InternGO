@@ -5,7 +5,7 @@ import axios from "../../../api/axios";
 import Select from "react-select";
 import { addDays, isAfter, parseISO, isValid } from "date-fns";
 import Loader from "../../Loader";
-
+ 
 const AdminUpdate = () => {
   const { date } = useParams();
   

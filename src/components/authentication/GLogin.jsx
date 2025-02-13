@@ -11,7 +11,7 @@ console.log(clientId);
 
 function GLogin() { 
   const navigate = useNavigate();
-  const dispatch = useDispatch();
+  const dispatch = useDispatch(); 
 
   const onSuccess = async (credentialResponse) => {
     const { credential } = credentialResponse;

@@ -141,7 +141,7 @@ const UserList = ({ planId }) => {
       console.error("Error updating users:", error);
     }
   };
-
+ 
   if(loading){
     return <Loader />
   }
@@ -182,7 +182,6 @@ const UserList = ({ planId }) => {
         </button>
       </div>
 
-      {/* Collapsible Filters Section */}
       <div className="mb-4">
         <button
           onClick={() => setShowFilters(!showFilters)}

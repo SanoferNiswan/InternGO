@@ -63,7 +63,6 @@ const Profile = ({ userId, token }) => {
     );
   };
 
-  // Handle onBlur API call using Axios
   const handleUpdate = async (assetId, field, value) => {
     const assetToUpdate = assets.find((asset) => asset.id === assetId);
 
@@ -102,6 +101,7 @@ const Profile = ({ userId, token }) => {
     if (error) return <p className="text-red-600 text-center">{error}</p>;
 
     const renderField = (title, value) => (
+
       <div className="mb-4 mt-2">
         <span className="font-bold text-gray-600 text-sm inline-block w-36">
           {title}:
@@ -114,7 +114,6 @@ const Profile = ({ userId, token }) => {
       case "personal info":
         return (
           <div className="w-full max-w-4xl">
-            {/* Personal Information Card */}
             <h2 className="text-lg font-semibold text-blue-600 mb-4 border-b pb-2">
               Personal Information
             </h2>
@@ -138,7 +137,6 @@ const Profile = ({ userId, token }) => {
       case "professional info":
         return (
           <div className="w-full max-w-4xl">
-            {/* Professional Information Card */}
             <div className="flex justify-between items-center border-b pb-2 mb-4">
               <h2 className="text-lg font-semibold text-blue-600">
                 Professional Information
@@ -248,7 +246,7 @@ const Profile = ({ userId, token }) => {
                           type="text"
                           value={asset.assetName}
                           className="w-full px-2 py-1 border rounded"
-                          disabled={role !== "Admins"} // Disable input if role is not "Admins"
+                          disabled={role !== "Admins"} 
                           onChange={(e) =>
                             handleFieldChange(
                               asset.id,
@@ -355,11 +353,10 @@ const Profile = ({ userId, token }) => {
     return <Loader />;
   }
 
-  return (
-    <div className="flex h-full w-full bg-white">
-      {/* Sidebar */}
+  return ( 
+    <div className="flex flex-col md:flex-row h-full w-full bg-white">
       {profileData && (
-        <div className="w-1/4 h-screen bg-gray-900 text-white shadow-md p-6 rounded-lg">
+        <div className="w-full md:w-1/4 h-auto md:h-screen bg-gray-900 text-white shadow-md p-6 rounded-lg">
           <div className="flex flex-col">
             <div className="flex flex-col items-center">
               <img
@@ -375,7 +372,6 @@ const Profile = ({ userId, token }) => {
               <p className="text-sm text-gray-200">{profileData.designation}</p>
             </div>
 
-            {/* Progress Bar */}
             <div className="w-full bg-white rounded-full mt-4">
               <div
                 className="bg-blue-400 text-xs font-medium text-center p-0.5 leading-none rounded-full text-black"
@@ -385,7 +381,6 @@ const Profile = ({ userId, token }) => {
               </div>
             </div>
 
-            {/* Contact Details */}
             <div className="mt-5 w-full text-left">
               <h2 className="text-md font-semibold mb-2">Contact</h2>
               <div className="text-sm space-y-1">
@@ -406,7 +401,6 @@ const Profile = ({ userId, token }) => {
               </div>
             </div>
 
-            {/* Skills Section */}
             <div className="mt-5">
               <span className="font-semibold text-white">Skills</span>
               <div className="flex flex-wrap gap-2 mt-2">
@@ -426,9 +420,8 @@ const Profile = ({ userId, token }) => {
         </div>
       )}
 
-      {/* Main Content */}
-      <div className="flex-1 bg-gray-50 p-6 flex-1 ml-1/5 flex flex-col h-screen rounded-lg shadow-lg">
-        <div className="flex space-x-3 border-b pb-2">
+      <div className="flex-1 bg-gray-50 p-6 flex flex-col h-auto md:h-screen rounded-lg shadow-lg">
+        <div className="flex space-x-3 border-b pb-2 overflow-x-auto">
           {((role === "Admins" && userId === id) || role === "Mentors"
             ? adminTab
             : internTab
@@ -449,13 +442,11 @@ const Profile = ({ userId, token }) => {
           ))}
         </div>
 
-        {/* Content Section */}
         <div className="bg-white shadow-md rounded-lg p-6 mt-4">
           {renderTabContent()}
         </div>
       </div>
 
-      {/* Profile Photo Modal */}
       {isProfilePhotoModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-lg w-[90%] max-w-md">
@@ -477,7 +468,6 @@ const Profile = ({ userId, token }) => {
         </div>
       )}
 
-      {/* Edit Profile Modal */}
       {isEditProfileModalOpen && (
         <EditProfileModal
           profileData={profileData}
@@ -488,7 +478,6 @@ const Profile = ({ userId, token }) => {
         />
       )}
 
-      {/* Add Asset Modal */}
       {isAssetModalOpen && (
         <AddAssetModal
           isAssetModalOpen={isAssetModalOpen}

@@ -19,7 +19,7 @@ const SignIn = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
+    try { 
       const response = await axios.post(SIGNIN_URL, formData);
       if (response.data) {
         const user = response.data.data;

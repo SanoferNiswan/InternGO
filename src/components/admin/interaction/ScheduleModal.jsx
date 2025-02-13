@@ -10,7 +10,7 @@ const ScheduleModal = ({ onClose, refreshData }) => {
   const dispatch = useDispatch();
   const { mentors } = useSelector(
     (state) => state.data
-  );
+  ); 
  
   useEffect(() => {
     if (mentors.length === 0) {

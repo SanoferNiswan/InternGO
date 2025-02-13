@@ -344,7 +344,7 @@ const ObjectiveList = ({
                   <option value="DEFAULT">Default</option>
                 </select>
               </td> */}
-              <td>
+              <td> 
                 <div className="flex gap-2">
                   <button
                     onClick={addObjective}

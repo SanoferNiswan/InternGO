@@ -94,7 +94,7 @@ const EditPlanPopup = ({ planDetails, onClose, onUpdate, token }) => {
           <label className="absolute text-md text-gray-500 transform -translate-y-4 scale-75 top-2 bg-white px-2 ml-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 peer-focus:text-blue-600">
             Description
           </label>
-        </div>
+        </div> 
 
         {/* Plan Days Input */}
         <div className="relative mb-4">

@@ -13,7 +13,6 @@ import Interaction from "./pages/interaction/Interaction";
 import Plan from "./components/admin/plans/Plan";
 import Resources from "./components/admin/profileManagement/Resources";
 import EditProfile from "./components/users/profile/EditProfile";
-import Roadmap from "./components/common/Roadmap";
 import UserDetail from "./components/admin/profileManagement/UserDetail";
 import NotFound from "./pages/NotFound";
 import MyProfile from "./components/common/MyProfile";
@@ -47,7 +46,7 @@ const App = () => {
             <ProtectedRoute>
               <DashboardLayout />
             </ProtectedRoute>
-          }
+          } 
         >
           <Route index element={<Dashboard />} />
 
@@ -56,7 +55,6 @@ const App = () => {
           <Route path="interactions" element={<Interaction />} />
           <Route path="my-profile" element={<MyProfile />} />
           <Route path="edit-profile" element={<EditProfile />} />
-          <Route path="roadmap" element={<Roadmap />} />
         </Route>
 
         <Route
@@ -71,7 +69,6 @@ const App = () => {
           path="/mentor/*"
           element={<RoleProtectedRoute allowedRoles={["Mentors"]} />}
         >
-          {/* <Route path="feedback" element={<CreateFeedback />} /> */}
           <Route path="feedback/create/:interactionID" element={<CreateFeedback />} />
           <Route path="feedback/view/:interactionId" element={<InteractionFeedback />} />
         </Route>

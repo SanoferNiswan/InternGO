@@ -14,7 +14,7 @@ const InternUpdate = () => {
   if (!isValid(inputDate)) {
     return <Navigate to="/not-found" replace />;
   }
-
+ 
   const today = new Date();
   const tomorrow = addDays(today, 1);
 

@@ -45,7 +45,6 @@ const AdminDashboard = () => {
 
   return (
     <div className="p-2">
-      {/* Admin Banner */}
       <div className="bg-blue-500 text-white p-6 rounded-lg flex flex-col sm:flex-row items-center gap-4 sm:gap-6 shadow-md mb-6 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
         {profilePhoto ? (
           <img
@@ -91,7 +90,7 @@ const AdminDashboard = () => {
             </h2>
           </div>
         </div>
-
+ 
         <div className="p-6 bg-white shadow-md rounded-lg flex items-center gap-4 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
           <FaProjectDiagram className="text-purple-500 text-4xl" />
           <div>
@@ -113,7 +112,7 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      <div className="mt-8 bg-white p-6 shadow-md rounded-lg">
+      <div className="mt-8 bg-white p-6 shadow-md rounded-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
         <h2 className="text-lg font-bold text-gray-700 mb-4">
           📢 Announcements
         </h2>

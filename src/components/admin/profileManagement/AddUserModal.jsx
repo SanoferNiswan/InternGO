@@ -31,49 +31,12 @@ const AddUserModal = ({ onClose }) => {
       alert("Failed to add user.");
     }
   };
-
+ 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50 z-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-96">
         <h2 className="text-xl font-bold mb-4">Add User</h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-8">
-          {/* <input
-            type="text"
-            name="name"
-            placeholder="Full Name"
-            value={userData.name}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded mb-2"
-            required
-          />
-          <input
-            type="email"
-            name="email"
-            value={userData.email}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded mb-2"
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={userData.password}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded mb-2"
-            required
-          />
-          <select
-            name="role"
-            value={userData.role}
-            onChange={handleChange}
-            className="w-full p-2 border border-gray-300 rounded mb-2"
-          >
-             <option value="">select role</option>
-            <option value="Mentors">Mentors</option>
-            <option value="Admins">Admins</option>
-            <option value="Interns">Interns</option>
-          </select> */}
           <div className="relative">
             <input
               type="text"

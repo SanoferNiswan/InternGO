@@ -6,7 +6,7 @@ const Feedback = () => {
       Feedback
     </div>
   )
-}
+} 
 
 export default Feedback
  

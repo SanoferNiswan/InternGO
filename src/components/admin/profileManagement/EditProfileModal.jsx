@@ -75,7 +75,7 @@ const EditProfileModal = ({
         >
           ✕
         </button>
-
+ 
         <h2 className="text-xl font-semibold mb-4">Edit Profile</h2>
 
         <div className="mb-4">

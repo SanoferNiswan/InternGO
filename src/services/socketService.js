@@ -2,7 +2,7 @@ import { io } from "socket.io-client";
 
 const SOCKET_SERVER_URL = "https://interngo.onrender.com";
 
-let socket;
+let socket; 
 
 export const connectSocket = (userId) => {
   if(socket){

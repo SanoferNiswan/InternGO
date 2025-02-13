@@ -102,12 +102,6 @@ const DashboardLayout = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
-    if (isModalOpen) {
-      setDropdownOpen(false);
-    }
-  }, [isModalOpen]); 
-
-  useEffect(() => {
     if (!userId) return;
     fetchNotifications();
 
@@ -139,9 +133,14 @@ const DashboardLayout = () => {
     }
   };
 
+  useEffect(() => {
+    if (isModalOpen) {
+      setDropdownOpen(false);
+    }
+  }, [isModalOpen]); 
+
   return (
     <div className="flex flex-col h-screen bg-gray-100">
-      {/*  Navbar */}
       <header className="flex items-center justify-between bg-white p-2 pr-6 py-2 shadow-md top-0 left-0 right-0">
         <div className="flex items-center">
           <img src={logo} alt="InternGO" className="w-10 h-10 mr-2" />
@@ -175,7 +174,7 @@ const DashboardLayout = () => {
                   <li
                     className="px-4 py-2 hover:bg-blue-50 cursor-pointer flex items-center gap-2"
                     onClick={() =>
-                      (window.location.href = "/dashboard/edit-profile")
+                      (window.location.href = "#/dashboard/edit-profile")
                     }
                   >
                     <FaEdit /> Edit Profile
@@ -205,7 +204,6 @@ const DashboardLayout = () => {
         </div>
       </header>
 
-      {/* sidebar */}
 
       <div
         className={`bg-white text-black shadow-lg transition-all duration-200 fixed top-16 left-0 flex flex-col ${

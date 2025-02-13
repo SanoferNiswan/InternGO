@@ -10,7 +10,7 @@ const UserDetail = () => {
     <div>
       <Profile userId={id} token={token} />
     </div>
-  )
+  ) 
 } 
 
 export default UserDetail

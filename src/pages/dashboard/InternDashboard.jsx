@@ -38,7 +38,7 @@ const InternDashboard = () => {
     <div className="p-2">
       <div className="bg-blue-500 text-white p-6 rounded-lg flex  gap-6 shadow-md mb-6 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
         {profilePhoto ? (
-          <img
+          <img 
             src={profilePhoto}
             alt="Admin"
             className="w-28 h-28 rounded-full"
@@ -58,40 +58,33 @@ const InternDashboard = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div className="p-6 bg-white shadow-md rounded-lg flex items-center gap-4">
+      {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="p-6 bg-white shadow-md rounded-lg flex items-center gap-4 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
           <FaBook className="text-blue-500 text-4xl" />
           <div>
             <p className="text-gray-500">Modules Completed</p>
             <h2 className="text-2xl font-bold">5</h2>
           </div>
         </div>
-        <div className="p-6 bg-white shadow-md rounded-lg flex items-center gap-4">
+        <div className="p-6 bg-white shadow-md rounded-lg flex items-center gap-4 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
           <FaTasks className="text-yellow-500 text-4xl" />
           <div>
             <p className="text-gray-500">Pending Tasks</p>
             <h2 className="text-2xl font-bold">3</h2>
           </div>
         </div>
-        <div className="p-6 bg-white shadow-md rounded-lg flex items-center gap-4">
+        <div className="p-6 bg-white shadow-md rounded-lg flex items-center gap-4 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
           <FaCheckCircle className="text-green-500 text-4xl" />
           <div>
             <p className="text-gray-500">Tasks Completed</p>
             <h2 className="text-2xl font-bold">12</h2>
           </div>
         </div>
-      </div>
+      </div> */}
 
-      <div className="mt-8 bg-white p-6 shadow-md rounded-lg max-h-full">
-        <h2 className="text-lg font-bold text-gray-700 mb-4">
-          📢 Announcements
-        </h2>
-        <Announcement />
-      </div>
-
-      <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div className="p-6 bg-white shadow-md rounded-lg">
-          <h3 className="text-gray-500">Status</h3>
+<div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="p-6 bg-white shadow-md rounded-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+          <h3 className="text-gray-500 mb-2">Current Zone</h3>
           <p
             className={`text-lg font-bold ${
               user?.zone === "GREEN ZONE"
@@ -106,21 +99,28 @@ const InternDashboard = () => {
             {user?.zone || "Not updated"}
           </p>
         </div>
-        <div className="p-6 bg-white shadow-md rounded-lg">
-          <h3 className="text-gray-500">Training Phase</h3>
+        <div className="p-6 bg-white shadow-md rounded-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+          <h3 className="text-gray-500 mb-3">Training Phase</h3>
           <p className="text-lg font-bold text-blue-500">
             {planDetails?.name || "No plans available"}
           </p>
         </div>
-        <div className="p-6 bg-white shadow-md rounded-lg">
-          <h3 className="text-gray-500">Current Mentor</h3>
-          <p className="text-lg font-bold text-blue-500">
+        <div className="p-6 bg-white shadow-md rounded-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+          <h3 className="text-gray-500 mb-3">Current Mentor</h3>
+          <p className="text-lg font-bold text-yellow-500">
             {planDetails?.mentorName || "No mentors assigned"}
           </p>
         </div>
       </div>
 
-      <div className="mt-8 bg-white p-6 shadow-md rounded-lg">
+      <div className="mt-8 bg-white p-6 shadow-md rounded-lg max-h-full transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+        <h2 className="text-lg font-bold text-gray-700 mb-4">
+          📢 Announcements
+        </h2>
+        <Announcement />
+      </div>
+
+      {/* <div className="mt-8 bg-white p-6 shadow-md rounded-lg">
         <h2 className="text-lg font-bold text-gray-700 mb-4 flex items-center gap-2">
           <FaClock className="text-blue-500" /> Today's Tasks
         </h2>
@@ -134,7 +134,7 @@ const InternDashboard = () => {
             <span className="text-sm text-gray-400">Due by 4 PM</span>
           </li>
         </ul>
-      </div>
+      </div> */}
     </div>
   );
 };

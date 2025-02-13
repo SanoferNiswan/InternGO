@@ -104,7 +104,7 @@ const UserFeedback = () => {
         backgroundColor: "rgba(255, 99, 132, 0.2)",
       },
     ],
-  };
+  }; 
 
   const handleDownload = async () => {
     try {

@@ -48,7 +48,7 @@ const AddAssetModal = ({ setActiveTab,isAssetModalOpen, setIsAssetModalOpen, use
             onChange={(e) => setAssetType(e.target.value)}
           />
         </div>
-
+ 
         <div className="mb-4">
           <label htmlFor="assetName" className="block mb-2">Asset Name</label>
           <input

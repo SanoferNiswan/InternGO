@@ -16,7 +16,7 @@ const AddUser = () => {
 
       {isModalOpen && <AddUserModal onClose={() => setIsModalOpen(false)} />}
     </div>
-  );
+  ); 
 };
 
 export default AddUser;
