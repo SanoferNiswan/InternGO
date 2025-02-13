@@ -1,14 +1,14 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { useSelector } from "react-redux";
-import { useParams,Navigate } from "react-router-dom";
+import { useParams, Navigate } from "react-router-dom";
 import axios from "../../../api/axios";
 import Select from "react-select";
 import { addDays, isAfter, parseISO, isValid } from "date-fns";
 import Loader from "../../Loader";
- 
+
 const AdminUpdate = () => {
   const { date } = useParams();
-  
+
   const inputDate = parseISO(date);
   if (!isValid(inputDate)) {
     return <Navigate to="/not-found" replace />;
@@ -20,6 +20,11 @@ const AdminUpdate = () => {
   if (isAfter(inputDate, tomorrow)) {
     return <Navigate to="/not-found" replace />;
   }
+
+  const formatDate = (dateString) => {
+    const [year, month, day] = dateString.split("-");
+    return `${day}-${month}-${year}`;
+  };
 
   const { token } = useSelector((state) => state.auth);
   const [searchInput, setSearchInput] = useState("");
@@ -41,7 +46,7 @@ const AdminUpdate = () => {
   const batches = ["Batch 1", "Batch 2", "Batch 3"];
   const designations = ["frontend", "backend", "testing"];
   const statusOptions = [
-    "ACTIVE", 
+    "ACTIVE",
     "NOT_ACTIVE",
     "EXAMINATION",
     "SHADOWING",
@@ -98,16 +103,16 @@ const AdminUpdate = () => {
     }));
   }, []);
 
-  if(loading){
-    return <Loader />
+  if (loading) {
+    return <Loader />;
   }
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
-      <h2 className="text-3xl font-bold text-center text-gray-700 mb-6">
-         {date} Updates
+      <h2 className="text-2xl font-bold text-center text-blue-600 mb-6">
+       Daily Updates ({formatDate(date)})
       </h2>
 
-      <div className="flex flex-wrap justify-center items-center gap-4 mb-6">
+      <div className="flex flex-wrap justify-center justify-between items-center gap-4 mb-6">
         <input
           type="text"
           value={searchInput}
@@ -129,7 +134,9 @@ const AdminUpdate = () => {
           isMulti
           value={createSelectOptions(filter.year)}
           options={createSelectOptions(years)}
-          onChange={(selectedOptions) => handleFilterChange(selectedOptions, "year")}
+          onChange={(selectedOptions) =>
+            handleFilterChange(selectedOptions, "year")
+          }
           placeholder="Filter by Year"
           className="w-60"
         />
@@ -137,7 +144,9 @@ const AdminUpdate = () => {
           isMulti
           value={createSelectOptions(filter.batch)}
           options={createSelectOptions(batches)}
-          onChange={(selectedOptions) => handleFilterChange(selectedOptions, "batch")}
+          onChange={(selectedOptions) =>
+            handleFilterChange(selectedOptions, "batch")
+          }
           placeholder="Filter by Batch"
           className="w-60"
         />
@@ -146,35 +155,51 @@ const AdminUpdate = () => {
       {dailyUpdates.length > 0 ? (
         dailyUpdates.map((update) => (
           <div key={update.user.id} className="mb-8">
-            <h3 className="text-xl font-bold text-gray-700 mb-2 p-3 rounded-md">
+            <h3 className="text-xl font-bold text-gray-800 mb-2 p-3 rounded-md">
               {update.user.name} - {update.user.designation}
             </h3>
             <div className="overflow-x-auto">
-              <table className="w-full border border-gray-300 shadow-md">
+              <table className="w-full border border-blue-300 shadow-md rounded-lg">
                 <thead>
-                  <tr className="bg-gray-500 text-white text-left">
-                    <th className="p-3 border">Task Name</th>
-                    <th className="p-3 border">Planned Activities</th>
-                    <th className="p-3 border">Completed Activities</th>
-                    <th className="p-3 border">Estimated Time</th>
-                    <th className="p-3 border">Actual Time</th>
-                    <th className="p-3 border">Progress</th>
+                  <tr className="bg-blue-100 text-black text-left text-sm">
+                    <th className="p-2 border border-blue-200">Task Name</th>
+                    <th className="p-2 border border-blue-200">
+                      Planned Activities
+                    </th>
+                    <th className="p-2 border border-blue-200">
+                      Completed Activities
+                    </th>
+                    <th className="p-2 border border-blue-200">
+                      Estimated Time
+                    </th>
+                    <th className="p-2 border border-blue-200">Actual Time</th>
+                    <th className="p-2 border border-blue-200">Progress</th>
                   </tr>
                 </thead>
                 <tbody>
                   {update.tasks.map((task, index) => (
                     <tr
                       key={task.id}
-                      className={
-                        index % 2 === 0 ? "bg-white text-gray-800" : "bg-gray-100 text-gray-800"
-                      }
+                      className={`text-gray-900 text-sm bg-white hover:bg-blue-50`}
                     >
-                      <td className="p-3 border">{task.taskName}</td>
-                      <td className="p-3 border">{task.activitiesPlanned || "N/A"}</td>
-                      <td className="p-3 border">{task.activitiesCompleted || "N/A"}</td>
-                      <td className="p-3 border">{task.estimatedTime || "-"} hrs</td>
-                      <td className="p-3 border">{task.actualTime || "-"} hrs</td>
-                      <td className="p-3 border font-semibold text-blue-600">{task.taskProgress}</td>
+                      <td className="p-2 border border-blue-200">
+                        {task.taskName}
+                      </td>
+                      <td className="p-2 border border-blue-200">
+                        {task.activitiesPlanned || "N/A"}
+                      </td>
+                      <td className="p-2 border border-blue-200">
+                        {task.activitiesCompleted || "N/A"}
+                      </td>
+                      <td className="p-2 border border-blue-200">
+                        {task.estimatedTime || "-"} hrs
+                      </td>
+                      <td className="p-2 border border-blue-200">
+                        {task.actualTime || "-"} hrs
+                      </td>
+                      <td className={`p-2 border border-blue-200 font-semibold text-blue-700 ${task.taskProgress=="PENDING"? "text-red-600":"text-green-600"}`}>
+                        {task.taskProgress}
+                      </td>
                     </tr>
                   ))}
                 </tbody>
@@ -198,7 +223,9 @@ const AdminUpdate = () => {
           Page {currentPage} of {totalPages}
         </span>
         <button
-          onClick={() => setCurrentPage((prev) => Math.min(prev + 1, totalPages))}
+          onClick={() =>
+            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+          }
           disabled={currentPage === totalPages}
           className="px-4 py-2 bg-blue-500 text-white rounded-lg disabled:bg-gray-300 transition-all hover:bg-blue-700"
         >

@@ -18,6 +18,7 @@ const Profile = ({ userId, token }) => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
   const [assets, setAssets] = useState([]);
+  const [isEditing, setIsEditing] = useState(false);
 
   const dispatch = useDispatch();
 
@@ -37,7 +38,6 @@ const Profile = ({ userId, token }) => {
       setProfileData(response.data.data);
       setAssets(response.data.data.assets);
       console.log(response.data.data);
-      
     } catch (error) {
       if (error.response && error.response.status === 403) {
         setError("You are restricted from accessing this page.");
@@ -216,39 +216,46 @@ const Profile = ({ userId, token }) => {
         );
       case "assets":
         return (
-          <div className="flex flex-col">
+          <div className="flex flex-col h-full">
             <h2 className="text-lg font-semibold text-blue-600 mb-2">Assets</h2>
             <hr />
-            {assets && (
-              <table className="w-full border-collapse border border-gray-300 mt-4">
+            {assets.length == 0 ? (
+              <p className="mt-5 text-center text-gray-600">
+                No assets provided
+              </p>
+            ) : (
+              <table className="w-3/4 border-collapse border border-blue-300 mt-4 text-sm shadow-md rounded-lg overflow-hidden">
                 <thead>
-                  <tr className="bg-gray-100 text-gray-700 text-sm font-semibold">
-                    <th className="border border-gray-300 px-4 py-2">
+                  <tr className="bg-blue-100 text-black text-sm font-semibold">
+                    <th className="border border-blue-200 px-3 py-2">
                       Asset ID
                     </th>
-                    <th className="border border-gray-300 px-4 py-2">Name</th>
-                    <th className="border border-gray-300 px-4 py-2">
+                    <th className="border border-blue-200 px-3 py-2">Name</th>
+                    <th className="border border-blue-200 px-3 py-2">
                       Asset Type
                     </th>
-                    <th className="border border-gray-300 px-4 py-2">
+                    <th className="border border-blue-200 px-3 py-2">
                       Provided On
                     </th>
-                    <th className="border border-gray-300 px-4 py-2">
+                    <th className="border border-blue-200 px-3 py-2">
                       Returned On
                     </th>
                   </tr>
                 </thead>
                 <tbody>
                   {assets.map((asset) => (
-                    <tr key={asset.id} className="text-gray-900 text-base">
-                      <td className="border border-gray-300 px-4 py-2">
+                    <tr
+                      key={asset.id}
+                      className="text-gray-900 hover:bg-blue-50 transition"
+                    >
+                      <td className="border border-blue-200 px-3 py-2">
                         {asset.id}
                       </td>
-                      <td className="border border-gray-300 px-4 py-2">
+                      <td className="border border-blue-200 px-3 py-2">
                         <input
                           type="text"
                           value={asset.assetName}
-                          className="w-full px-3 py-1.5 border rounded text-gray-700"
+                          className="w-auto bg-transparent px-1 py-0.5 text-gray-700 focus:outline-none hover:border-blue-500 focus:border-b-2 border-transparent"
                           disabled={role !== "Admins"}
                           onChange={(e) =>
                             handleFieldChange(
@@ -262,11 +269,11 @@ const Profile = ({ userId, token }) => {
                           }
                         />
                       </td>
-                      <td className="border border-gray-300 px-4 py-2">
+                      <td className="border border-blue-200 px-3 py-2">
                         <input
                           type="text"
                           value={asset.assetType}
-                          className="w-full px-3 py-1.5 border rounded text-gray-700"
+                          className="w-auto bg-transparent px-1 py-0.5 text-gray-700 focus:outline-none hover:border-blue-500 focus:border-b-2 border-transparent"
                           disabled={role !== "Admins"}
                           onChange={(e) =>
                             handleFieldChange(
@@ -280,7 +287,7 @@ const Profile = ({ userId, token }) => {
                           }
                         />
                       </td>
-                      <td className="border border-gray-300 px-4 py-2">
+                      <td className="border border-blue-200 px-3 py-2">
                         <input
                           type="date"
                           value={
@@ -290,7 +297,7 @@ const Profile = ({ userId, token }) => {
                                   .split("T")[0]
                               : ""
                           }
-                          className="w-full px-3 py-1.5 border rounded text-gray-700"
+                          className="w-auto bg-transparent px-1 py-0.5 text-gray-700 focus:outline-none hover:border-blue-500 focus:border-b-2 border-transparent"
                           disabled={role !== "Admins"}
                           onChange={(e) =>
                             handleFieldChange(
@@ -304,29 +311,43 @@ const Profile = ({ userId, token }) => {
                           }
                         />
                       </td>
-                      <td className="border border-gray-300 px-4 py-2">
-                        <input
-                          type="date"
-                          value={
-                            asset.returnedOn
-                              ? new Date(asset.returnedOn)
-                                  .toISOString()
-                                  .split("T")[0]
-                              : ""
-                          }
-                          className="w-full px-3 py-1.5 border rounded text-gray-700"
-                          disabled={role !== "Admins"}
-                          onChange={(e) =>
-                            handleFieldChange(
-                              asset.id,
-                              "returnedOn",
-                              e.target.value
-                            )
-                          }
-                          onBlur={(e) =>
-                            handleUpdate(asset.id, "returnedOn", e.target.value)
-                          }
-                        />
+                      <td
+                        className="border border-blue-200 px-3 py-2 cursor-pointer"
+                        onClick={() => role === "Admins" && setIsEditing(true)}
+                      >
+                        {isEditing || asset.returnedOn ? (
+                          <input
+                            type="date"
+                            value={
+                              asset.returnedOn
+                                ? new Date(asset.returnedOn)
+                                    .toISOString()
+                                    .split("T")[0]
+                                : ""
+                            }
+                            className="w-auto bg-transparent px-1 py-0.5 text-gray-700 focus:outline-none hover:border-blue-500 focus:border-b-2 border-transparent"
+                            disabled={role !== "Admins"}
+                            onChange={(e) =>
+                              handleFieldChange(
+                                asset.id,
+                                "returnedOn",
+                                e.target.value
+                              )
+                            }
+                            onBlur={(e) => {
+                              handleUpdate(
+                                asset.id,
+                                "returnedOn",
+                                e.target.value
+                              );
+                              setIsEditing(false);
+                            }}
+                          />
+                        ) : (
+                          <span className="text-blue-500 hover:underline">
+                            Not returned
+                          </span>
+                        )}
                       </td>
                     </tr>
                   ))}
@@ -356,7 +377,7 @@ const Profile = ({ userId, token }) => {
   return (
     <div className="flex flex-col md:flex-row h-full w-full bg-white">
       {profileData && (
-        <div className="w-full md:w-1/4 h-auto md:h-screen bg-gray-900 text-white shadow-md p-6 rounded-lg">
+        <div className="w-full md:w-1/4 h-auto bg-gray-900 text-white shadow-md p-6 rounded-lg">
           <div className="flex flex-col">
             <div className="flex flex-col items-center">
               <img
@@ -364,12 +385,10 @@ const Profile = ({ userId, token }) => {
                   profileData.profilePhoto ||
                   "https://cdn-icons-png.flaticon.com/512/9203/9203764.png"
                 }
-                onError={(e)=>console.log(e)}
                 alt="Profile"
                 className="w-24 h-24 rounded-full object-cover mb-4 border-4 border-white cursor-pointer bg-white"
                 onClick={() => setIsProfilePhotoModalOpen(true)}
               />
-              {console.log("photo",profileData.profilePhoto,token)}
               <h1 className="text-lg font-bold">{profileData.name}</h1>
               <p className="text-sm text-gray-200">{profileData.designation}</p>
             </div>
@@ -385,7 +404,7 @@ const Profile = ({ userId, token }) => {
 
             <div className="mt-5 w-full text-left">
               <h2 className="text-md font-semibold mb-2">Contact</h2>
-              <div className="text-sm space-y-1">
+              <div className="text-sm space-y-3">
                 <div className="flex items-center gap-2">
                   <FaPhone className="text-white opacity-80" />
                   <span>{profileData.phone_no || "---"}</span>
@@ -394,7 +413,7 @@ const Profile = ({ userId, token }) => {
                   <FaRegEnvelope className="text-white opacity-80" />
                   <span>{profileData.email || "---"}</span>
                 </div>
-                <div className="flex items-center gap-2">
+                <div className="flex mt-1 gap-2">
                   <FaMapMarkerAlt className="text-white opacity-80" />
                   <span className="whitespace-normal">
                     {profileData.permanentAddress || "---"}
@@ -457,7 +476,7 @@ const Profile = ({ userId, token }) => {
               <img
                 src={profileData.profilePhoto}
                 alt="Profile"
-                className="rounded-lg max-h-[300px] max-w-[300px] object-cover"
+                className="rounded-lg max-h-[200px] max-w-[300px] object-cover"
               />
             </div>
             <button
@@ -476,6 +495,7 @@ const Profile = ({ userId, token }) => {
           setIsEditProfileModalOpen={setIsEditProfileModalOpen}
           userId={userId}
           token={token}
+          refresh = {fetchProfileData}
           onClose={() => setIsEditProfileModalOpen(false)}
         />
       )}
@@ -485,6 +505,7 @@ const Profile = ({ userId, token }) => {
           isAssetModalOpen={isAssetModalOpen}
           setIsAssetModalOpen={setIsAssetModalOpen}
           userId={userId}
+          refresh = {fetchProfileData}
           setActiveTab={setActiveTab}
         />
       )}

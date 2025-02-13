@@ -6,6 +6,7 @@ const EditProfileModal = ({
   setIsEditProfileModalOpen,
   userId,
   token,
+  refresh
 }) => {
   const [formData, setFormData] = useState({
     employeeId: profileData.employeeId,
@@ -40,24 +41,7 @@ const EditProfileModal = ({
       );
       alert("Profile updated successfully");
       setIsEditProfileModalOpen(false);
-      const handleSaveChanges = async () => {
-        try {
-          await axios.patch(
-            `/api/users/update/${userId}`,
-            {
-              ...formData,
-            },
-            {
-              headers: { Authorization: `Bearer ${token}` },
-            }
-          );
-          alert("Profile updated successfully");
-          setIsEditProfileModalOpen(false);
-        } catch (error) {
-          console.error("Error updating profile:", error);
-        }
-      };
-      window.location.reload();
+      refresh();
     } catch (error) {
       console.error("Error updating profile:", error);
     }
@@ -178,6 +162,7 @@ const EditProfileModal = ({
                 .split("T")[0]
             }
             className="border border-gray-300 rounded px-2 py-1"
+            max={new Date().toISOString().split("T")[0]}
             onChange={handleInputChange}
           />
         </div>

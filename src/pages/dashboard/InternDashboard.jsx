@@ -3,14 +3,14 @@ import Announcement from "../../components/Announcement";
 import { useSelector } from "react-redux";
 import axios from "../../api/axios";
 import { toast } from "react-toastify";
+import Loader from "../../components/Loader";
 
 const InternDashboard = () => {
   const { user, token, userId, profilePhoto, name } = useSelector(
     (state) => state.auth
   );
 
-  console.log(profilePhoto);
-  
+  const [loading,setLoading] = useState(false);
 
   const [planDetails, setPlanDetails] = useState(null);
 
@@ -20,6 +20,7 @@ const InternDashboard = () => {
 
   const fetchPlanDetails = async () => {
     try {
+      setLoading(true);
       const response = await axios.get(`/api/users/training/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -28,8 +29,14 @@ const InternDashboard = () => {
       setPlanDetails(response.data.data);
     } catch (error) {
       toast.error(error);
+    }finally{
+      setLoading(false);
     }
   };
+
+  if(loading){
+    return <Loader />
+  }
 
   return (
     <div className="p-2">
@@ -38,10 +45,10 @@ const InternDashboard = () => {
           <img
             src={profilePhoto}
             alt={name}
-            className="w-28 h-28 rounded-full"
+            className="w-28 h-28 rounded-full aspect-square object-cover"
           />
         ) : (
-          <div className="w-24 h-24 rounded-full bg-white flex items-center justify-center text-lg font-bold text-blue-500">
+          <div className="w-24 h-24 rounded-full bg-white flex items-center justify-center text-lg font-bold text-blue-500 aspect-square object-cover">
             {name?.charAt(0).toUpperCase()}
           </div>
         )}
@@ -55,29 +62,12 @@ const InternDashboard = () => {
         </div>
       </div>
 
-      {/* <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        <div className="p-6 bg-white shadow-md rounded-lg flex items-center gap-4 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
-          <FaBook className="text-blue-500 text-4xl" />
-          <div>
-            <p className="text-gray-500">Modules Completed</p>
-            <h2 className="text-2xl font-bold">5</h2>
-          </div>
-        </div>
-        <div className="p-6 bg-white shadow-md rounded-lg flex items-center gap-4 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
-          <FaTasks className="text-yellow-500 text-4xl" />
-          <div>
-            <p className="text-gray-500">Pending Tasks</p>
-            <h2 className="text-2xl font-bold">3</h2>
-          </div>
-        </div>
-        <div className="p-6 bg-white shadow-md rounded-lg flex items-center gap-4 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
-          <FaCheckCircle className="text-green-500 text-4xl" />
-          <div>
-            <p className="text-gray-500">Tasks Completed</p>
-            <h2 className="text-2xl font-bold">12</h2>
-          </div>
-        </div>
-      </div> */}
+      <div className="mt-8 bg-white p-6 shadow-md rounded-lg max-h-full transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+        <h2 className="text-lg font-bold text-gray-700 mb-4">
+          📢 Announcements
+        </h2>
+        <Announcement />
+      </div>
 
       <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         <div className="p-6 bg-white shadow-md rounded-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
@@ -90,7 +80,7 @@ const InternDashboard = () => {
                 ? "text-red-500"
                 : user?.zone === "YELLOW ZONE"
                 ? "text-blue-500"
-                : "text-gray-500"
+                : "text-red-400"
             }`}
           >
             {user?.zone || "Not updated"}
@@ -110,12 +100,6 @@ const InternDashboard = () => {
         </div>
       </div>
 
-      <div className="mt-8 bg-white p-6 shadow-md rounded-lg max-h-full transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
-        <h2 className="text-lg font-bold text-gray-700 mb-4">
-          📢 Announcements
-        </h2>
-        <Announcement />
-      </div>
     </div>
   );
 };

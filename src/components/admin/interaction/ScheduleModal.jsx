@@ -60,6 +60,8 @@ const ScheduleModal = ({ onClose, refreshData }) => {
 
     setIsSubmitting(true);
     try {
+      console.log(formatTime(fields.time));
+      
       const response = await axios.post(
         "/api/interactions/schedule",
         {
@@ -100,7 +102,7 @@ const ScheduleModal = ({ onClose, refreshData }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-[40%] max-h-[90vh] overflow-y-auto">
-        <h2 className="text-xl font-semibold mb-4">Schedule Interaction</h2>
+        <h2 className="text-xl font-semibold mb-4 text-blue-600">Schedule Interaction</h2>
 
         <div className="space-y-4">
           {[
@@ -112,7 +114,7 @@ const ScheduleModal = ({ onClose, refreshData }) => {
             { name: "internName", label: "Intern Name", type: "text" },
             { name: "internEmail", label: "Intern Email", type: "email" },
           ].map(({ name, label, type }) => (
-            <div key={name} className="mb-3">
+            <div key={name} className="mb-3 flex flex-col gap-y-2">
               <label className="block text-gray-700">{label}</label>
               <input
                 type={type}
@@ -128,7 +130,7 @@ const ScheduleModal = ({ onClose, refreshData }) => {
             </div>
           ))}
 
-          <div className="mb-3">
+          <div className="mb-3 flex flex-col gap-y-2">
             <label className="block text-gray-700">Mentor Name</label>
             <select
               name="mentorName"
@@ -147,7 +149,7 @@ const ScheduleModal = ({ onClose, refreshData }) => {
             </select>
           </div>
 
-          <div className="mb-3">
+          <div className="mb-3 flex flex-col gap-y-2">
             <label className="block text-gray-700">Interviewer</label>
             <select
               name="interviewer"
@@ -167,26 +169,52 @@ const ScheduleModal = ({ onClose, refreshData }) => {
           </div>
         </div>
 
-        {[
-          { name: "date", label: "Date", type: "date" },
-          { name: "time", label: "Time ( railway time only )", type: "time" },
-          { name: "duration", label: "Duration", type: "text" },
-        ].map(({ name, label, type }) => (
-          <div key={name} className="mb-3">
-            <label className="block text-gray-700">{label}</label>
+        <div className="mb-3 flex flex-col gap-y-2">
+            <label className="block text-gray-700">Date</label>
             <input
-              type={type}
-              name={name}
-              value={fields[name]}
+              type="date"
+              name="date"
+              value={fields["date"]}
+              onChange={handleChange}
+              min={new Date().toISOString().split("T")[0]} 
+              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+            {errors["date"] && (
+              <p className="text-red-500 text-sm">{errors["date"]}</p>
+            )}
+          </div>
+
+          <div className="mb-3 flex flex-col gap-y-2">
+            <label className="block text-gray-700">Time</label>
+            <input
+              type="time"
+              name="time"
+              value={fields["time"]}
               onChange={handleChange}
               className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               required
             />
-            {errors[name] && (
-              <p className="text-red-500 text-sm">{errors[name]}</p>
+            {errors["time"] && (
+              <p className="text-red-500 text-sm">{errors["time"]}</p>
             )}
           </div>
-        ))}
+
+          <div className="mb-3 flex flex-col gap-y-2">
+            <label className="block text-gray-700">Duration</label>
+            <input
+              type="duration"
+              name="duration"
+              value={fields["duration"]}
+              onChange={handleChange}
+              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+            {errors["duration"] && (
+              <p className="text-red-500 text-sm">{errors["duration"]}</p>
+            )}
+          </div>
+
 
         <div className="flex justify-end gap-2 mt-4">
           <button
@@ -208,7 +236,6 @@ const ScheduleModal = ({ onClose, refreshData }) => {
           </button>
         </div>
 
-        {/* 🔹 Add ToastContainer inside component */}
         <ToastContainer position="top-right" autoClose={3000} />
       </div>
     </div>

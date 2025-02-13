@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "../../api/axios";
 import { useSelector } from "react-redux";
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
@@ -23,7 +23,7 @@ import GLogout from "../../components/authentication/GLogout";
 import logo from "../../assets/interngo logo.png";
 
 const DashboardLayout = () => {
-  const { name, userId, permissions, token, profilePhoto,role } = useSelector(
+  const { name, userId, permissions, token, profilePhoto, role } = useSelector(
     (state) => state.auth
   );
 
@@ -102,11 +102,29 @@ const DashboardLayout = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+
+    if (dropdownOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownOpen]);
+
   useEffect(() => {
     if (isModalOpen) {
       setDropdownOpen(false);
     }
-  }, [isModalOpen]); 
+  }, [isModalOpen]);
 
   useEffect(() => {
     if (!userId) return;
@@ -123,7 +141,6 @@ const DashboardLayout = () => {
     return () => {
       socket.off("notification");
       console.log("socket off");
-      
     };
   }, [userId]);
 
@@ -145,7 +162,12 @@ const DashboardLayout = () => {
     <div className="flex flex-col h-screen bg-gray-100">
       <header className="flex items-center justify-between bg-white p-2 pr-6 py-2 shadow-md top-0 left-0 right-0">
         <div className="flex items-center">
-          <img src={logo} alt="InternGO" className="w-36 h-9 ml-2" onClick={()=>navigate("/dashboard")}/>
+          <img
+            src={logo}
+            alt="InternGO"
+            className="w-36 h-9 ml-2"
+            onClick={() => navigate("/dashboard")}
+          />
         </div>
 
         <div className="relative flex items-center space-x-4">
@@ -170,16 +192,22 @@ const DashboardLayout = () => {
             </button>
 
             {dropdownOpen && (
-              <div className="absolute right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg w-48 z-50 ">
-                <ul className="py-2 flex flex-col ">
+              <div
+                ref={dropdownRef}
+                className="absolute right-0 mt-2 bg-white border border-gray-200 rounded-lg shadow-lg w-48 z-50"
+              >
+                <ul className="py-2 flex flex-col">
                   <li
                     className="px-4 py-2 hover:bg-blue-50 cursor-pointer flex items-center gap-2"
                     onClick={() =>
+                    {
                       (window.location.href = "#/dashboard/edit-profile")
+                      setDropdownOpen(false);
+                    }
                     }
                   >
                     <FaEdit /> Edit Profile
-                  </li>{" "}
+                  </li>
                   <hr />
                   {role === "Admins" && (
                     <li
@@ -204,7 +232,6 @@ const DashboardLayout = () => {
           </div>
         </div>
       </header>
-
 
       <div
         className={`bg-white text-black shadow-lg transition-all duration-200 fixed top-16 left-0 flex flex-col ${

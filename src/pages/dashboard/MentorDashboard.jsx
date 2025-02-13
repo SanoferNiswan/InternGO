@@ -37,10 +37,10 @@ const MentorDashboard = () => {
           <img
             src={profilePhoto}
             alt="Admin"
-            className="w-28 h-28 rounded-full"
+            className="w-28 h-28 rounded-full aspect-square object-cover"
           />
         ) : (
-          <div className="w-24 h-24 rounded-full bg-white flex items-center justify-center text-lg font-bold text-blue-500">
+          <div className="w-24 h-24 rounded-full bg-white flex items-center justify-center text-lg font-bold text-blue-500 aspect-square object-cover">
             {name?.charAt(0).toUpperCase()}
           </div>
         )}
@@ -53,6 +53,13 @@ const MentorDashboard = () => {
             productivity and stay ahead.
           </p>
         </div>
+      </div>
+
+      <div className="mt-8 bg-white p-6 shadow-md rounded-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+        <h2 className="text-lg font-bold text-gray-700 mb-4">
+          📢 Announcements
+        </h2>
+        <Announcement />
       </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6">
@@ -74,12 +81,6 @@ const MentorDashboard = () => {
             </h2>
           </div>
         </div>
-      </div>
-      <div className="mt-8 bg-white p-6 shadow-md rounded-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
-        <h2 className="text-lg font-bold text-gray-700 mb-4">
-          📢 Announcements
-        </h2>
-        <Announcement />
       </div>
     </div>
   );

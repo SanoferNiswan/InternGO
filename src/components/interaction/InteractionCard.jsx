@@ -91,7 +91,7 @@ const InteractionCard = ({ interaction, onEdit }) => {
               </td>
             </tr>
             <tr className="flex justify-between">
-              <td className="flex-1 text-center">
+              <td className="flex-1 text-center truncate">
                 {interaction.assignedIntern}
               </td>
               <td className="flex-1 text-center">

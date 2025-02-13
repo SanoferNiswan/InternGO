@@ -1,36 +1,44 @@
-import React, { useState } from 'react';
-import axios from '../../../api/axios';
-import { useSelector } from 'react-redux';
+import React, { useState } from "react";
+import axios from "../../../api/axios";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
-const AddAssetModal = ({ setActiveTab,isAssetModalOpen, setIsAssetModalOpen, userId }) => {
+const AddAssetModal = ({
+  isAssetModalOpen,
+  setIsAssetModalOpen,
+  userId,
+  refresh,
+}) => {
   const { token } = useSelector((state) => state.auth);
-  const [assetType, setAssetType] = useState('');
-  const [assetName, setAssetName] = useState('');
-  const [givenOn, setGivenOn] = useState('');
+  const [assetType, setAssetType] = useState("");
+  const [assetName, setAssetName] = useState("");
+  const [givenOn, setGivenOn] = useState("");
 
   const handleSubmit = async () => {
     try {
-      const response = await axios.post('api/users/create/assets', {
-        userId: userId,  
-        assetType,
-        assetName,
-        givenOn,
-      }, 
-      {
-        headers: {
+      const response = await axios.post(
+        "api/users/create/assets",
+        {
+          userId: userId,
+          assetType,
+          assetName,
+          givenOn,
+        },
+        {
+          headers: {
             Authorization: `Bearer ${token}`,
-          }
-      });
-
-      setIsAssetModalOpen(false); 
-      window.location.reload();
-      setActiveTab("assets");
+          },
+        }
+      );
+      toast.success("asset added successfully");
+      setIsAssetModalOpen(false);
+      refresh();
     } catch (error) {
-      console.error('Error adding asset:', error);
+      console.error("Error adding asset:", error);
     }
   };
 
-  if (!isAssetModalOpen) return null;  // Don't render if the modal should be hidden
+  if (!isAssetModalOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 flex items-center justify-center">
@@ -38,7 +46,9 @@ const AddAssetModal = ({ setActiveTab,isAssetModalOpen, setIsAssetModalOpen, use
         <h2 className="text-xl mb-4">Add New Asset</h2>
 
         <div className="mb-4">
-          <label htmlFor="assetType" className="block mb-2">Asset Type</label>
+          <label htmlFor="assetType" className="block mb-2">
+            Asset Type
+          </label>
           <input
             type="text"
             id="assetType"
@@ -47,9 +57,11 @@ const AddAssetModal = ({ setActiveTab,isAssetModalOpen, setIsAssetModalOpen, use
             onChange={(e) => setAssetType(e.target.value)}
           />
         </div>
- 
+
         <div className="mb-4">
-          <label htmlFor="assetName" className="block mb-2">Asset Name</label>
+          <label htmlFor="assetName" className="block mb-2">
+            Asset Name
+          </label>
           <input
             type="text"
             id="assetName"
@@ -60,12 +72,15 @@ const AddAssetModal = ({ setActiveTab,isAssetModalOpen, setIsAssetModalOpen, use
         </div>
 
         <div className="mb-4">
-          <label htmlFor="givenOn" className="block mb-2">Given On</label>
+          <label htmlFor="givenOn" className="block mb-2">
+            Given On
+          </label>
           <input
             type="date"
             id="givenOn"
             className="w-full p-2 border rounded"
             value={givenOn}
+            max={new Date().toISOString().split("T")[0]} 
             onChange={(e) => setGivenOn(e.target.value)}
           />
         </div>
@@ -73,13 +88,13 @@ const AddAssetModal = ({ setActiveTab,isAssetModalOpen, setIsAssetModalOpen, use
         <div className="flex justify-between">
           <button
             className="px-4 py-2 rounded bg-gray-500 text-white hover:bg-gray-600"
-            onClick={() => setIsAssetModalOpen(false)}  // Close the modal
+            onClick={() => setIsAssetModalOpen(false)} // Close the modal
           >
             Cancel
           </button>
           <button
             className="px-4 py-2 rounded bg-blue-500 text-white hover:bg-blue-600"
-            onClick={handleSubmit} 
+            onClick={handleSubmit}
           >
             Submit
           </button>

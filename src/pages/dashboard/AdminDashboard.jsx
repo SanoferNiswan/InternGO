@@ -45,10 +45,10 @@ const AdminDashboard = () => {
           <img
             src={profilePhoto}
             alt="Admin"
-            className="w-20 h-20 sm:w-28 sm:h-28 rounded-full"
+            className="w-20 h-20 sm:w-28 sm:h-28 rounded-full aspect-square object-cover"
           />
         ) : (
-          <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-full bg-white flex items-center justify-center text-lg font-bold text-blue-500">
+          <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-full aspect-square object-cover bg-white flex items-center justify-center text-lg font-bold text-blue-500">
             {name?.charAt(0).toUpperCase()}
           </div>
         )}
@@ -63,7 +63,14 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      <h1 className="text-2xl font-bold text-gray-800 mb-6">Analytics</h1>
+      <div className="mt-8 bg-white p-6 shadow-md rounded-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+        <h2 className="text-lg font-bold text-gray-700 mb-4">
+          📢 Announcements
+        </h2>
+        <Announcement />
+      </div>
+
+      <h1 className="text-2xl font-bold text-gray-800 mt-6 mb-6">Analytics</h1>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
         <div className="p-6 bg-white shadow-md rounded-lg flex items-center gap-4 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
@@ -107,12 +114,6 @@ const AdminDashboard = () => {
         </div>
       </div>
 
-      <div className="mt-8 bg-white p-6 shadow-md rounded-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
-        <h2 className="text-lg font-bold text-gray-700 mb-4">
-          📢 Announcements
-        </h2>
-        <Announcement />
-      </div>
     </div>
   );
 };
