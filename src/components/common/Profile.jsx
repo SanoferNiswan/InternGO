@@ -53,7 +53,7 @@ const Profile = ({ userId, token }) => {
     "assets",
   ];
 
-  const adminTab = ["personal info", "education", "bankDetails", "skill"];
+  const adminTab = ["personal info", "education"];
 
   const handleFieldChange = (assetId, field, value) => {
     setAssets((prevAssets) =>
