@@ -2,7 +2,8 @@ import React, { useEffect, useState } from "react";
 import axios from "../../api/axios";
 import { useSelector } from "react-redux";
 import Announcement from "../../components/Announcement";
-import { FaAward, FaBomb, FaTasks, FaTicketAlt } from "react-icons/fa";
+import { toast } from "react-toastify";
+import { FaBomb, FaTasks } from "react-icons/fa";
 
 const MentorDashboard = () => {
   const { userId, token, profilePhoto, name } = useSelector(
@@ -25,9 +26,8 @@ const MentorDashboard = () => {
         }
       );
       setInteractionCount(response.data.data);
-      console.log(response.data.data);
     } catch (error) {
-      console.log(error);
+      toast.error(error);
     }
   };
   return (

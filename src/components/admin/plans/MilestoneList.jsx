@@ -53,9 +53,8 @@ const MilestoneList = ({ listOfMilestone, setListOfMilestone, planId,planDays })
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      console.log("Milestone updated");
     } catch (error) {
-      console.error("Error updating milestone:", error);
+      toast.error("Error updating milestone:", error);
     }
   };
 

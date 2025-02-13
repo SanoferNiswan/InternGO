@@ -30,7 +30,6 @@ const Plan = () => {
       });
       setPlans(response.data.data);
     } catch (err) {
-      console.log(err);
       toast.error("Unauthorized access");
     } finally {
       setLoading(false);

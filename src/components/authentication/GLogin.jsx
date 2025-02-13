@@ -7,7 +7,6 @@ import { setAuth } from "../../redux/slices/authSlice";
 const jwt_decode = import("jwt-decode").then((module) => module.default);
 
 const clientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
-console.log(clientId);
 
 function GLogin() { 
   const navigate = useNavigate();
@@ -36,7 +35,6 @@ function GLogin() {
 
       if (user?.token) {
         const { userId, role, permissions, token,profilePhoto } = user;
-        console.log(user);
 
         dispatch(setAuth({ user, userId, name, token, role, permissions,profilePhoto }));
 
@@ -51,7 +49,6 @@ function GLogin() {
   };
 
   const onFailure = () => {
-    console.log("Login failed!");
     alert("Google Sign-In failed. Please try again.");
   };
 

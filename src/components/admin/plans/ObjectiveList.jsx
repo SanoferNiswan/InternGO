@@ -73,7 +73,6 @@ const ObjectiveList = ({
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      console.log("Objective updated");
     } catch (error) {
       console.error("Error updating objective:", error);
     }

@@ -21,7 +21,6 @@ const UserInteraction = () => {
         },
       });
       setInteractions(response.data.data.interactionsAttended);
-      console.log(response.data.data.interactionsAttended);
     } catch (err) {
       console.log(err?.response?.data?.message);
     }finally{

@@ -14,11 +14,9 @@ const AdminUpdate = () => {
     return <Navigate to="/not-found" replace />;
   }
 
-  // Get today's date and tomorrow's date
   const today = new Date();
   const tomorrow = addDays(today, 1);
 
-  // If the input date is after tomorrow, redirect to 404
   if (isAfter(inputDate, tomorrow)) {
     return <Navigate to="/not-found" replace />;
   }
@@ -109,7 +107,6 @@ const AdminUpdate = () => {
          {date} Updates
       </h2>
 
-      {/* Filters */}
       <div className="flex flex-wrap justify-center items-center gap-4 mb-6">
         <input
           type="text"
@@ -146,7 +143,6 @@ const AdminUpdate = () => {
         />
       </div>
 
-      {/* Tables by User */}
       {dailyUpdates.length > 0 ? (
         dailyUpdates.map((update) => (
           <div key={update.user.id} className="mb-8">
@@ -190,7 +186,6 @@ const AdminUpdate = () => {
         <p className="text-center text-gray-500 mt-4">No updates found.</p>
       )}
 
-      {/* Pagination */}
       <div className="flex justify-center items-center mt-6 space-x-4">
         <button
           onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}

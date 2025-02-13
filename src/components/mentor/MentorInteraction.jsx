@@ -3,6 +3,7 @@ import axios from "../../api/axios";
 import { useSelector } from "react-redux";
 import InteractionCard from "../interaction/InteractionCard";
 import Loader from "../Loader";
+import { toast } from "react-toastify";
 
 const MentorInteraction = () => {
   const { userId, token, name } = useSelector((state) => state.auth);
@@ -22,7 +23,7 @@ const MentorInteraction = () => {
       });
       setInteractions(response.data.data.interactionsTaken);
     } catch (err) {
-      console.log(err?.response?.data?.message);
+      toast.error(err?.response?.data?.message);
     }finally{
       setLoading(false);
     }

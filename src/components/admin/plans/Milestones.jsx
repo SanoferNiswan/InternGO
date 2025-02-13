@@ -7,6 +7,7 @@ import EditPlanPopup from "./EditPlanPopup";
 import UserList from "./UserList";
 import MilestoneList from "./MilestoneList";
 import AddMilestoneForm from "./AddMilestoneForm";
+import { toast } from "react-toastify";
 import Loader from "../../Loader";
 
 const Milestones = () => {
@@ -41,7 +42,7 @@ const Milestones = () => {
       setPlanDetails(response.data.data);
       setListOfMilestone(response.data.data.milestones);
     } catch (error) {
-      console.log(
+      toast.error(
         "Error fetching plan details:",
         error.response.data.statusCode
       );
@@ -57,7 +58,7 @@ const Milestones = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
 
-      console.log("Plan deleted successfully");
+      toast.success("Plan deleted successfully");
       navigate("/admin/plans");
     } catch (error) {
       console.error("Error deleting plan:", error);

@@ -139,10 +139,8 @@ const EditProfile = () => {
       updatedData.profilePhoto = profilePhoto;
     }
 
-    console.log("updated data", updatedData);
 
     try {
-      console.log("inside try block");
 
       const response = await axios.patch( 
         `/api/users/update/${userId}`,
@@ -153,7 +151,6 @@ const EditProfile = () => {
           },
         }
       );
-      console.log("Profile updated successfully:", response.data);
       dispatch(setAuth({profilePhoto:response.data.data.data.profilePhoto }));
       alert("Profile updated successfully");
       navigate("/dashboard/my-profile");

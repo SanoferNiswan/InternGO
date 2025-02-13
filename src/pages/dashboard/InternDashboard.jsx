@@ -1,14 +1,8 @@
 import React, { useEffect, useState } from "react";
-import {
-  FaBook,
-  FaTasks,
-  FaCheckCircle,
-  FaBullhorn,
-  FaClock,
-} from "react-icons/fa";
 import Announcement from "../../components/Announcement";
 import { useSelector } from "react-redux";
 import axios from "../../api/axios";
+import { toast } from "react-toastify";
 
 const InternDashboard = () => {
   const { user, token, userId, profilePhoto, name } = useSelector(
@@ -30,7 +24,7 @@ const InternDashboard = () => {
       });
       setPlanDetails(response.data.data);
     } catch (error) {
-      console.log(error);
+      toast.error(error);
     }
   };
 
@@ -119,22 +113,6 @@ const InternDashboard = () => {
         </h2>
         <Announcement />
       </div>
-
-      {/* <div className="mt-8 bg-white p-6 shadow-md rounded-lg">
-        <h2 className="text-lg font-bold text-gray-700 mb-4 flex items-center gap-2">
-          <FaClock className="text-blue-500" /> Today's Tasks
-        </h2>
-        <ul className="space-y-4">
-          <li className="flex items-center justify-between text-gray-600">
-            <span>Complete API Integration</span>
-            <span className="text-sm text-gray-400">Due by 6 PM</span>
-          </li>
-          <li className="flex items-center justify-between text-gray-600">
-            <span>Work on UI improvements</span>
-            <span className="text-sm text-gray-400">Due by 4 PM</span>
-          </li>
-        </ul>
-      </div> */}
     </div>
   );
 };

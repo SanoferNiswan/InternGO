@@ -46,11 +46,6 @@ const InteractionSchedule = () => {
 
   const fetchData = async () => {
     try {
-      console.log("inside fetch data");
-      console.log("date:", selectedDate);
-
-      console.log("Filter data : ", filter, "name : ", search);
-
       setLoading(true);
       const response = await axios.post(
         "/api/interactions/",
@@ -69,7 +64,6 @@ const InteractionSchedule = () => {
       );
 
       if (response.data) {
-        console.log(response.data.data);
         setInteractions(response.data.data.data);
         setTotalPages(Math.ceil(response.data.data.total_pages));
       }

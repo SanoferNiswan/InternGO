@@ -64,7 +64,6 @@ const SignUp = () => {
         const {confirmPassword,...data} = formData;
 
         const response = await axios.post(SIGNUP_URL, data);
-        console.log(response);
         
         if (response.data.statusCode === 201) {
           alert(response.data.message);

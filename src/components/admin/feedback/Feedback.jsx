@@ -39,7 +39,6 @@ const Feedback = () => {
 
   useEffect(() => {
     fetchData();
-    console.log("called");
     
   }, [search, filter, currentPage]);
 
@@ -72,9 +71,7 @@ const Feedback = () => {
     }
   };
 
-  useEffect(() => {
-    console.log("search mounted");
-    
+  useEffect(() => {    
     const handler = setTimeout(() => {
       setSearch(searchInput);
     }, 1000);

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "../../../api/axios";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 const AddUserModal = ({ onClose }) => {
   const { token } = useSelector((state) => state.auth);
@@ -23,8 +24,7 @@ const AddUserModal = ({ onClose }) => {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("User created:", response.data);
-      alert("User added successfully!");
+      toast.success("User added successfully!");
       onClose();
     } catch (error) {
       console.error("Error adding user:", error);

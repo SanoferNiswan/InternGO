@@ -32,7 +32,6 @@ const Announcement = () => {
     const socket = connectSocket(userId);
 
     socket.on("announcement", (newAnnouncement) => {
-      console.log("New announcement received:", newAnnouncement);
       
       setAnnouncements((prev) => [newAnnouncement.createdNotification, ...prev]);
     });

@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import axios from "../../../api/axios";
 import { useSelector } from "react-redux";
 import { Radar } from "react-chartjs-2";
+import { toast } from "react-toastify";
 import {
   Chart as ChartJS,
   RadialLinearScale,
@@ -38,7 +39,7 @@ const InteractionFeedback = () => {
       );
       setFeedback(response.data.data);
     } catch (error) {
-      console.log(error);
+      toast.error(error);
     } finally {
       setLoading(false);
     }

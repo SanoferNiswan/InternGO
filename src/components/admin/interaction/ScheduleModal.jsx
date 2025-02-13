@@ -60,8 +60,6 @@ const ScheduleModal = ({ onClose, refreshData }) => {
 
     setIsSubmitting(true);
     try {
-      console.log(fields.date, typeof fields.date);
-
       const response = await axios.post(
         "/api/interactions/schedule",
         {
@@ -76,8 +74,6 @@ const ScheduleModal = ({ onClose, refreshData }) => {
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-
-      console.log(response.data.message);
 
       toast.success(response.data.message, {
         autoClose: 5000,

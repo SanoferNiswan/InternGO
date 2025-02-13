@@ -20,7 +20,6 @@ const AddMilestoneForm = ({
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Calculate total existing milestone days
   const totalMilestoneDays = currentMilestones.reduce(
     (sum, milestone) => sum + milestone.milestoneDays,
     0
@@ -29,7 +28,6 @@ const AddMilestoneForm = ({
   const addMilestone = async () => {
     const milestoneDays = parseInt(newMilestone.milestoneDays, 10);
 
-    // Validation
     if (!newMilestone.name || !newMilestone.mentorName || milestoneDays <= 0) {
       toast.error("Please fill all fields and ensure days are greater than 0.");
       return;
@@ -53,7 +51,6 @@ const AddMilestoneForm = ({
       setShowMilestoneForm(false);
       toast.success("Milestone added successfully!");
 
-      // Reset form
       setNewMilestone({ name: "", mentorName: "", milestoneDays: null });
       refreshData();
     } catch (error) {
@@ -69,7 +66,6 @@ const AddMilestoneForm = ({
       <div className="bg-white p-2 shadow-lg rounded-lg">
         <h1 className="mb-3 ml-3 font-bold">Add Milestone</h1>
         <div className="flex justify-between gap-2 items-center border-b pb-2">
-          {/* Name Field */}
           <div className="relative">
             <input
               type="text"
@@ -84,7 +80,6 @@ const AddMilestoneForm = ({
             </label>
           </div>
 
-          {/* Mentor Name Field */}
           <div className="relative">
             <select
               value={newMilestone.mentorName}
@@ -110,7 +105,6 @@ const AddMilestoneForm = ({
                 </label>
           </div>
 
-          {/* Milestone Days Field */}
           <div className="relative"> 
             <input
               type="number"
@@ -128,7 +122,6 @@ const AddMilestoneForm = ({
             </label>
           </div>
 
-          {/* Buttons */}
           <div className="flex gap-2 justify-around w-1/6">
             <button
               onClick={addMilestone}

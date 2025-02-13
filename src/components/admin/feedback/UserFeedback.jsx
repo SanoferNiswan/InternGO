@@ -16,6 +16,7 @@ import {
 } from "chart.js";
 import InteractionCard from "../../interaction/InteractionCard";
 import Loader from "../../Loader";
+import { toast } from "react-toastify";
 import { FaDownload } from "react-icons/fa";
 
 ChartJS.register(
@@ -45,9 +46,8 @@ const UserFeedback = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       setFeedback(response.data.data);
-      console.log("feedback:", response.data);
     } catch (error) {
-      console.log(error);
+      toast.error(error);
     } finally {
       setLoading(false);
     }
@@ -80,7 +80,6 @@ const UserFeedback = () => {
       if (!avgRatings[capitalizedKey]) {
         avgRatings[capitalizedKey] = fb.ratings[key];
         avgCount[capitalizedKey] = 1;
-        console.log(key);
       } else {
         avgRatings[capitalizedKey] += fb.ratings[key];
         avgCount[capitalizedKey] += 1;
@@ -88,7 +87,6 @@ const UserFeedback = () => {
     });
   });
   Object.keys(avgRatings).forEach((key) => {
-    console.log(avgRatings[key], avgCount[key]);
     avgRatings[key] /= avgCount[key];
   });
 
@@ -114,8 +112,6 @@ const UserFeedback = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-
-      console.log(response);
 
       const blob = new Blob([response.data], { type: "application/pdf" });
       const url = window.URL.createObjectURL(blob);

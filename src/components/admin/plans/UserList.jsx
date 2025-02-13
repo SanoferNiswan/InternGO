@@ -62,9 +62,6 @@ const UserList = ({ planId }) => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      console.log(
-        `Name: ${search}, Year: ${filter.year}, Batch: ${filter.batch}, Designation: ${filter.designation}, Status: ${filter.status}, Plan Status: ${filter.planStatus}`
-      );
 
       if (Array.isArray(response.data.data.data)) {
         setUsers(response.data.data.data);

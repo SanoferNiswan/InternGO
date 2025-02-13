@@ -59,10 +59,6 @@ const EditModal = ({ onClose, interaction, refreshData }) => {
     if (!validateFields()) return;
 
     try {
-        console.log("inside try");
-        console.log(fields);
-        
-        
       const response = await axios.patch(
         `/api/interactions/${interaction.id}/update`,
         {

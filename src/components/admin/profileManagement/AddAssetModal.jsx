@@ -22,7 +22,6 @@ const AddAssetModal = ({ setActiveTab,isAssetModalOpen, setIsAssetModalOpen, use
           }
       });
 
-      console.log('Asset added:', response.data);
       setIsAssetModalOpen(false); 
       window.location.reload();
       setActiveTab("assets");

@@ -23,8 +23,6 @@ const CreateAnnouncement = () => {
     setSuccess(null);
  
     try {
-      console.log(message);
-      
       const response = await axios.post(
         "/api/notifications/createAnnouncement",
         { message },
@@ -35,8 +33,6 @@ const CreateAnnouncement = () => {
           },
         }
       );
-      console.log(response);
-
       setSuccess("Announcement created successfully!");
       setMessage(""); 
     } catch (err) {

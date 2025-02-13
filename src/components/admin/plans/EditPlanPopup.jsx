@@ -34,8 +34,7 @@ const EditPlanPopup = ({ planDetails, onClose, onUpdate, token }) => {
         toast.error("Plan days must be less than 180!");
         return;
       }
-      console.log(planDetails);
-
+      
       const response = await axios.patch(
         `/api/plans/${planDetails?.id}/update`,
         { ...updatedPlan },
