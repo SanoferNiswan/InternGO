@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import GLogin from '../../components/authentication/GLogin';
 import axios from '../../api/axios';
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
  
 const SignUp = () => {
 
@@ -88,7 +89,7 @@ const SignUp = () => {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
+      <div className="w-full max-w-md h-[650px] p-6 bg-white rounded-lg shadow-md overflow-y-auto mt-6 mb-6">
         <h2 className="text-center text-2xl font-bold mb-6">Sign Up</h2>
         <form className="space-y-5" onSubmit={handleSubmit}>
           <div>
@@ -141,7 +142,7 @@ const SignUp = () => {
                 className="absolute inset-y-0 right-3 flex items-center cursor-pointer"
                 onClick={() => togglePasswordVisibility('password')}
               >
-                {showPassword ? '👁️' : '👁️‍🗨️'}
+                {showPassword ? <FaEye /> : <FaEyeSlash />}
               </span>
             </div>
             {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
@@ -165,7 +166,7 @@ const SignUp = () => {
                 className="absolute inset-y-0 right-3 flex items-center cursor-pointer"
                 onClick={() => togglePasswordVisibility('confirmPassword')}
               >
-                {showConfirmPassword ? '👁️' : '👁️‍🗨️'}
+                {showConfirmPassword ? <FaEye /> : <FaEyeSlash />}
               </span>
             </div>
             {errors.confirmPassword && (

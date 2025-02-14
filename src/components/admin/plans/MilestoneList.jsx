@@ -80,7 +80,7 @@ const MilestoneList = ({ listOfMilestone, setListOfMilestone, planId,planDays })
         <div key={index} className="p-4 border rounded-lg bg-gray-100">
           <div className="bg-white p-2 shadow-lg rounded-lg">
             <div>
-              <p className="p-2 font-bold">Milestone {milestone.id}</p>
+              <p className="p-2 font-bold">Milestone {index+1}</p>
             </div>
             <div className="flex justify-between items-center border-b pb-2">
               <div className="relative">

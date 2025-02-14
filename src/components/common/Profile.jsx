@@ -385,7 +385,7 @@ const Profile = ({ userId, token }) => {
                   profileData.profilePhoto ||
                   "https://cdn-icons-png.flaticon.com/512/9203/9203764.png"
                 }
-                alt="Profile"
+                alt="add your photo"
                 className="w-24 h-24 rounded-full object-cover mb-4 border-4 border-white cursor-pointer bg-white"
                 onClick={() => setIsProfilePhotoModalOpen(true)}
               />

@@ -193,11 +193,11 @@ const EditProfile = () => {
   };
 
   return (
-    <div className="p-6">
+    <div>
       <ToastContainer />
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">{name} Profile</h1>
+          <h1 className="text-2xl font-bold ml-2 text-blue-600">{name} Profile</h1>
           <div className="relative">
             <label
               htmlFor="profilePhoto"

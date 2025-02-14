@@ -50,7 +50,7 @@ const Announcement = () => {
   }, [userId]);
 
   return (
-    <div className="h-64 overflow-y-auto p-4 bg-white rounded-lg shadow-md">
+    <div className="h-auto max-h-64 overflow-y-auto p-4 bg-white rounded-lg shadow-md">
       {loading ? (
         <p className="text-gray-500 text-center py-4 italic h-full items-center justify-center flex bg-gray-100 rounded-md ">
           loading...

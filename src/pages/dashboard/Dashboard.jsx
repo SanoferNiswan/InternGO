@@ -8,7 +8,7 @@ const Dashboard = () => {
   const { role } = useSelector((state) => state.auth); 
 
   return ( 
-    <div className="p-6">
+    <div>
       {role === "Admins" ? <AdminDashboard /> : role === "Interns" ? <InternDashboard /> : role==="Mentors"?
        <MentorDashboard />: <p className="text-red-500 text-lg font-semibold">Unauthorized Access</p>}
     </div>

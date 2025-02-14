@@ -4,6 +4,7 @@ import axios from "../../api/axios";
 import GLogin from "../../components/authentication/GLogin";
 import { useDispatch } from "react-redux";
 import { setAuth } from "../../redux/slices/authSlice";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 const SignIn = () => {
   const dispatch = useDispatch();
@@ -14,30 +15,40 @@ const SignIn = () => {
   });
 
   const navigate = useNavigate();
- 
+
   const [errmsg, setErrMsg] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try { 
+    try {
       const response = await axios.post(SIGNIN_URL, formData);
       if (response.data) {
         const user = response.data.data;
-        const { userId, name, token, role, permissions,profilePhoto } = user;
+        const { userId, name, token, role, permissions, profilePhoto } = user;
 
         if (token) {
-          dispatch(setAuth({ user, userId, name, token, role, permissions, profilePhoto }));
+          dispatch(
+            setAuth({
+              user,
+              userId,
+              name,
+              token,
+              role,
+              permissions,
+              profilePhoto,
+            })
+          );
 
           navigate("/dashboard", { replace: true });
         }
         console.log(user);
-        
       } else {
         alert("Invalid email or password. Please try again.");
       }
     } catch (error) {
       console.error("Sign In Error:", error.response.data.message);
-      setErrMsg(error.response?.data?.message || "An error occurred");
+      setErrMsg(JSON.Strerror.response?.data?.message || "An error occurred");
     }
   };
 
@@ -67,18 +78,27 @@ const SignIn = () => {
             <label className="block text-sm font-medium text-gray-700">
               Password
             </label>
-            <input
-              type="password"
-              name="password"
-              placeholder="Enter your password"
-              value={formData.password}
-              onChange={(e) =>
-                setFormData({ ...formData, password: e.target.value })
-              }
-              className="w-full p-2 border border-gray-400 rounded focus:outline-none focus:ring focus:ring-primary"
-              required
-            />
+            <div className="relative w-full">
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Enter your password"
+                value={formData.password}
+                onChange={(e) =>
+                  setFormData({ ...formData, password: e.target.value })
+                }
+                className="w-full p-2 pr-10 border border-gray-400 rounded focus:outline-none focus:ring focus:ring-primary"
+                required
+              />
+              <span
+                className="absolute inset-y-0 right-3 flex items-center cursor-pointer text-gray-600"
+                onClick={() => setShowPassword((prev) => !prev)}
+              >
+                {showPassword ? <FaEye /> : <FaEyeSlash />}
+              </span>
+            </div>
           </div>
+
           <button
             type="submit"
             className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700 transition"
