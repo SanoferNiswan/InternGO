@@ -48,7 +48,7 @@ const SignIn = () => {
       }
     } catch (error) {
       console.error("Sign In Error:", error.response.data.message);
-      setErrMsg(JSON.Strerror.response?.data?.message || "An error occurred");
+      setErrMsg((error.response?.data?.message) || "An error occurred");
     }
   };
 
