@@ -1,5 +1,5 @@
 import React from "react";
-import { HashRouter } from "react-router-dom";
+// import { HashRouter } from "react-router-dom";
 import { BrowserRouter as Router,Routes,Route,Navigate } from "react-router-dom";
 import Home from "./pages/Home";
 import SignIn from "./pages/authentication/SignIn";
@@ -33,7 +33,7 @@ import CreateAnnouncement from "./components/admin/announcement/CreateAnnounceme
 
 const App = () => {
   return (
-    <HashRouter>
+    <Router>
       <ToastContainer />
       <Routes>
         <Route path="/" element={<Home />} />
@@ -94,7 +94,7 @@ const App = () => {
         <Route path="/not-found" element={<NotFound />} />
         <Route path="/403" element={<Forbidden />} />
       </Routes>
-    </HashRouter>
+    </Router>
   );
 };
 

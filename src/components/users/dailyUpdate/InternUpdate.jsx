@@ -12,7 +12,6 @@ const InternUpdate = () => {
   const { date } = useParams();
   const [loading, setLoading] = useState(false);
   const [tasks, setTasks] = useState([]);
-  const [originalTasks, setOriginalTasks] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const inputDate = parseISO(date);
@@ -55,7 +54,6 @@ const InternUpdate = () => {
 
       if (response.data.statusCode === 200) {
         setTasks(response.data.data.tasks || []);
-        setOriginalTasks(response.data.data.tasks || []);
       }
     } catch (error) {
       console.error("Error fetching daily updates:", error);
@@ -111,7 +109,12 @@ const InternUpdate = () => {
         return false;
       }
 
-      if (task.estimatedTime > 3 || task.actualTime > 3 || task.estimatedTime<0 || task.actualTime<0) {
+      if (
+        task.estimatedTime > 3 ||
+        task.actualTime > 3 ||
+        task.estimatedTime < 0 ||
+        task.actualTime < 0
+      ) {
         toast.error("time should between 1 to 3 hours for each task");
         return false;
       }
@@ -121,9 +124,7 @@ const InternUpdate = () => {
     }
 
     if (totalEstimatedTime > 10 || totalActualTime > 10) {
-      toast.error(
-        "Please take rest. don't work more than 10 hours"
-      );
+      toast.error("Please take rest. don't work more than 10 hours");
       return false;
     }
 
@@ -293,12 +294,17 @@ const InternUpdate = () => {
                     }`}
                   >
                     <select
-                      className="w-full bg-transparent px-1 py-0.5 text-gray-700 focus:outline-none hover:border-blue-500 focus:border-b-2 border-transparent"
+                      className="w-full bg-transparent px-2 py-1 text-gray-700 focus:outline-none hover:border-blue-500 focus:border-b-2 border-transparent"
                       value={task.taskProgress}
                       disabled={!isEditable()}
                       onChange={(e) =>
                         handleInputChange(index, "taskProgress", e.target.value)
                       }
+                      style={{
+                        width: "100%",
+                        minWidth: "150px",
+                        paddingRight: "1rem",
+                      }}
                     >
                       <option value="PENDING">PENDING</option>
                       <option value="COMPLETED">COMPLETED</option>
