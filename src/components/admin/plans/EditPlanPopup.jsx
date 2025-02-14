@@ -65,7 +65,6 @@ const EditPlanPopup = ({ planDetails, onClose, onUpdate, token }) => {
       <div className="bg-white p-6 rounded-lg shadow-lg w-1/3">
         <h2 className="text-xl font-semibold mb-4">Edit Plan</h2>
 
-        {/* Name Input */}
         <div className="relative mb-4">
           <input
             type="text"
@@ -80,7 +79,6 @@ const EditPlanPopup = ({ planDetails, onClose, onUpdate, token }) => {
           </label>
         </div>
 
-        {/* Description Input */}
         <div className="relative mb-4">
           <textarea
             type="textArea"
@@ -95,7 +93,6 @@ const EditPlanPopup = ({ planDetails, onClose, onUpdate, token }) => {
           </label>
         </div> 
 
-        {/* Plan Days Input */}
         <div className="relative mb-4">
           <input
             type="number"
@@ -110,7 +107,6 @@ const EditPlanPopup = ({ planDetails, onClose, onUpdate, token }) => {
           </label>
         </div>
 
-        {/* Buttons */}
         <div className="flex justify-end space-x-4">
           <button className="px-4 py-2 bg-gray-300 rounded" onClick={onClose}>
             Cancel

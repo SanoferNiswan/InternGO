@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "../../api/axios";
 import { useDispatch, useSelector } from "react-redux";
-import { setAuth } from "../../redux/slices/authSlice";
 import { FaRegEnvelope, FaPhone, FaMapMarkerAlt } from "react-icons/fa";
 import EditProfileModal from "../admin/profileManagement/EditProfileModal";
 import AddAssetModal from "../admin/profileManagement/AddAssetModal";
@@ -20,7 +19,6 @@ const Profile = ({ userId, token }) => {
   const [assets, setAssets] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
 
-  const dispatch = useDispatch();
 
   useEffect(() => {
     if (userId && token) {

@@ -16,7 +16,6 @@ const EditFeedbackModal = ({ isOpen, onClose, feedback, refreshData }) => {
   const [selectedKPIs, setSelectedKPIs] = useState(Object.keys(ratings));
   const [descriptiveFeedback, setDescriptiveFeedback] = useState(feedback.descriptive_feedback || "");
 
-  // Handle KPI selection
   const handleKPISelection = (kpi) => {
     if (selectedKPIs.includes(kpi)) {
       setSelectedKPIs(selectedKPIs.filter((item) => item !== kpi));
@@ -28,14 +27,11 @@ const EditFeedbackModal = ({ isOpen, onClose, feedback, refreshData }) => {
     }
   };
 
-  // Handle Rating change
   const handleRatingChange = (kpi, value) => {
     setRatings({ ...ratings, [kpi]: value });
   };
 
-  // Handle form submission
   const handleSubmit = async () => {
-    // Validation
     if (!descriptiveFeedback.trim()) {
       toast.error("Descriptive feedback cannot be empty.");
       return;
@@ -72,7 +68,6 @@ const EditFeedbackModal = ({ isOpen, onClose, feedback, refreshData }) => {
         <div className="bg-white p-6 rounded-lg shadow-lg w-[50%] max-h-[90vh] overflow-y-auto max-w-lg w-full">
           <h2 className="text-xl font-bold mb-4 text-blue-600 text-center">Edit Feedback</h2>
 
-          {/* KPI Selection */}
           <div className="mb-4">
             <label className="block font-semibold mb-2">Select KPIs for Evaluation:</label>
             <div className="grid grid-cols-2 gap-2">
@@ -90,7 +85,6 @@ const EditFeedbackModal = ({ isOpen, onClose, feedback, refreshData }) => {
             </div>
           </div>
 
-          {/* Rating Selection */}
           {selectedKPIs.length > 0 && (
             <div className="mb-4">
               <label className="block font-semibold mb-2">Provide Ratings:</label>
@@ -110,7 +104,6 @@ const EditFeedbackModal = ({ isOpen, onClose, feedback, refreshData }) => {
             </div>
           )}
 
-          {/* Descriptive Feedback */}
           <label className="block font-semibold mb-2">Descriptive Feedback:</label>
           <textarea
             rows="4"
@@ -120,7 +113,6 @@ const EditFeedbackModal = ({ isOpen, onClose, feedback, refreshData }) => {
             placeholder="Update detailed feedback..."
           ></textarea>
 
-          {/* Buttons */}
           <div className="flex justify-end space-x-2">
             <button className="px-4 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg" onClick={onClose}>
               Cancel

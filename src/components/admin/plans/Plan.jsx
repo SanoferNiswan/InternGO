@@ -61,7 +61,6 @@ const Plan = () => {
         toast.success("Plan created successfully!");
         setPlans((prev) => [...prev, data]);
 
-        // Clear the form
         setPlanName("");
         setPlanDays("");
         setDescription("");
@@ -83,7 +82,6 @@ const Plan = () => {
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-      {/* Dynamic Plan Cards */}
       {plans.map((plan) => (
         <div
           key={plan.id}
@@ -104,7 +102,6 @@ const Plan = () => {
         </div>
       ))}
 
-      {/* Add New Plan Button */}
       <div
         className="relative flex flex-col bg-white shadow-md p-6 rounded-xl cursor-pointer hover:shadow-xl transition-transform transform hover:scale-105 items-center justify-center min-h-[180px]"
         onClick={() => setIsModalOpen(true)}
@@ -113,7 +110,6 @@ const Plan = () => {
         <p className="mt-1 font-bold text-gray-500">Create Plan</p>
       </div>
 
-      {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-gray-500 bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-white p-6 rounded-lg shadow-xl w-[90%] max-w-md">

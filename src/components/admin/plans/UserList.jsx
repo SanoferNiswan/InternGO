@@ -113,8 +113,8 @@ const UserList = ({ planId }) => {
     setSelectedUsers(
       (prevSelected) =>
         prevSelected.includes(userId)
-          ? prevSelected.filter((id) => id !== userId) // Deselect
-          : [...prevSelected, userId] // Select
+          ? prevSelected.filter((id) => id !== userId) 
+          : [...prevSelected, userId] 
     );
   };
 
@@ -228,7 +228,6 @@ const UserList = ({ planId }) => {
         )}
       </div>
 
-      {/* User List */}
       <div className="grid grid-cols-1 sm:grid-cols-1 lg:grid-cols-1 gap-4">
         {Array.isArray(users) && users.length > 0 ? (
           users.map((user) => (
@@ -273,7 +272,6 @@ const UserList = ({ planId }) => {
         </button>
       )}
 
-      {/* Pagination */}
       <div className="flex justify-between items-center mt-4">
         <button
           onClick={handlePrev}

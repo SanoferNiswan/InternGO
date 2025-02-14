@@ -26,14 +26,12 @@ const Milestones = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch plan details
   useEffect(() => {
     fetchPlanDetails();
   }, [planId, token]);
 
   const fetchPlanDetails = async () => {
     try {
-      // setLoading(false);
       const response = await axios.get(`/api/plans/${planId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -106,7 +104,6 @@ const Milestones = () => {
         </button>
       </div>
 
-      {/* Toggle Button for User List */}
       <div className="text-center mt-4">
         <button
           className={`text-sm px-3 py-1 rounded ${
@@ -120,45 +117,7 @@ const Milestones = () => {
         </button>
       </div>
 
-      {/* <div className="flex gap-2">
-        <div className={showUserList ? "w-full md:w-2/3" : "w-full"}>
-          <MilestoneList
-            listOfMilestone={listOfMilestone}
-            setListOfMilestone={setListOfMilestone}
-            planId={planId}
-            planDays={planDetails.planDays} // Pass planDays for validation
-          />
-
-          {showMilestoneForm && (
-            <AddMilestoneForm
-              setShowMilestoneForm={setShowMilestoneForm}
-              // setListOfMilestone={setListOfMilestone}
-              refreshData={fetchPlanDetails}
-              planId={planId}
-              currentMilestones={listOfMilestone} // Pass existing milestones
-              planDays={planDetails.planDays} // Pass planDays for validation
-            />
-          )}
-
-          <div className="text-center mt-4">
-            <button
-              className="text-sm bg-gray-700 text-white px-3 py-1 rounded hover:bg-gray-900"
-              onClick={() => setShowMilestoneForm(true)}
-            >
-              + Add Milestone
-            </button>
-          </div>
-        </div>
-
-        {showUserList && (
-          <div className="w-1/3">
-            <UserList planId={planId} />
-          </div>
-        )}
-      </div> */}
-
       <div className={`flex flex-col md:flex-row gap-4 mt-4`}>
-        {/* Milestone Section */}
         <div className={`${showUserList ? "md:w-2/3 w-full" : "w-full"}`}>
           <MilestoneList
             listOfMilestone={listOfMilestone}
@@ -187,7 +146,6 @@ const Milestones = () => {
           </div>
         </div>
 
-        {/* User List Section - Moves below on smaller screens */}
         {showUserList && (
           <div className={`w-full ${showUserList ? "md:w-1/3" : ""}`}>
             <UserList planId={planId} />

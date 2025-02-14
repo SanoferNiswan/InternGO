@@ -103,7 +103,6 @@ const CreateFeedback = () => {
           Feedback Form
         </h1>
 
-        {/* Interaction Details */}
         <div className="mb-4 text-lg text-gray-700">
           <p>
             <strong>Interaction Name:</strong> {interaction?.name}
@@ -113,7 +112,6 @@ const CreateFeedback = () => {
           </p>
         </div>
 
-        {/* KPI Selection */}
         <div className="mb-4">
           <label className="block font-semibold mb-2">Select KPIs for Evaluation:</label>
           <div className="grid grid-cols-2 gap-2">
@@ -132,7 +130,6 @@ const CreateFeedback = () => {
         </div>
         {errors.kpis && <p className="text-red-500 text-sm">{errors.kpis}</p>}
 
-        {/* Ratings Section */}
         {selectedKPIs.length > 0 && (
           <div className="mb-4">
             <label className="block font-semibold mb-2">Provide Ratings:</label>
@@ -158,7 +155,6 @@ const CreateFeedback = () => {
           </div>
         )}
 
-        {/* Descriptive Feedback */}
         <div className="mb-4">
           <label className="block font-semibold mb-2">Descriptive Feedback:</label>
           <textarea

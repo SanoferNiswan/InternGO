@@ -23,7 +23,6 @@ const ObjectiveList = ({
   const { token } = useSelector((state) => state.auth);
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Calculate total existing objective days
   const totalObjectiveDays = milestone.objectives.reduce(
     (sum, obj) => sum + obj.objectiveDays,
     0
@@ -111,7 +110,6 @@ const ObjectiveList = ({
     const objectiveDays = parseInt(newObjective.objectiveDays) || 0;
     const noOfInteractions = parseInt(newObjective.noOfInteractions) || 0;
 
-    // Validation
     if (
       !newObjective.name ||
       !newObjective.description ||
@@ -149,7 +147,6 @@ const ObjectiveList = ({
 
       const newObjectiveData = response.data.data[0];
 
-      // Update the milestone with the new objective
       setListOfMilestone((prevMilestones) =>
         prevMilestones.map((milestoneItem) =>
           milestoneItem.id === milestone.id
@@ -164,7 +161,6 @@ const ObjectiveList = ({
       toast.success("Objective added successfully!");
       setShowObjectiveForm(null);
 
-      // Reset the form
       setNewObjective({
         name: "",
         description: "",
@@ -244,19 +240,6 @@ const ObjectiveList = ({
                   className="border px-2 py-1 rounded w-full"
                 />
               </td>
-              {/* <td>
-                <select
-                  value={objective.roadmapType}
-                  onChange={(e) =>
-                    handleObjectiveChange(e, objective.id, "roadmapType")
-                  }
-                  onBlur={() => handleUpdateObjective(objective)}
-                  className="border px-2 py-1 rounded w-full"
-                >
-                  <option value="CUSTOM">Custom</option>
-                  <option value="DEFAULT">Default</option>
-                </select>
-              </td> */}
               <td>
                 <button
                   className="text-red-600 hover:text-red-800 ml-6"
@@ -328,21 +311,6 @@ const ObjectiveList = ({
                   className="border px-2 py-1 rounded w-full"
                 />
               </td>
-              {/* <td>
-                <select
-                  value={newObjective.roadmapType}
-                  onChange={(e) =>
-                    setNewObjective((prev) => ({
-                      ...prev,
-                      roadmapType: e.target.value,
-                    }))
-                  }
-                  className="border px-2 py-1 rounded w-full"
-                >
-                  <option value="CUSTOM">Custom</option>
-                  <option value="DEFAULT">Default</option>
-                </select>
-              </td> */}
               <td> 
                 <div className="flex gap-2">
                   <button

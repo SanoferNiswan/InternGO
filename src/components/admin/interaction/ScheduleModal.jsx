@@ -60,7 +60,7 @@ const ScheduleModal = ({ onClose, refreshData }) => {
 
     setIsSubmitting(true);
     try {
-      console.log(formatTime(fields.time));
+      console.log((fields.time));
       
       const response = await axios.post(
         "/api/interactions/schedule",
@@ -71,7 +71,7 @@ const ScheduleModal = ({ onClose, refreshData }) => {
           assignedMentor: fields.mentorName,
           assignedInterviewer: fields.interviewer,
           date: fields.date,
-          time: formatTime(fields.time),
+          time: fields.time,
           duration: fields.duration,
         },
         { headers: { Authorization: `Bearer ${token}` } }
@@ -90,13 +90,6 @@ const ScheduleModal = ({ onClose, refreshData }) => {
     } finally {
       setIsSubmitting(false);
     }
-  };
-
-  const formatTime = (time) => {
-    const [hours, minutes] = time.split(":");
-    const suffix = hours >= 12 ? "PM" : "AM";
-    const formattedHours = hours % 12 || 12;
-    return `${formattedHours}:${minutes} ${suffix}`;
   };
 
   return (
