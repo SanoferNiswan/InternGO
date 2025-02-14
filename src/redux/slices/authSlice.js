@@ -15,33 +15,14 @@ const authSlice = createSlice({
   name: 'auth',
   initialState,
   reducers: {
-    // setAuth: (state, action) => {
-    //   const { user, userId, name, token, role, permissions,profilePhoto } = action.payload;
-
-    //   state.user = user;
-    //   state.userId = userId;
-    //   state.name = name;
-    //   state.token = token;
-    //   state.role = role;
-    //   state.permissions = permissions;
-    //   state.profilePhoto=profilePhoto;
-
-    //   Cookies.set('user', JSON.stringify(user), { expires: 2, secure: true });
-    //   Cookies.set('userId', userId, { expires: 2, secure: true });
-    //   Cookies.set('name', name, { expires: 2, secure: true });
-    //   Cookies.set('token', token, { expires: 2, secure: true });
-    //   Cookies.set('role', role, { expires: 2, secure: true });
-    //   Cookies.set('profilePhoto', profilePhoto, { expires: 2, secure: true });
-    //   Cookies.set('permissions', JSON.stringify(permissions), { expires: 2, secure: true });
-    // },
     setAuth: (state, action) => {
       Object.assign(state, action.payload); 
     
       Object.keys(action.payload).forEach((key) => {
         if (key === "permissions" || key === "user") {
-          Cookies.set(key, JSON.stringify(action.payload[key]), { expires: 2, secure: true });
+          Cookies.set(key, JSON.stringify(action.payload[key]), { expires: 1/24, secure: true });
         } else {
-          Cookies.set(key, action.payload[key], { expires: 2, secure: true });
+          Cookies.set(key, action.payload[key], { expires: 1/24, secure: true });
         }
       });
     },    
@@ -54,7 +35,6 @@ const authSlice = createSlice({
       state.profilePhoto = null;
       state.permissions = [];
 
-      // Remove all cookies on logout
       Cookies.remove('user');
       Cookies.remove('userId');
       Cookies.remove('name');

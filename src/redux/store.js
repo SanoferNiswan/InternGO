@@ -38,7 +38,6 @@ const store = configureStore({
   }, 
 });
 
-// Subscribe to store changes & save to localStorage
 store.subscribe(() => {
   const state = store.getState().data;
   localStorage.setItem("data", JSON.stringify(state));
