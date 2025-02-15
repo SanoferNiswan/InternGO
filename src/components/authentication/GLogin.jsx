@@ -40,7 +40,7 @@ function GLogin() {
 
         dispatch(setAuth({ user, userId, name, zone, token, role, permissions,profilePhoto }));
 
-        navigate("/dashboard");
+        navigate("/dashboard",{replace:true});
         console.log(user);
         
       } else {

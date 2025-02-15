@@ -20,9 +20,9 @@ const authSlice = createSlice({
     
       Object.keys(action.payload).forEach((key) => {
         if (key === "permissions" || key === "user") {
-          Cookies.set(key, JSON.stringify(action.payload[key]), { expires: 1/24, secure: true });
+          Cookies.set(key, JSON.stringify(action.payload[key]), { expires: 1/24, secure: true, sameSite: "Lax" });
         } else {
-          Cookies.set(key, action.payload[key], { expires: 1/24, secure: true });
+          Cookies.set(key, action.payload[key]==null?"":action.payload[key], { expires: 1/24, secure: true, sameSite: "Lax"});
         }
       });
     },    

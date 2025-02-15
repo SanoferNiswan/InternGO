@@ -1,10 +1,17 @@
-
-import React from "react";
+import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaBell, FaChartBar, FaUsers, FaClipboardList, FaLaptopCode, FaPlusSquare } from "react-icons/fa";
 import logo from "../assets/Intern (3).png"
+import { useSelector } from "react-redux";
 const Home = () => {
   const navigate = useNavigate(); 
+  const {token} = useSelector((state)=>state.auth);
+
+  useEffect(()=>{
+    if(token){
+      navigate("/dashboard");
+    }
+  },[navigate]);
   
   return (
     <div className="min-h-screen bg-gray-100">
@@ -64,7 +71,7 @@ const FeatureCard = ({ icon, title, description }) => {
       <p className="text-gray-600">{description}</p>
     </div>
   );
-};
+}; 
 
 export default Home;
 
