@@ -73,7 +73,7 @@ const ObjectiveList = ({
         { headers: { Authorization: `Bearer ${token}` } }
       );
     } catch (error) {
-      console.error("Error updating objective:", error);
+      toast.error(JSON.stringify(error.response.data.message));
     }
   };
 
@@ -170,8 +170,7 @@ const ObjectiveList = ({
         milestoneId: milestone.id,
       });
     } catch (error) {
-      console.error("Error adding objective:", error);
-      toast.error("Failed to add objective.");
+      toast.error(error.response.data.message);
     } finally {
       setIsSubmitting(false);
     }

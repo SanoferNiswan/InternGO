@@ -1,6 +1,10 @@
-import React from 'react'
+import React from 'react';
 
-const FloatingInput = ({ id, label, name, type = "text", value, onChange, disabled = false }) => (
+const FloatingInput = ({ id, label, name, type = "text", value, onChange, disabled = false }) => {
+  const minDate = "1970-01-01";
+  const maxDate = "2005-12-31";
+
+  return (
     <div className="relative">
       <input
         type={type}
@@ -9,6 +13,8 @@ const FloatingInput = ({ id, label, name, type = "text", value, onChange, disabl
         value={value || ""}
         onChange={onChange} 
         disabled={disabled}
+        min={type === "date" ? minDate : undefined}
+        max={type === "date" ? maxDate : undefined}
         className={`block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 appearance-none dark:text-black dark:border-gray-300 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer ${
           disabled ? "bg-gray-200 cursor-not-allowed" : ""
         }`}
@@ -22,5 +28,6 @@ const FloatingInput = ({ id, label, name, type = "text", value, onChange, disabl
       </label>
     </div>
   );
+};
 
-export default FloatingInput
+export default FloatingInput;

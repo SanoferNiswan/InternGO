@@ -81,7 +81,7 @@ export default Home;
 // import React, { useState, useEffect } from "react";
 // import { useNavigate } from "react-router-dom";
 // import { FaBell, FaChartBar, FaUsers, FaClipboardList, FaLaptopCode, FaPlusSquare } from "react-icons/fa";
-// import logo from "../assets/Intern (3).png";
+// import logo from "../assets/interngo logo.png";
 
 // // Import carousel images
 // import img1 from "../assets/c4.jpg";

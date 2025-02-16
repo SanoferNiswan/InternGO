@@ -35,7 +35,6 @@ const Profile = ({ userId, token }) => {
       });
       setProfileData(response.data.data);
       setAssets(response.data.data.assets);
-      console.log(response.data.data);
     } catch (error) {
       if (error.response && error.response.status === 403) {
         setError("You are restricted from accessing this page.");

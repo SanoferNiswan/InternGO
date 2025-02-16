@@ -2,11 +2,16 @@ import React, { useState, useEffect } from "react";
 import { FaTrash } from "react-icons/fa";
 import ObjectiveList from "./ObjectiveList";
 import axios from "../../../api/axios";
-import { useSelector, useDispatch } from "react-redux"; 
+import { useSelector, useDispatch } from "react-redux";
 import { fetchMentors } from "../../../redux/slices/dataSlice";
 import { toast } from "react-toastify";
 
-const MilestoneList = ({ listOfMilestone, setListOfMilestone, planId,planDays }) => {
+const MilestoneList = ({
+  listOfMilestone,
+  setListOfMilestone,
+  planId,
+  planDays,
+}) => {
   const [showObjectiveForm, setShowObjectiveForm] = useState(null);
   const dispatch = useDispatch();
   const { mentors } = useSelector((state) => state.data);
@@ -16,7 +21,7 @@ const MilestoneList = ({ listOfMilestone, setListOfMilestone, planId,planDays })
     if (mentors.length === 0) {
       dispatch(fetchMentors());
     }
-  }, [token, dispatch]); 
+  }, [token, dispatch]);
 
   const totalMilestoneDays = listOfMilestone.reduce(
     (sum, milestone) => sum + milestone.milestoneDays,
@@ -36,10 +41,16 @@ const MilestoneList = ({ listOfMilestone, setListOfMilestone, planId,planDays })
 
   const handleUpdateMilestone = async (milestone, planId) => {
     try {
-      if (totalMilestoneDays + parseInt(milestone.milestoneDays) > planDays) {
-            toast.error(`Total milestone days cannot exceed ${planDays}!`);
-            return;
-          }
+      const updatedTotalMilestoneDays =
+        listOfMilestone.reduce(
+          (sum, m) => sum + (m.id === milestone.id ? 0 : m.milestoneDays),
+          0
+        ) + parseInt(milestone.milestoneDays);
+
+      if (updatedTotalMilestoneDays > planDays) {
+        toast.error(`Total milestone days cannot exceed ${planDays}!`);
+        return;
+      }
 
       await axios.patch(
         `/api/plans/${planId}/update/milestone`,
@@ -54,7 +65,7 @@ const MilestoneList = ({ listOfMilestone, setListOfMilestone, planId,planDays })
         { headers: { Authorization: `Bearer ${token}` } }
       );
     } catch (error) {
-      toast.error("Error updating milestone:", error);
+      toast.error("Error updating milestone:", error.response.data.message);
     }
   };
 
@@ -80,7 +91,7 @@ const MilestoneList = ({ listOfMilestone, setListOfMilestone, planId,planDays })
         <div key={index} className="p-4 border rounded-lg bg-gray-100">
           <div className="bg-white p-2 shadow-lg rounded-lg">
             <div>
-              <p className="p-2 font-bold">Milestone {index+1}</p>
+              <p className="p-2 font-bold">Milestone {index + 1}</p>
             </div>
             <div className="flex justify-between items-center border-b pb-2">
               <div className="relative">

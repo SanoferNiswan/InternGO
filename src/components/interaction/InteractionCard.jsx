@@ -144,7 +144,7 @@ const InteractionCard = ({ interaction, onEdit }) => {
         </div>
       )}
 
-      {role == "Mentors" && interaction.interactionStatus == "PENDING" && (
+      {role == "Mentors" && interaction.interactionStatus == "FEEDBACK_PENDING" && (
         <div className="flex justify-center">
           <button
             className="bg-green-500 hover:bg-green-600 p-2 rounded-lg text-white"

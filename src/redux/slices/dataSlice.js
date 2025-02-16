@@ -13,7 +13,6 @@ const initialState = {
   error: null,
 };
 
-// Async Thunk to Fetch Mentors
 export const fetchMentors = createAsyncThunk(
   "data/fetchMentors",
   async (_, { getState, rejectWithValue }) => {
@@ -30,7 +29,6 @@ export const fetchMentors = createAsyncThunk(
   }
 );
 
-// Async Thunk to Fetch Filters
 export const fetchFilters = createAsyncThunk("data/fetchFilters", async (_, { rejectWithValue }) => {
   try {
     const response = await axios.get("http://localhost:8080/api/users/distinct/filters");

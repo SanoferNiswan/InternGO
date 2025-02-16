@@ -8,7 +8,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const EditProfile = () => {
-  const { userId, token, name } = useSelector((state) => state.auth);
+  const { userId, token, name, role } = useSelector((state) => state.auth);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -35,7 +35,7 @@ const EditProfile = () => {
   });
 
   const [profilePhoto, setProfilePhoto] = useState(null);
-  const [newProfilePhoto,setNewProfilePhoto] = useState(null);
+  const [newProfilePhoto, setNewProfilePhoto] = useState(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -73,7 +73,6 @@ const EditProfile = () => {
         if (userData.profilePhoto) {
           setProfilePhoto(userData.profilePhoto);
         }
-
       } catch (error) {
         console.error("Error fetching user data:", error);
         toast.error("Failed to fetch user data");
@@ -88,8 +87,8 @@ const EditProfile = () => {
     if (file) {
       const reader = new FileReader();
       reader.onloadend = () => {
-        setNewProfilePhoto(reader.result); 
-        setProfilePhoto(reader.result)
+        setNewProfilePhoto(reader.result);
+        setProfilePhoto(reader.result);
       };
       reader.readAsDataURL(file);
     }
@@ -119,8 +118,10 @@ const EditProfile = () => {
 
   const validateForm = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    const phoneRegex = /^\d{10}$/;
+    const phoneRegex = /^[6789]\d{9}$/;
     const ifscRegex = /^[A-Z]{4}0[A-Z0-9]{6}$/;
+    const bankNameRegex = /^[A-Za-z\s]{3,}$/; // Bank Name should be at least 3 characters long, only letters and spaces
+    const branchRegex = /^[A-Za-z\s0-9-]{3,}$/; // Branch should be at least 3 characters long, letters, numbers, and hyphen allowed
 
     if (formData.personalEmail && !emailRegex.test(formData.personalEmail)) {
       toast.error("Invalid email address");
@@ -132,8 +133,29 @@ const EditProfile = () => {
       return false;
     }
 
-    if (formData.bankDetails.IFSC && !ifscRegex.test(formData.bankDetails.IFSC)) {
+    if (
+      formData.bankDetails.IFSC &&
+      !ifscRegex.test(formData.bankDetails.IFSC)
+    ) {
       toast.error("Invalid IFSC code");
+      return false;
+    }
+
+    if (
+      formData.bankDetails.bankName &&
+      !bankNameRegex.test(formData.bankDetails.bankName)
+    ) {
+      toast.error("Invalid Bank Name (Only letters and spaces, min 3 chars)");
+      return false;
+    }
+
+    if (
+      formData.bankDetails.branch &&
+      !branchRegex.test(formData.bankDetails.branch)
+    ) {
+      toast.error(
+        "Invalid Branch Name (Min 3 chars, letters, numbers, and hyphens allowed)"
+      );
       return false;
     }
 
@@ -197,7 +219,9 @@ const EditProfile = () => {
       <ToastContainer />
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold ml-2 text-blue-600">{name} Profile</h1>
+          <h1 className="text-2xl font-bold ml-2 text-blue-600">
+            {name} Profile
+          </h1>
           <div className="relative">
             <label
               htmlFor="profilePhoto"
@@ -337,39 +361,41 @@ const EditProfile = () => {
         </div>
 
         {/* Bank Details Section */}
-        <div className="bg-white p-6 rounded-lg shadow-md space-y-4">
-          <h2 className="text-lg font-bold mb-2">Bank Details</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <FloatingInput
-              id="bankName"
-              label="Bank Name"
-              name="bankDetails.bankName"
-              value={formData.bankDetails.bankName}
-              onChange={handleChange}
-            />
-            <FloatingInput
-              id="branch"
-              label="Branch"
-              name="bankDetails.branch"
-              value={formData.bankDetails.branch}
-              onChange={handleChange}
-            />
-            <FloatingInput
-              id="IFSC"
-              label="IFSC Code"
-              name="bankDetails.IFSC"
-              value={formData.bankDetails.IFSC}
-              onChange={handleChange}
-            />
-            <FloatingInput
-              id="accountNumber"
-              label="Account Number"
-              name="bankDetails.accountNumber"
-              value={formData.bankDetails.accountNumber}
-              onChange={handleChange}
-            />
+        {role == "Interns" && (
+          <div className="bg-white p-6 rounded-lg shadow-md space-y-4">
+            <h2 className="text-lg font-bold mb-2">Bank Details</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <FloatingInput
+                id="bankName"
+                label="Bank Name"
+                name="bankDetails.bankName"
+                value={formData.bankDetails.bankName}
+                onChange={handleChange}
+              />
+              <FloatingInput
+                id="branch"
+                label="Branch"
+                name="bankDetails.branch"
+                value={formData.bankDetails.branch}
+                onChange={handleChange}
+              />
+              <FloatingInput
+                id="IFSC"
+                label="IFSC Code"
+                name="bankDetails.IFSC"
+                value={formData.bankDetails.IFSC}
+                onChange={handleChange}
+              />
+              <FloatingInput
+                id="accountNumber"
+                label="Account Number"
+                name="bankDetails.accountNumber"
+                value={formData.bankDetails.accountNumber}
+                onChange={handleChange}
+              />
+            </div>
           </div>
-        </div>
+        )}
 
         {/* Skills Section */}
         <div className="bg-white p-6 rounded-lg shadow-md space-y-4">
