@@ -38,7 +38,7 @@ const InteractionCard = ({ interaction, onEdit }) => {
   return ( 
     <div
       key={interaction.id}
-      className="p-4 rounded-lg bg-gray-50 shadow-gray-400 shadow-lg flex flex-col gap-6 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2"
+      className="p-4 rounded-lg bg-gray-50 shadow-gray-400 shadow-lg flex flex-col gap-6 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2 h-[250px]"
     >
       <div className="flex justify-between items-center">
         <div className="flex items-center">
