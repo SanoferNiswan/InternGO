@@ -35,12 +35,12 @@ const UserInteraction = () => {
   return (
     <div className="p-2">
       <h1 className="mb-6 text-2xl font-semibold text-center text-blue-500">{name}'s Interaction</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
-        {
-          interactions.length===0 && <p className="font-semibold text-gray-600 text-center bg-gray-100 p-3 rounded-md shadow-md h-96 flex justify-center items-center">
+      {
+          interactions.length===0 && <p className="font-semibold text-gray-600 text-center bg-gray-100 p-3 rounded-md shadow-md h-96 flex justify-center items-center m-10">
           No interactions found
         </p>
         }
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 p-4">
         {interactions.map((interaction) => (
             <InteractionCard key={interaction.id} interaction={interaction} />
         ))}

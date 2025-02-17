@@ -16,19 +16,19 @@ const ForgotPassword = () => {
     if (email.trim() === "") {
         toast.error("email must not be empty");
     }
-    //   try {
-    //     const response = await axios.post(`/api/auth/forgot-password`, email);
-    //     toast.success(response.data.data);
-    //     setSubmitted(true);
-    //   } catch (error) {
-    //     if (error) {
-    //       toast.error(JSON.stringify(error.response?.data?.message));
-    //     } else {
-    //       toast.error("network error");
-    //     }
-    //   }
+      try {
+        const response = await axios.post(`/api/auth/forgot-password`, email);
+        console.log(response.data.data);
+        setSubmitted(true);
+      } catch (error) {
+        if (error) {
+          toast.error(JSON.stringify(error.response?.data?.message));
+        } else {
+          toast.error("network error");
+        }
+      }
       // api call
-      setSubmitted(true);
+      // setSubmitted(true);
     
   };
 

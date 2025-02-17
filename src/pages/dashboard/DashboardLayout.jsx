@@ -18,6 +18,7 @@ import {
   FaChartLine,
   FaUserPlus,
   FaEdit,
+  FaHandsHelping,
 } from "react-icons/fa";
 import GLogout from "../../components/authentication/GLogout";
 import logo from "../../assets/interngo logo.png";
@@ -77,7 +78,7 @@ const DashboardLayout = () => {
     },
     {
       name: "Pending Tickets",
-      permission: "tickets.view",
+      permission: "users.manage",
       path: "/dashboard/pending-tickets",
       icon: <FaTicketAlt />,
     },
@@ -92,6 +93,12 @@ const DashboardLayout = () => {
       permission: "users.manage",
       path: "/admin/create-announcement",
       icon: <FaBullhorn />,
+    },
+    {
+      name: "Help desk",
+      permission: "tasks.update",
+      path: "/intern/help",
+      icon: <FaHandsHelping />,
     },
   ];
 

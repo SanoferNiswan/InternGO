@@ -20,13 +20,14 @@ const InternDashboard = () => {
 
   const fetchPlanDetails = async () => {
     try {
-      setLoading(true);
       const response = await axios.get(`/api/users/training/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
       setPlanDetails(response.data.data);
+      console.log(response);
+      
     } catch (error) {
       toast.error(error);
     }finally{

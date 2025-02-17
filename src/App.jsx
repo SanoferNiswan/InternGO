@@ -52,7 +52,6 @@ const App = () => {
           <Route index element={<Dashboard />} />
 
           <Route path="feedback" element={<Feedback />} />
-          <Route path="help" element={<Help />} />
           <Route path="interactions" element={<Interaction />} />
           <Route path="my-profile" element={<MyProfile />} />
           <Route path="edit-profile" element={<EditProfile />} />
@@ -64,6 +63,7 @@ const App = () => {
         >
           <Route path="daily-update" element={<DailyUpdate />} />
           <Route path="daily-update/:date" element={<InternUpdate />} />
+          <Route path="help" element={<Help />} />
         </Route>
 
         <Route

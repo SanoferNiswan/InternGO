@@ -13,9 +13,7 @@ const ScheduleModal = ({ onClose, refreshData }) => {
   ); 
  
   useEffect(() => {
-    if (mentors.length === 0) {
       dispatch(fetchMentors());
-    }
   }, [token, dispatch]);
 
   const [fields, setFields] = useState({
