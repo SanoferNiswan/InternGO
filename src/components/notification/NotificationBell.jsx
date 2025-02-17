@@ -2,13 +2,15 @@ import React, { useState } from "react";
 import { FaBell, FaTrash, FaCheck } from "react-icons/fa";
 import { toast } from "react-toastify";
 import axios from "../../api/axios";
-import "react-toastify/dist/ReactToastify.css"; 
+import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
- 
+
 const NotificationBell = ({ notifications, setNotifications }) => {
   const { token, userId } = useSelector((state) => state.auth);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedNotifications, setSelectedNotifications] = useState([]);
+
+  console.log("notifications : ", notifications);
 
   const markAsRead = async () => {
     if (selectedNotifications.length === 0) {
@@ -149,16 +151,31 @@ const NotificationBell = ({ notifications, setNotifications }) => {
                         : "text-gray-700 font-medium"
                     }`}
                   >
-                    <div className="flex items-center space-x-3">
-                      <input
-                        type="checkbox"
-                        checked={selectedNotifications.includes(
-                          notification.id
-                        )}
-                        onChange={() => toggleSelection(notification.id)}
-                        className="cursor-pointer"
-                      />
-                      <p className="text-sm">{notification.message}</p>
+                    <div className="flex flex-col gap-3">
+                      <div className="flex items-center space-x-3">
+                        <input
+                          type="checkbox"
+                          checked={selectedNotifications.includes(
+                            notification.id
+                          )}
+                          onChange={() => toggleSelection(notification.id)}
+                          className="cursor-pointer "
+                        />
+                        <p className="text-sm">{notification.message}</p>
+                      </div>
+                      <div className="text-xs text-gray-600 text-end">
+                        {new Intl.DateTimeFormat("en-US", {
+                          day: "2-digit",
+                          month: "short",
+                          year: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          hour12: true,
+                          timeZone: "IST"
+                        })
+                          .format(new Date(notification.createdAt))
+                          .replace(",", "")}
+                      </div>
                     </div>
                   </li>
                 ))}
@@ -189,4 +206,3 @@ const NotificationBell = ({ notifications, setNotifications }) => {
 };
 
 export default NotificationBell;
-
