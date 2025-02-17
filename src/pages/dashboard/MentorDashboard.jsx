@@ -3,7 +3,7 @@ import axios from "../../api/axios";
 import { useSelector } from "react-redux";
 import Announcement from "../../components/Announcement";
 import { toast } from "react-toastify";
-import { FaBomb, FaTasks } from "react-icons/fa";
+import { FaBomb, FaBook, FaClock, FaTasks, FaTimes } from "react-icons/fa";
 
 const MentorDashboard = () => {
   const { userId, token, profilePhoto, name } = useSelector(
@@ -62,9 +62,9 @@ const MentorDashboard = () => {
         <Announcement />
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 gap-6 mt-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
         <div className="p-6 bg-white shadow-md rounded-lg flex items-center gap-4 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
-          <FaTasks className="text-blue-500 text-4xl" />
+          <FaTasks className="text-blue-500 text-2xl" />
           <div>
             <p className="text-gray-500">Interactions Completed</p>
             <h2 className="text-2xl font-bold text-center">
@@ -73,11 +73,20 @@ const MentorDashboard = () => {
           </div>
         </div>
         <div className="p-6 bg-white shadow-md rounded-lg flex items-center gap-4 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
-          <FaBomb className="text-yellow-500 text-4xl" />
+          <FaClock className="text-yellow-500 text-2xl" />
           <div>
             <p className="text-gray-500 text-center">Pending Interactions</p>
             <h2 className="text-2xl font-bold text-center">
               {interactionCount?.interactionPending}
+            </h2>
+          </div>
+        </div>
+        <div className="p-6 bg-white shadow-md rounded-lg flex items-center gap-4 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
+          <FaBook className="text-purple-500 text-2xl" />
+          <div>
+            <p className="text-gray-500 text-center">Pending feedback</p>
+            <h2 className="text-2xl font-bold text-center">
+              {interactionCount?.interactionFeedbackPending}
             </h2>
           </div>
         </div>

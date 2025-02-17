@@ -1,12 +1,18 @@
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchMentors } from "../../../redux/slices/dataSlice.js";
 import { useState, useEffect } from "react";
 import axios from "../../../api/axios.js";
 
 const EditModal = ({ onClose, interaction, refreshData }) => {
   const { token } = useSelector((state) => state.auth);
-  const mentors = ["Arshad", "Gokul"];
+  const dispatch = useDispatch();
+  const { mentors } = useSelector((state) => state.data);
+
+  useEffect(() => {
+    dispatch(fetchMentors());
+  }, []);
 
   const [fields, setFields] = useState({
     interactionName: "",
@@ -20,7 +26,7 @@ const EditModal = ({ onClose, interaction, refreshData }) => {
   });
 
   useEffect(() => {
-    if (interaction) { 
+    if (interaction) {
       setFields({
         interactionName: interaction.name || "",
         internName: interaction.assignedIntern || "",
@@ -28,7 +34,9 @@ const EditModal = ({ onClose, interaction, refreshData }) => {
         mentorName: interaction.assignedMentor || mentors[0],
         interviewer: interaction.assignedInterviewer || mentors[0],
         date: interaction.date ? interaction.date.split("T")[0] : "",
-        time: interaction.time ? interaction.time.replace(/(AM|PM)/, "").trim() : "",
+        time: interaction.time
+          ? interaction.time.replace(/(AM|PM)/, "").trim()
+          : "",
         duration: interaction.duration || "",
       });
     }
@@ -37,7 +45,7 @@ const EditModal = ({ onClose, interaction, refreshData }) => {
   const handleChange = (e) => {
     setFields({ ...fields, [e.target.name]: e.target.value });
   };
- 
+
   const validateFields = () => {
     let errors = {};
     if (!fields.interactionName)
@@ -75,7 +83,6 @@ const EditModal = ({ onClose, interaction, refreshData }) => {
       );
 
       console.log(response);
-      
 
       toast.success(response.data.message, {
         autoClose: 3000,
@@ -105,7 +112,9 @@ const EditModal = ({ onClose, interaction, refreshData }) => {
 
         <div className="space-y-4">
           {["interactionName", "internName", "internEmail"].map((name) => (
-            <input
+            <div className="gap-2 flex flex-col">
+              <label>{name}</label>
+              <input
               key={name}
               type="text"
               name={name}
@@ -114,6 +123,7 @@ const EditModal = ({ onClose, interaction, refreshData }) => {
               className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               placeholder={name}
             />
+            </div>
           ))}
 
           <div className="mb-3">
@@ -155,19 +165,42 @@ const EditModal = ({ onClose, interaction, refreshData }) => {
           </div>
         </div>
 
-        <div className="mt-4 space-y-4">
-          {["date", "time", "duration"].map((name) => (
+        <div className="mb-3 flex flex-col gap-y-2">
+            <label className="block text-gray-700">Date</label>
             <input
-              key={name}
-              type="text"
-              name={name}
-              value={fields[name]}
+              type="date"
+              name="date"
+              value={fields["date"]}
+              onChange={handleChange}
+              min={new Date().toISOString().split("T")[0]} 
+              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
+
+          <div className="mb-3 flex flex-col gap-y-2">
+            <label className="block text-gray-700">Time</label>
+            <input
+              type="time"
+              name="time"
+              value={fields["time"]}
               onChange={handleChange}
               className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-              placeholder={name}
+              required
             />
-          ))}
-        </div>
+          </div>
+
+          <div className="mb-3 flex flex-col gap-y-2">
+            <label className="block text-gray-700">Duration</label>
+            <input
+              type="duration"
+              name="duration"
+              value={fields["duration"]}
+              onChange={handleChange}
+              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              required
+            />
+          </div>
 
         <div className="flex justify-end gap-2 mt-4">
           <button

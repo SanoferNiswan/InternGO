@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "../../api/axios";
 import { toast } from "react-toastify";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 
 const ResetPassword = () => {
   const [searchParams] = useSearchParams();
@@ -11,6 +11,7 @@ const ResetPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
 
   const validateFields = () => {
     const newErrors = {};
@@ -47,6 +48,8 @@ const ResetPassword = () => {
       );
       console.log(response);
       toast.success("Password reset successfully!");
+      navigate("/signin",{replace:true});
+      
     } catch (error) {
       toast.error(error?.response?.data?.message || "Something went wrong!");
     } finally {

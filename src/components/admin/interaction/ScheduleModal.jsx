@@ -8,13 +8,11 @@ import axios from "../../../api/axios";
 const ScheduleModal = ({ onClose, refreshData }) => {
   const { token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const { mentors } = useSelector(
-    (state) => state.data
-  ); 
- 
+  const { mentors } = useSelector((state) => state.data);
+
   useEffect(() => {
-      dispatch(fetchMentors());
-  }, [token, dispatch]);
+    dispatch(fetchMentors());
+  }, []);
 
   const [fields, setFields] = useState({
     interactionName: "",
@@ -52,14 +50,28 @@ const ScheduleModal = ({ onClose, refreshData }) => {
     return Object.keys(errors).length === 0;
   };
 
-
   const handleSubmit = async () => {
     if (!validateFields()) return;
 
     setIsSubmitting(true);
     try {
-      console.log((fields.time));
-      
+      console.log(fields.time);
+
+      const currentDate = new Date();
+      const selectedDate = new Date(fields.date);
+      const selectedTime = fields.time.split(":"); 
+      selectedDate.setHours(
+        parseInt(selectedTime[0], 10),
+        parseInt(selectedTime[1], 10),
+        0,
+        0
+      );
+
+      if (selectedDate < currentDate) {
+        toast.error("Selected time cannot be in the past.");
+        return;
+      }
+
       const response = await axios.post(
         "/api/interactions/schedule",
         {
@@ -93,12 +105,14 @@ const ScheduleModal = ({ onClose, refreshData }) => {
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
       <div className="bg-white p-6 rounded-lg shadow-lg w-[40%] max-h-[90vh] overflow-y-auto">
-        <h2 className="text-xl font-semibold mb-4 text-blue-600">Schedule Interaction</h2>
+        <h2 className="text-xl font-semibold mb-4 text-blue-600">
+          Schedule Interaction
+        </h2>
 
         <div className="space-y-4">
           {[
             {
-              name: "interactionName",
+              name: "Interaction Name",
               label: "Interaction Name",
               type: "text",
             },
@@ -161,51 +175,50 @@ const ScheduleModal = ({ onClose, refreshData }) => {
         </div>
 
         <div className="mb-3 flex flex-col gap-y-2">
-            <label className="block text-gray-700">Date</label>
-            <input
-              type="date"
-              name="date"
-              value={fields["date"]}
-              onChange={handleChange}
-              min={new Date().toISOString().split("T")[0]} 
-              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-            {errors["date"] && (
-              <p className="text-red-500 text-sm">{errors["date"]}</p>
-            )}
-          </div>
+          <label className="block text-gray-700">Date</label>
+          <input
+            type="date"
+            name="date"
+            value={fields["date"]}
+            onChange={handleChange}
+            min={new Date().toISOString().split("T")[0]}
+            className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+          {errors["date"] && (
+            <p className="text-red-500 text-sm">{errors["date"]}</p>
+          )}
+        </div>
 
-          <div className="mb-3 flex flex-col gap-y-2">
-            <label className="block text-gray-700">Time</label>
-            <input
-              type="time"
-              name="time"
-              value={fields["time"]}
-              onChange={handleChange}
-              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-            {errors["time"] && (
-              <p className="text-red-500 text-sm">{errors["time"]}</p>
-            )}
-          </div>
+        <div className="mb-3 flex flex-col gap-y-2">
+          <label className="block text-gray-700">Time</label>
+          <input
+            type="time"
+            name="time"
+            value={fields["time"]}
+            onChange={handleChange}
+            className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+          {errors["time"] && (
+            <p className="text-red-500 text-sm">{errors["time"]}</p>
+          )}
+        </div>
 
-          <div className="mb-3 flex flex-col gap-y-2">
-            <label className="block text-gray-700">Duration</label>
-            <input
-              type="duration"
-              name="duration"
-              value={fields["duration"]}
-              onChange={handleChange}
-              className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-              required
-            />
-            {errors["duration"] && (
-              <p className="text-red-500 text-sm">{errors["duration"]}</p>
-            )}
-          </div>
-
+        <div className="mb-3 flex flex-col gap-y-2">
+          <label className="block text-gray-700">Duration</label>
+          <input
+            type="duration"
+            name="duration"
+            value={fields["duration"]}
+            onChange={handleChange}
+            className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            required
+          />
+          {errors["duration"] && (
+            <p className="text-red-500 text-sm">{errors["duration"]}</p>
+          )}
+        </div>
 
         <div className="flex justify-end gap-2 mt-4">
           <button

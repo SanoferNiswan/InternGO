@@ -43,6 +43,11 @@ const EditFeedbackModal = ({ isOpen, onClose, feedback, refreshData }) => {
       return;
     }
 
+    if(selectedKPIs.length<5){
+      toast.error("Please select atleast 5 KPI")
+      return;
+    }
+
     const updatedFeedback = {
       ratings,
       descriptive_feedback: descriptiveFeedback,
