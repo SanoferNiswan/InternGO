@@ -124,7 +124,7 @@ const InternUpdate = () => {
     }
 
     if (totalEstimatedTime > 10 || totalActualTime > 10) {
-      toast.error("Please take rest. don't work more than 10 hours");
+      toast.error("Total working hours should be less than 10");
       return false;
     }
 

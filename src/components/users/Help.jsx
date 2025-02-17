@@ -31,18 +31,23 @@ const Help = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const { subject, description, recepientId,recepient } = formData;
-    if (subject === "" || description === "" || recepientId === "" || recepient==="") {
+    const { subject, description,recepient } = formData;
+    if (subject === "" || description === ""  || recepient==="") {
       toast("error", "Please fill all details");
       return;
     }
+    let newFormData = {...formData};
+
+    if(recepient==="Admins"){
+      var {recepientId,...rest} = formData;
+      newFormData = rest;
+    }
 
     try {
-      console.log(formData,":formdata");
       
       const response = await axios.post(`api/helpdesk/`, {
         userId,
-        ...formData,
+        ...newFormData,
         resolvedStatus: "PENDING",
       },{
         headers:{
