@@ -30,6 +30,7 @@ import InteractionFeedback from "./components/admin/feedback/InteractionFeedback
 import UserFeedback from "./components/admin/feedback/UserFeedback";
 import CreateAnnouncement from "./components/admin/announcement/CreateAnnouncement";
 import ForgotPassword from "./pages/authentication/ForgotPassword";
+import ResetPassword from "./pages/authentication/ResetPassword";
 
 const App = () => {
   return (
@@ -40,6 +41,7 @@ const App = () => {
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
         <Route
           path="/dashboard/*"
