@@ -52,12 +52,20 @@ const ObjectiveList = ({
 
   const handleUpdateObjective = async (objective) => {
     try {
-      if (totalObjectiveDays + objective.objectiveDays > milestone.milestoneDays) {
+      const previousObjectiveDays =
+        milestone.objectives.find((obj) => obj.id === objective.id)
+          ?.objectiveDays || 0;
+
+      const newTotalObjectiveDays =
+        totalObjectiveDays - previousObjectiveDays + objective.objectiveDays;
+
+      if (newTotalObjectiveDays > milestone.milestoneDays) {
         toast.error(
           `Total objective days cannot exceed ${milestone.milestoneDays}!`
         );
         return;
       }
+
       await axios.patch(
         `/api/plans/${planId}/update/objective`,
         {
@@ -77,14 +85,12 @@ const ObjectiveList = ({
     }
   };
 
-
-
   const handleDeleteObjective = async (objectiveId) => {
     try {
       await axios.delete(`/api/plans/delete/objective/${objectiveId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-  
+
       setListOfMilestone((prevMilestones) =>
         prevMilestones.map((milestoneItem) =>
           milestoneItem.id === milestone.id
@@ -97,14 +103,13 @@ const ObjectiveList = ({
             : milestoneItem
         )
       );
-  
+
       toast.success(`Objective ${objectiveId} deleted successfully`);
     } catch (error) {
       console.error("Error deleting objective:", error);
       toast.error("Failed to delete objective. Please try again.");
     }
   };
-  
 
   const addObjective = async () => {
     const objectiveDays = parseInt(newObjective.objectiveDays) || 0;
@@ -310,7 +315,7 @@ const ObjectiveList = ({
                   className="border px-2 py-1 rounded w-full"
                 />
               </td>
-              <td> 
+              <td>
                 <div className="flex gap-2">
                   <button
                     onClick={addObjective}
