@@ -47,10 +47,6 @@ const ScheduleModal = ({ onClose, refreshData }) => {
     if (!fields.duration) errors.duration = "Duration is required";
 
     setErrors(errors);
-    console.log(errors);
-    
-    console.log(Object.keys(errors).length);
-    
     return Object.keys(errors).length === 0;
   };
 
@@ -63,8 +59,6 @@ const ScheduleModal = ({ onClose, refreshData }) => {
     console.log("handle submit");
     setIsSubmitting(true);
     try {
-      console.log(fields.time);
-
       const currentDate = new Date();
       const selectedDate = new Date(fields.date);
       const selectedTime = fields.time.split(":"); 
@@ -96,7 +90,7 @@ const ScheduleModal = ({ onClose, refreshData }) => {
       );
 
       toast.success(response.data.message, {
-        autoClose: 5000,
+        autoClose: 2000,
         onClose: () => {
           onClose(), refreshData();
         },

@@ -7,7 +7,6 @@ import DashboardLayout from "./pages/dashboard/DashboardLayout";
 import ProtectedRoute from "./components/protectedRoutes/ProtectedRoute";
 import RoleProtectedRoute from "./components/protectedRoutes/RoleProtectedRoute";
 import Feedback from "./components/admin/feedback/Feedback";
-import Help from "./components/users/Help";
 import Interaction from "./pages/interaction/Interaction";
 import Plan from "./components/admin/plans/Plan";
 import Resources from "./components/admin/profileManagement/Resources";
@@ -31,7 +30,7 @@ import UserFeedback from "./components/admin/feedback/UserFeedback";
 import CreateAnnouncement from "./components/admin/announcement/CreateAnnouncement";
 import ForgotPassword from "./pages/authentication/ForgotPassword";
 import ResetPassword from "./pages/authentication/ResetPassword";
-import PendingTickets from "./components/admin/help/PendingTickets";
+import Help from "./pages/help/Help";
 
 const App = () => {
   return (
@@ -75,6 +74,7 @@ const App = () => {
         >
           <Route path="feedback/create/:interactionID" element={<CreateFeedback />} />
           <Route path="feedback/view/:interactionId" element={<InteractionFeedback />} />
+          <Route path="pending-tickets" element={<Help />} />
         </Route>
 
         <Route
@@ -92,7 +92,8 @@ const App = () => {
           <Route path="add-users" element={<AddUser />} />
           <Route path="feedback/:interactionId" element={<InteractionFeedback />} />
           <Route path="feedback/user/:userId" element={<UserFeedback />} />
-          <Route path="pending-tickets" element={<PendingTickets />} />
+          {/* <Route path="pending-tickets" element={<PendingTickets />} /> */}
+          <Route path="pending-tickets" element={<Help />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/not-found" replace />} />

@@ -208,7 +208,6 @@ const Resources = () => {
             className="mt-1 block w-full"
             placeholder="Select Status"
           />
-          {/* </div> */}
         </div>
       </div>
 

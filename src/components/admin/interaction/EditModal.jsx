@@ -63,10 +63,23 @@ const EditModal = ({ onClose, interaction, refreshData }) => {
 
   const handleSubmit = async () => {
     if (!validateFields()) return;
+    const currentDate = new Date();
+      const selectedDate = new Date(fields.date);
+      const selectedTime = fields.time.split(":"); 
+      selectedDate.setHours(
+        parseInt(selectedTime[0], 10),
+        parseInt(selectedTime[1], 10),
+        0,
+        0
+      );
 
+      if (selectedDate < currentDate) {
+        toast.error("Selected time cannot be in the past.");
+        return;
+      }
 
     try {
-      console.log(fields);
+      console.log("edit fields:",fields);
       
       const response = await axios.patch(
         `/api/interactions/${interaction.id}/update`,
@@ -79,6 +92,7 @@ const EditModal = ({ onClose, interaction, refreshData }) => {
           date: fields.date,
           time: fields.time,
           duration: fields.duration,
+          isScheduled:true
         },
         { headers: { Authorization: `Bearer ${token}` } }
       );

@@ -62,7 +62,7 @@ const InteractionCard = ({ interaction, onEdit }) => {
               disabled={isLoading}
             />
             <div
-              className={`w-10 h-5 flex items-center p-1 rounded-full transition-all ${
+              className={`w-11 h-6 flex items-center p-1 rounded-full transition-all ${
                 isToggled ? "bg-blue-500" : "bg-gray-300"
               }`}
             >
