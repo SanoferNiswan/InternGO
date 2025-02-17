@@ -5,24 +5,34 @@ import { useSearchParams } from "react-router-dom";
 
 const ResetPassword = () => {
   const [searchParams] = useSearchParams();
-  const token = searchParams.get("token"); 
-  console.log("token:",token);
-  
+  const token = searchParams.get("token");
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errors, setErrors] = useState({});
+
+  const validateFields = () => {
+    const newErrors = {};
+
+    if (!password) {
+      newErrors.password = "Password is required.";
+    } else if (password.length < 6) {
+      newErrors.password = "Password must be at least 6 characters long.";
+    }
+
+    if (!confirmPassword) {
+      newErrors.confirmPassword = "Please confirm your password.";
+    } else if (password !== confirmPassword) {
+      newErrors.confirmPassword = "Passwords do not match.";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const resetPassword = async () => {
-    if (password.length < 6) {
-      toast.error("Password must be at least 6 characters long.");
-      return;
-    }
-
-    if (password !== confirmPassword) {
-      toast.error("Passwords do not match!");
-      return;
-    }
+    if (!validateFields()) return;
 
     try {
       setIsSubmitting(true);
@@ -36,7 +46,6 @@ const ResetPassword = () => {
         }
       );
       console.log(response);
-      
       toast.success("Password reset successfully!");
     } catch (error) {
       toast.error(error?.response?.data?.message || "Something went wrong!");
@@ -56,20 +65,37 @@ const ResetPassword = () => {
             resetPassword();
           }}
         >
-          <input
-            type="password"
-            placeholder="New Password"
-            className="p-2 border border-gray-300 rounded text-center focus:outline-none focus:ring-2 focus:ring-blue-500"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-          <input
-            type="password"
-            placeholder="Confirm Password"
-            className="p-2 border border-gray-300 rounded text-center focus:outline-none focus:ring-2 focus:ring-blue-300"
-            value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
-          />
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              New Password
+            </label>
+            <input
+              type="password"
+              className={`p-2 border rounded w-full focus:outline-none focus:ring-2 ${
+                errors.password ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-blue-500"
+              }`}
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Confirm Password
+            </label>
+            <input
+              type="password"
+              className={`p-2 border rounded w-full focus:outline-none focus:ring-2 ${
+                errors.confirmPassword ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-blue-500"
+              }`}
+              value={confirmPassword}
+              onChange={(e) => {
+                setConfirmPassword(e.target.value); validateFields()}}
+            />
+            {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>}
+          </div>
+
           <button
             type="submit"
             className={`p-2 rounded-md text-white font-semibold ${

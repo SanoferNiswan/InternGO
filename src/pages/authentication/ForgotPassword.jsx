@@ -1,12 +1,10 @@
 import React, { useState } from "react";
 import { FaExclamationCircle } from "react-icons/fa";
-import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "../../api/axios";
 
 const ForgotPassword = () => {
-  const { token } = useSelector((state) => state.auth);
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
   const navigate = useNavigate();
