@@ -6,6 +6,8 @@ import { useSearchParams } from "react-router-dom";
 const ResetPassword = () => {
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token"); 
+  console.log("token:",token);
+  
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -24,7 +26,7 @@ const ResetPassword = () => {
 
     try {
       setIsSubmitting(true);
-      await axios.post(
+      const response = await axios.post(
         "/api/auth/reset-password",
         { password },
         {
@@ -33,6 +35,8 @@ const ResetPassword = () => {
           },
         }
       );
+      console.log(response);
+      
       toast.success("Password reset successfully!");
     } catch (error) {
       toast.error(error?.response?.data?.message || "Something went wrong!");
