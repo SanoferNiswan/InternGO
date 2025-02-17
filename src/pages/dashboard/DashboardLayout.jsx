@@ -78,15 +78,15 @@ const DashboardLayout = () => {
     },
     {
       name: "Pending Tickets",
-      permission: "users.manage",
-      path: "/dashboard/pending-tickets",
+      permission: "helpdesk.manage",
+      path: "/admin/pending-tickets",
       icon: <FaTicketAlt />,
     },
     {
-      name: "Create Announcement",
-      permission: "announcements.create",
-      path: "/dashboard/create-announcement",
-      icon: <FaBullhorn />,
+      name: "Pending Tickets",
+      permission: "feedback.create",
+      path: "/mentor/pending-tickets",
+      icon: <FaTicketAlt />,
     },
     {
       name: "Create announcement",
@@ -100,6 +100,12 @@ const DashboardLayout = () => {
       path: "/intern/help",
       icon: <FaHandsHelping />,
     },
+    // {
+    //   name: "Help desk",
+    //   permission: "helpdesk.manage",
+    //   path: "/intern/help",
+    //   icon: <FaHandsHelping />,
+    // },
   ];
 
   const filteredTabs = tabs.filter((tab) =>

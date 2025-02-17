@@ -47,12 +47,20 @@ const ScheduleModal = ({ onClose, refreshData }) => {
     if (!fields.duration) errors.duration = "Duration is required";
 
     setErrors(errors);
+    console.log(errors);
+    
+    console.log(Object.keys(errors).length);
+    
     return Object.keys(errors).length === 0;
   };
 
   const handleSubmit = async () => {
-    if (!validateFields()) return;
-
+    if (!validateFields()){
+      console.log("handle submit validate");
+      return;
+      
+    }
+    console.log("handle submit");
     setIsSubmitting(true);
     try {
       console.log(fields.time);
@@ -112,7 +120,7 @@ const ScheduleModal = ({ onClose, refreshData }) => {
         <div className="space-y-4">
           {[
             {
-              name: "Interaction Name",
+              name: "interactionName",
               label: "Interaction Name",
               type: "text",
             },

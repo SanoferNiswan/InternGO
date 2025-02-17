@@ -31,6 +31,7 @@ import UserFeedback from "./components/admin/feedback/UserFeedback";
 import CreateAnnouncement from "./components/admin/announcement/CreateAnnouncement";
 import ForgotPassword from "./pages/authentication/ForgotPassword";
 import ResetPassword from "./pages/authentication/ResetPassword";
+import PendingTickets from "./components/admin/help/PendingTickets";
 
 const App = () => {
   return (
@@ -91,6 +92,7 @@ const App = () => {
           <Route path="add-users" element={<AddUser />} />
           <Route path="feedback/:interactionId" element={<InteractionFeedback />} />
           <Route path="feedback/user/:userId" element={<UserFeedback />} />
+          <Route path="pending-tickets" element={<PendingTickets />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/not-found" replace />} />

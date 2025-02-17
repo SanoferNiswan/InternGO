@@ -34,9 +34,7 @@ const EditModal = ({ onClose, interaction, refreshData }) => {
         mentorName: interaction.assignedMentor || mentors[0],
         interviewer: interaction.assignedInterviewer || mentors[0],
         date: interaction.date ? interaction.date.split("T")[0] : "",
-        time: interaction.time
-          ? interaction.time.replace(/(AM|PM)/, "").trim()
-          : "",
+        time: interaction.time || "",
         duration: interaction.duration || "",
       });
     }
@@ -66,7 +64,10 @@ const EditModal = ({ onClose, interaction, refreshData }) => {
   const handleSubmit = async () => {
     if (!validateFields()) return;
 
+
     try {
+      console.log(fields);
+      
       const response = await axios.patch(
         `/api/interactions/${interaction.id}/update`,
         {
@@ -76,7 +77,7 @@ const EditModal = ({ onClose, interaction, refreshData }) => {
           assignedMentor: fields.mentorName,
           assignedInterviewer: fields.interviewer,
           date: fields.date,
-          time: formatTime(fields.time),
+          time: fields.time,
           duration: fields.duration,
         },
         { headers: { Authorization: `Bearer ${token}` } }
@@ -96,13 +97,6 @@ const EditModal = ({ onClose, interaction, refreshData }) => {
         error.response?.data?.message || "Failed to update interaction"
       );
     }
-  };
-
-  const formatTime = (time) => {
-    const [hours, minutes] = time.split(":");
-    const suffix = hours >= 12 ? "PM" : "AM";
-    const formattedHours = hours % 12 || 12;
-    return `${formattedHours}:${minutes} ${suffix}`;
   };
 
   return (
