@@ -19,11 +19,12 @@ function GLogin() {
       const decodedData = decode(credential); 
 
       const { email, name } = decodedData;
-      const allowedDomain = "finestcoder.com";
+      const allowedDomain1 = "finestcoder.com";
+      const allowedDomain2 = "codingmart.com";
 
-      if (email.split("@")[1] !== allowedDomain) {
+      if (email.split("@")[1] !== allowedDomain1 && email.split("@")[1] !== allowedDomain2) {
         alert(
-          "Authentication failed: Only @finestcoder.com email addresses are allowed."
+          "Authentication failed: invalid domain"
         );
         return;
       }
@@ -32,7 +33,6 @@ function GLogin() {
         credential
       });
       const user = response.data?.data;
-      console.log("response:",response.data);
       
 
       if (user?.token) {

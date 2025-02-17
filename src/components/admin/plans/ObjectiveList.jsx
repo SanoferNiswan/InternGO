@@ -66,6 +66,21 @@ const ObjectiveList = ({
         return;
       }
 
+      if(objective.name.length<3){
+        toast.error("length of objective name should be greater than 3")
+        return;
+      }
+
+      if(!isNaN(objective.name)){
+        toast.error("objective description should not be number")
+        return;
+      }
+
+      if(!isNaN(objective.description)){
+        toast.error("objective description should not be number")
+        return;
+      }
+
       await axios.patch(
         `/api/plans/${planId}/update/objective`,
         {
@@ -81,7 +96,7 @@ const ObjectiveList = ({
         { headers: { Authorization: `Bearer ${token}` } }
       );
     } catch (error) {
-      toast.error(JSON.stringify(error.response.data.message));
+      toast.error(JSON.stringify(error?.response?.data?.message));
     }
   };
 
