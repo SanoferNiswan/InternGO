@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchFilters } from "../../../redux/slices/dataSlice";
 import { useParams, Navigate } from "react-router-dom";
 import axios from "../../../api/axios";
 import Select from "react-select";
@@ -42,16 +43,21 @@ const AdminUpdate = () => {
     planStatus: "Present",
   });
 
-  const years = [2023, 2024, 2025];
-  const batches = ["Batch 1", "Batch 2", "Batch 3"];
-  const designations = ["frontend", "backend", "testing"];
-  const statusOptions = [
-    "ACTIVE",
-    "NOT_ACTIVE",
-    "EXAMINATION",
-    "SHADOWING",
-    "DEPLOYED",
-  ];
+  const dispatch = useDispatch();
+  const { filters } = useSelector(
+    (state) => state.data
+  ); 
+
+  useEffect(()=>{
+    if(token){
+      dispatch(fetchFilters());
+    }
+  },[token])
+
+  const years = filters.years;
+  const batches = filters.batches;
+  const designations = filters.designations;
+  // const statusOptions = filters.statuses;
 
   useEffect(() => {
     const handler = setTimeout(() => setSearch(searchInput), 500);

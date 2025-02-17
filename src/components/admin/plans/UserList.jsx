@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useRef } from "react";
 import axios from "../../../api/axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchFilters } from "../../../redux/slices/dataSlice";
 import Select from "react-select";
 import { FaUserPlus, FaUser } from "react-icons/fa";
 import Loader from "../../Loader";
@@ -18,6 +19,17 @@ const UserList = ({ planId }) => {
   const limit = 5;
   const topRef = useRef();
 
+  const dispatch = useDispatch();
+  const { filters } = useSelector(
+    (state) => state.data
+  ); 
+
+  useEffect(()=>{
+    if(token){
+      dispatch(fetchFilters());
+    }
+  },[token])
+
   const [filter, setFilter] = useState({
     year: [],
     batch: [],
@@ -26,16 +38,10 @@ const UserList = ({ planId }) => {
     planStatus: "Present",
   });
  
-  const years = [2023, 2024, 2025];
-  const batches = ["Batch 1", "Batch 2", "Batch 3"];
-  const designations = ["frontend", "backend", "testing"];
-  const statusOptions = [
-    "ACTIVE",
-    "NOT_ACTIVE",
-    "EXAMINATION",
-    "SHADOWING",
-    "DEPLOYED",
-  ];
+  const years = filters.years;
+  const batches = filters.batches;
+  const designations = filters.designations;
+  const statusOptions = filters.statuses
 
   const createSelectOptions = (options) =>
     options.map((option) => ({ value: option, label: option }));

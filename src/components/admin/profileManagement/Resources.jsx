@@ -1,21 +1,34 @@
 import React, { useState, useEffect } from "react";
-import { useSelector } from "react-redux";
+import { useSelector,useDispatch } from "react-redux";
+import { fetchFilters } from "../../../redux/slices/dataSlice";
 import Select from "react-select";
 import axios from "../../../api/axios";
 import UserCard from "./UserCard";
-import { useRef } from "react";
 import Loader from "../../Loader";
 
 const Resources = () => {
   const { role, token } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const { filters } = useSelector(
+    (state) => state.data
+  ); 
+
+  useEffect(()=>{
+    if(token){
+      dispatch(fetchFilters());
+    }
+  },[token])
 
   const [users, setUsers] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [loadings, setLoadings] = useState(true);
+  const [errors, setErrors] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
+
+  const createSelectOptions = (options) =>
+    options.map((option) => ({ value: option, label: option }));
 
   const [filter, setFilter] = useState({
     year: [],
@@ -24,27 +37,13 @@ const Resources = () => {
     status: [],
   });
 
-  const years = [2023, 2024, 2025];
-  const batches = ["Batch 1", "Batch 2", "Batch 3"];
-  const designations = ["frontend", "backend", "testing"];
-  const statusOptions = [
-    "ACTIVE",
-    "NOT_ACTIVE",
-    "EXAMINATION",
-    "SHADOWING",
-    "DEPLOYED",
-  ];
-
-  const createSelectOptions = (options) =>
-    options.map((option) => ({ value: option, label: option }));
-
   useEffect(() => {
     fetchData();
   }, [search, filter, currentPage]);
 
   const fetchData = async () => {
     try {
-      setLoading(true);
+      setLoadings(true);
       const response = await axios.post(
         "/api/users/",
         {
@@ -65,9 +64,9 @@ const Resources = () => {
         setTotalPages(Math.ceil(response.data.data.total_pages));
       }
     } catch (err) {
-      setError("Failed to fetch data");
+      setErrors("Failed to fetch data");
     } finally {
-      setLoading(false);
+      setLoadings(false);
     }
   };
 
@@ -110,14 +109,14 @@ const Resources = () => {
     );
   }
 
-  if (loading) {
+  if (loadings) {
     return <Loader />;
   }
 
-  if (error) {
+  if (errors) {
     return (
       <div className="p-6">
-        <p className="text-red-500">Error: {error}</p>
+        <p className="text-red-500">Error: {errors}</p>
       </div>
     );
   }
@@ -145,7 +144,7 @@ const Resources = () => {
           <Select
             isMulti
             value={filter.year.map((year) => ({ value: year, label: year }))}
-            options={createSelectOptions(years)}
+            options={createSelectOptions(filters.years)}
             onChange={(selectedOptions) =>
               handleFilterChange(selectedOptions, "year")
             }
@@ -164,7 +163,7 @@ const Resources = () => {
               value: batch,
               label: batch,
             }))}
-            options={createSelectOptions(batches)}
+            options={createSelectOptions(filters.batches)}
             onChange={(selectedOptions) =>
               handleFilterChange(selectedOptions, "batch")
             }
@@ -183,7 +182,7 @@ const Resources = () => {
               value: designation,
               label: designation,
             }))}
-            options={createSelectOptions(designations)}
+            options={createSelectOptions(filters.designations)}
             onChange={(selectedOptions) =>
               handleFilterChange(selectedOptions, "designation")
             }
@@ -202,7 +201,7 @@ const Resources = () => {
               value: status,
               label: status,
             }))}
-            options={createSelectOptions(statusOptions)}
+            options={createSelectOptions(filters.statuses)}
             onChange={(selectedOptions) =>
               handleFilterChange(selectedOptions, "status")
             }

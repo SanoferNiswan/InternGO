@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import ScheduleModal from "./ScheduleModal";
 import { FaCalendarAlt } from "react-icons/fa";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchFilters } from "../../../redux/slices/dataSlice";
 import Select from "react-select";
 import axios from "../../../api/axios";
 import DatePicker from "react-datepicker";
@@ -13,8 +14,19 @@ import Loader from "../../Loader";
 const InteractionSchedule = () => {
   const [selectedInteraction, setSelectedInteraction] = useState(null);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const dispatch = useDispatch();
   const { token } = useSelector((state) => state.auth);
+  const { filters } = useSelector(
+    (state) => state.data
+  ); 
+
+  useEffect(()=>{
+    if(token){
+      dispatch(fetchFilters());
+    }
+  },[token])
+
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [interactions, setInteractions] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -32,10 +44,10 @@ const InteractionSchedule = () => {
     interactionStatus: [],
   });
 
-  const years = [2023, 2024, 2025];
+  const years = filters.years;
   const status = ["PENDING", "COMPLETED"];
-  const batches = ["Batch 1", "Batch 2", "Batch 3"];
-  const designations = ["frontend", "backend", "testing"];
+  const batches = filters.batches;
+  const designations = filters.designations;
 
   const createSelectOptions = (options) =>
     options.map((option) => ({ value: option, label: option }));

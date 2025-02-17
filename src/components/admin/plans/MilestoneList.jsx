@@ -17,16 +17,11 @@ const MilestoneList = ({
   const { mentors } = useSelector((state) => state.data);
   const { token } = useSelector((state) => state.auth);
 
-  useEffect(() => {
-    if (mentors.length === 0) {
-      dispatch(fetchMentors());
-    }
-  }, [token, dispatch]);
 
-  const totalMilestoneDays = listOfMilestone.reduce(
-    (sum, milestone) => sum + milestone.milestoneDays,
-    0
-  );
+
+  useEffect(() => {
+      dispatch(fetchMentors());
+  }, [token, dispatch]);
 
   const handleMilestoneChange = (e, milestoneId, field) => {
     const { value } = e.target;
@@ -52,6 +47,8 @@ const MilestoneList = ({
         return;
       }
 
+      console.log(milestone);
+      
       await axios.patch(
         `/api/plans/${planId}/update/milestone`,
         {

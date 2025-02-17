@@ -29,12 +29,21 @@ export const fetchMentors = createAsyncThunk(
   }
 );
 
-export const fetchFilters = createAsyncThunk("data/fetchFilters", async (_, { rejectWithValue }) => {
+export const fetchFilters = createAsyncThunk("data/fetchFilters", async (_, { getState,rejectWithValue }) => {
+  console.log("inside redux thunk filters");
+  
   try {
-    const response = await axios.get("http://localhost:8080/api/users/distinct/filters");
+    const token = getState().auth.token; 
+    const response = await axios.get("/api/users/distinct/filters",{
+      headers:{
+        Authorization:`Bearer ${token}`
+      }
+    });
+    console.log("response : ",response);
     return response.data.data;
   } catch (error) {
-    return rejectWithValue(error.response?.data || "Error fetching filters");
+    // return rejectWithValue(error.response?.data?.message || "Error fetching filters");
+    return rejectWithValue(JSON.stringify(error));
   }
 });
 
