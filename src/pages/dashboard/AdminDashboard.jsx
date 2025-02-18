@@ -58,7 +58,7 @@ const AdminDashboard = () => {
             Efficiently manage interns, track progress through detailed
             analytics, and monitor engagement with real-time insights. Stay
             informed with important updates, announcements, and performance
-            metrics—all in one centralized dashboard.
+            metrics—all in one centralized app.
           </p>
         </div>
       </div>

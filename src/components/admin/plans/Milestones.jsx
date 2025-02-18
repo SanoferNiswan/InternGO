@@ -85,7 +85,7 @@ const Milestones = () => {
       </div>
 
       <p className="text-gray-700 p-4">{planDetails?.description}</p>
-      <p className="text-gray-700 p-4">
+      <p className="text-blue-700 p-4">
         Number of users in current plan: {planDetails?.users.length}
       </p>
 

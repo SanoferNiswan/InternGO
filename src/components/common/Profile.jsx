@@ -51,7 +51,6 @@ const Profile = ({ userId, token }) => {
     "professional info",
     "education",
     "bankDetails",
-    "skill",
     "assets",
   ];
 

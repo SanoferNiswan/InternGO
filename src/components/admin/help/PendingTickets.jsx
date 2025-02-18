@@ -90,6 +90,7 @@ const PendingTickets = () => {
             <div className="flex-1 flex-col">
               <h2 className="text-md font-medium">{request.subject}</h2>
               <p className="text-gray-600 text-xs mt-2 mr-4">{request.description}</p>
+              <p className="text-blue-600 text-xs mt-2 mr-4"><strong>raised by :</strong>{" "}{request.senderName}</p>
             </div>
             <div className="flex flex-col items-end">
               <div
@@ -125,60 +126,6 @@ const PendingTickets = () => {
         ))}
       </div>
     </div>
-
-    // <div className="container mx-auto p-6">
-    //   <h1 className="text-xl font-bold text-blue-600 mb-6">Help Requests</h1>
-
-    //   {error && (
-    //     <div className="text-red-500 text-center">Failed to load data.</div>
-    //   )}
-
-    //   <div className="space-y-4">
-    //     {helpRequests.map((request) => (
-    //       <div
-    //         key={request.id}
-    //         className="bg-white shadow-lg rounded-lg p-4 border-l-4 border-blue-500 flex justify-between hover:shadow-2xl hover:-translate-y-2 transition-all duration-300"
-    //       >
-    //         <div>
-    //           <h2 className="text-xl font-semibold">{request.subject}</h2>
-    //           <p className="text-gray-600">{request.description}</p>
-    //         </div>
-    //         <div>
-    //           <div className="flex justify-between">
-    //             <span
-    //               className={`ml-2 mr-2 text-sm font-semibold ${
-    //                 request.resolvedStatus === "RESOLVED"
-    //                   ? "text-green-500"
-    //                   : "text-red-500"
-    //               }`}
-    //             >
-    //               {request.resolvedStatus}
-    //             </span>
-    //             <div
-    //               className={`relative w-14 h-7 transition-all rounded-full ${
-    //                 request.resolvedStatus === "RESOLVED"
-    //                   ? "bg-green-500"
-    //                   : "bg-red-500"
-    //               }`}
-    //               onClick={() => toggleResolved(request.id)}
-    //             >
-    //               <div
-    //                 className={`absolute top-1 left-1 w-5 h-5 bg-white rounded-full transition-transform ${
-    //                   request.resolvedStatus === "RESOLVED"
-    //                     ? "translate-x-7"
-    //                     : "translate-x-0"
-    //                 }`}
-    //               ></div>
-    //             </div>
-    //           </div>
-    //           <p className="text-sm text-gray-500">
-    //             <strong>Priority:</strong> {request.priority}
-    //           </p>
-    //         </div>
-    //       </div>
-    //     ))}
-    //   </div>
-    // </div>
   );
 };
 

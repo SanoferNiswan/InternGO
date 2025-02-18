@@ -125,7 +125,7 @@ const AddMilestoneForm = ({
           <div className="flex gap-2 justify-around w-1/6">
             <button
               onClick={addMilestone}
-              className={`text-sm bg-gray-700 text-white px-3 py-1 rounded hover:bg-gray-900 transition ${
+              className={`text-sm bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-800 transition ${
                 isSubmitting ? "opacity-50 cursor-not-allowed" : ""
               }`}
               disabled={isSubmitting}

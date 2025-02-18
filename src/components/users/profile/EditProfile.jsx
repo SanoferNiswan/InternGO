@@ -120,8 +120,8 @@ const EditProfile = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^[6789]\d{9}$/;
     const ifscRegex = /^[A-Z]{4}0[A-Z0-9]{6}$/;
-    const bankNameRegex = /^[A-Za-z\s]{3,}$/; // Bank Name should be at least 3 characters long, only letters and spaces
-    const branchRegex = /^[A-Za-z\s0-9-]{3,}$/; // Branch should be at least 3 characters long, letters, numbers, and hyphen allowed
+    const bankNameRegex = /^[A-Za-z\s]{3,}$/; 
+    const branchRegex = /^[A-Za-z\s-]{3,}$/; 
 
     if (formData.personalEmail && !emailRegex.test(formData.personalEmail)) {
       toast.error("Invalid email address");
@@ -154,7 +154,7 @@ const EditProfile = () => {
       !branchRegex.test(formData.bankDetails.branch)
     ) {
       toast.error(
-        "Invalid Branch Name (Min 3 chars, letters, numbers, and hyphens allowed)"
+        "Invalid Branch Name (Min 3 chars, letters only allowed)"
       );
       return false;
     }

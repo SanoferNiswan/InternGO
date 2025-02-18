@@ -334,10 +334,10 @@ const ObjectiveList = ({
                 <div className="flex gap-2">
                   <button
                     onClick={addObjective}
-                    className={`text-sm bg-gray-700 text-white px-3 py-1 rounded ${
+                    className={`text-sm bg-blue-600 text-white px-3 py-1 rounded ${
                       isSubmitting
                         ? "opacity-50 cursor-not-allowed"
-                        : "hover:bg-gray-900"
+                        : "hover:bg-blue-700"
                     }`}
                     disabled={isSubmitting}
                   >
@@ -345,7 +345,7 @@ const ObjectiveList = ({
                   </button>
                   <button
                     onClick={() => setShowObjectiveForm(null)}
-                    className="text-sm bg-red-600 text-white px-3 py-1 rounded hover:bg-red-800"
+                    className="text-sm bg-gray-600 text-white px-3 py-1 rounded hover:bg-gray-800"
                   >
                     Cancel
                   </button>

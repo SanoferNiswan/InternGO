@@ -109,6 +109,9 @@ const AdminUpdate = () => {
     }));
   }, []);
 
+  console.log(dailyUpdates);
+  
+
   if (loading) {
     return <Loader />;
   }
@@ -159,7 +162,7 @@ const AdminUpdate = () => {
       </div>
 
       {dailyUpdates.length > 0 ? (
-        dailyUpdates.map((update) => (
+        dailyUpdates.filter((update) => update.tasks.length > 0).map((update) => (
           <div key={update.user.id} className="mb-8">
             <h3 className="text-xl font-bold text-gray-800 mb-2 p-3 rounded-md">
               {update.user.name} - {update.user.designation}

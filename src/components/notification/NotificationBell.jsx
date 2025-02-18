@@ -9,9 +9,6 @@ const NotificationBell = ({ notifications, setNotifications }) => {
   const { token, userId } = useSelector((state) => state.auth);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedNotifications, setSelectedNotifications] = useState([]);
-
-  console.log("notifications : ", notifications);
-
   const markAsRead = async () => {
     if (selectedNotifications.length === 0) {
       toast.warning("Select at least one notification!", { autoClose: 2000 });
@@ -137,7 +134,7 @@ const NotificationBell = ({ notifications, setNotifications }) => {
             </div>
           </div>
 
-          <div className="overflow-y-auto h-72 px-4 py-2">
+          <div className="overflow-y-auto h-72">
             {notifications.length === 0 ? (
               <p className="text-center text-gray-500">No new notifications</p>
             ) : (
@@ -145,13 +142,13 @@ const NotificationBell = ({ notifications, setNotifications }) => {
                 {notifications.map((notification) => (
                   <li
                     key={notification.id}
-                    className={`py-3 px-4 border-b border-gray-200 flex justify-between items-center ${
+                    className={`py-2 px-3 border-b border-gray-200 flex justify-between items-center ${
                       notification.isRead
                         ? "text-gray-400"
                         : "text-gray-700 font-medium"
                     }`}
                   >
-                    <div className="flex flex-col gap-3">
+                    <div className="flex flex-col gap-1">
                       <div className="flex items-center space-x-3">
                         <input
                           type="checkbox"
@@ -163,7 +160,7 @@ const NotificationBell = ({ notifications, setNotifications }) => {
                         />
                         <p className="text-sm">{notification.message}</p>
                       </div>
-                      <div className="text-xs text-gray-600 text-end">
+                      <div className="text-xs text-gray-400 text-end">
                         {new Intl.DateTimeFormat("en-US", {
                           day: "2-digit",
                           month: "short",

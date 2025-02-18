@@ -18,7 +18,7 @@ const DailyUpdates = () => {
     day = addDays(day, 1);
   }
 
-  const joiningDate = new Date(2024, 8, 16); // September 16, 2024
+  const joiningDate = new Date(2024, 8, 16); 
   const tomorrow = addDays(new Date(), 1);
 
   const handleDateClick = (date) => {
