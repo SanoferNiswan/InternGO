@@ -156,6 +156,7 @@ const EditProfileModal = ({
           <input
             name="dateOfJoining"
             type="date"
+            min="2024-01-01"
             defaultValue={
               new Date(formData.dateOfJoining || new Date())
                 .toISOString()

@@ -127,7 +127,6 @@ const InteractionSchedule = () => {
   return (
     <div className="p-6 min-h-screen">
       <div className="flex flex-col md:flex-row justify-between items-center gap-4 mb-6">
-        {interactions.length > 0 && (
           <div className="flex flex-col sm:flex-row items-center gap-4 w-full md:w-2/3">
             <input
               type="text"
@@ -156,7 +155,6 @@ const InteractionSchedule = () => {
               {showFilters ? "Hide Filters" : "Show Filters"}
             </button>
           </div>
-        )}
 
         {/* Schedule Button */}
         <button

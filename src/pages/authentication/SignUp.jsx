@@ -22,6 +22,8 @@ const SignUp = () => {
       case "name":
         return value.trim() === ""
           ? "Name is required."
+          : value.trim().length < 5
+          ? "Name must be at least 5 characters long."
           : /^[A-Za-z\s]+$/.test(value)
           ? ""
           : "Name should contain only alphabets and spaces.";

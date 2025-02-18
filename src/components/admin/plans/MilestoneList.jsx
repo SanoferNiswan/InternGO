@@ -46,8 +46,6 @@ const MilestoneList = ({
         toast.error(`Total milestone days cannot exceed ${planDays}!`);
         return;
       }
-
-      console.log(milestone);
       
       await axios.patch(
         `/api/plans/${planId}/update/milestone`,

@@ -6,6 +6,7 @@ import EditProfileModal from "../admin/profileManagement/EditProfileModal";
 import AddAssetModal from "../admin/profileManagement/AddAssetModal";
 import Loader from "../Loader";
 import { toast } from "react-toastify";
+import defaultProfile from "../../assets/profile.jpg";
 
 const Profile = ({ userId, token }) => {
   const { role, userId: id } = useSelector((state) => state.auth);
@@ -18,7 +19,6 @@ const Profile = ({ userId, token }) => {
   const [loading, setLoading] = useState(true);
   const [assets, setAssets] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
-
 
   useEffect(() => {
     if (userId && token) {
@@ -377,12 +377,9 @@ const Profile = ({ userId, token }) => {
           <div className="flex flex-col">
             <div className="flex flex-col items-center">
               <img
-                src={
-                  profileData.profilePhoto ||
-                  "https://cdn-icons-png.flaticon.com/512/9203/9203764.png"
-                }
+                src={profileData.profilePhoto || defaultProfile}
                 alt="add your photo"
-                className="w-24 h-24 rounded-full object-cover mb-4 border-4 border-white cursor-pointer bg-white"
+                className="w-24 h-24 rounded-full object-cover mb-4 cursor-pointer bg-white"
                 onClick={() => setIsProfilePhotoModalOpen(true)}
               />
               <h1 className="text-lg font-bold">{profileData.name}</h1>
@@ -466,21 +463,20 @@ const Profile = ({ userId, token }) => {
 
       {isProfilePhotoModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-[90%] max-w-md">
-            <h2 className="text-lg font-bold mb-4">Profile Photo</h2>
+          <div className="relative p-6 rounded-lg shadow-lg w-[90%] max-w-md">
+            <button
+              className="absolute top-2 right-2 text-white bg-red-500 rounded-full p-2 hover:bg-red-600 focus:outline-none"
+              onClick={() => setIsProfilePhotoModalOpen(false)}
+            >
+              X
+            </button>
             <div className="flex justify-center">
               <img
                 src={profileData.profilePhoto}
                 alt="Profile"
-                className="rounded-lg max-h-[200px] max-w-[300px] object-cover"
+                className="rounded-full h-[300px] w-[300px] object-cover"
               />
             </div>
-            <button
-              className="bg-red-500 text-white px-4 py-2 rounded-lg mt-4 w-1/2 ml-24 hover:bg-red-600"
-              onClick={() => setIsProfilePhotoModalOpen(false)}
-            >
-              Close
-            </button>
           </div>
         </div>
       )}
@@ -491,7 +487,7 @@ const Profile = ({ userId, token }) => {
           setIsEditProfileModalOpen={setIsEditProfileModalOpen}
           userId={userId}
           token={token}
-          refresh = {fetchProfileData}
+          refresh={fetchProfileData}
           onClose={() => setIsEditProfileModalOpen(false)}
         />
       )}
@@ -501,7 +497,7 @@ const Profile = ({ userId, token }) => {
           isAssetModalOpen={isAssetModalOpen}
           setIsAssetModalOpen={setIsAssetModalOpen}
           userId={userId}
-          refresh = {fetchProfileData}
+          refresh={fetchProfileData}
           setActiveTab={setActiveTab}
         />
       )}

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import axios from "../../api/axios";
 import { useDispatch } from "react-redux";
 import { setAuth } from "../../redux/slices/authSlice";
+import { toast } from "react-toastify";
 
 const jwt_decode = import("jwt-decode").then((module) => module.default);
 
@@ -23,7 +24,7 @@ function GLogin() {
       const allowedDomain2 = "codingmart.com";
 
       if (email.split("@")[1] !== allowedDomain1 && email.split("@")[1] !== allowedDomain2) {
-        alert(
+        toast.error(
           "Authentication failed: invalid domain"
         );
         return;
@@ -41,19 +42,17 @@ function GLogin() {
         dispatch(setAuth({ user, userId, name, zone, token, role, permissions,profilePhoto }));
 
         navigate("/dashboard",{replace:true});
-        console.log(user);
         
       } else {
         alert("Authentication failed: Unable to retrieve user details.");
       }
     } catch (error) {
-      console.error("Error during authentication:", error);
-      alert("Authentication failed: Please try again.");
+      toast.error("Authentication failed: Please try again.");
     }
   };
 
   const onFailure = () => {
-    alert("Google Sign-In failed. Please try again.");
+    toast.error("Google Sign-In failed. Please try again.");
   };
 
   return (

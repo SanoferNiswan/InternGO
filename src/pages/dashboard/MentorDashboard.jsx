@@ -40,7 +40,7 @@ const MentorDashboard = () => {
             className="w-28 h-28 rounded-full aspect-square object-cover"
           />
         ) : (
-          <div className="w-24 h-24 rounded-full bg-white flex items-center justify-center text-lg font-bold text-blue-500 aspect-square object-cover">
+          <div className="w-24 h-24 rounded-full bg-white flex items-center justify-center font-bold text-blue-500 aspect-square object-cover text-4xl">
             {name?.charAt(0).toUpperCase()}
           </div>
         )}

@@ -30,8 +30,6 @@ export const fetchMentors = createAsyncThunk(
 );
 
 export const fetchFilters = createAsyncThunk("data/fetchFilters", async (_, { getState,rejectWithValue }) => {
-  console.log("inside redux thunk filters");
-  
   try {
     const token = getState().auth.token; 
     const response = await axios.get("/api/users/distinct/filters",{
@@ -39,7 +37,6 @@ export const fetchFilters = createAsyncThunk("data/fetchFilters", async (_, { ge
         Authorization:`Bearer ${token}`
       }
     });
-    console.log("response : ",response);
     return response.data.data;
   } catch (error) {
     // return rejectWithValue(error.response?.data?.message || "Error fetching filters");

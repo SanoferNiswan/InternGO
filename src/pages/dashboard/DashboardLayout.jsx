@@ -99,13 +99,7 @@ const DashboardLayout = () => {
       permission: "tasks.update",
       path: "/intern/help",
       icon: <FaHandsHelping />,
-    },
-    // {
-    //   name: "Help desk",
-    //   permission: "helpdesk.manage",
-    //   path: "/intern/help",
-    //   icon: <FaHandsHelping />,
-    // },
+    }
   ];
 
   const filteredTabs = tabs.filter((tab) =>
