@@ -46,6 +46,8 @@ const UserFeedback = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       setFeedback(response.data.data);
+      console.log(response);
+      
     } catch (error) {
       toast.error(error);
     } finally {
