@@ -13,27 +13,40 @@ const ResetPassword = () => {
   const [errors, setErrors] = useState({});
   const navigate = useNavigate();
 
-  const validateFields = () => {
-    const newErrors = {};
+  const validateFields = (field, value) => {
+    const newErrors = { ...errors };
 
-    if (!password) {
-      newErrors.password = "Password is required.";
-    } else if (password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters long.";
+    if (field === "password") {
+      if (!value) {
+        newErrors.password = "Password is required.";
+      } else if (value.length < 6) {
+        newErrors.password = "Password must be at least 6 characters long.";
+      } else {
+        delete newErrors.password;
+      }
+
+      if (confirmPassword && value !== confirmPassword) {
+        newErrors.confirmPassword = "Passwords do not match.";
+      } else {
+        delete newErrors.confirmPassword;
+      }
     }
 
-    if (!confirmPassword) {
-      newErrors.confirmPassword = "Please confirm your password.";
-    } else if (password !== confirmPassword) {
-      newErrors.confirmPassword = "Passwords do not match.";
+    if (field === "confirmPassword") {
+      if (!value) {
+        newErrors.confirmPassword = "Please confirm your password.";
+      } else if (password !== value) {
+        newErrors.confirmPassword = "Passwords do not match.";
+      } else {
+        delete newErrors.confirmPassword;
+      }
     }
 
     setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
   };
 
   const resetPassword = async () => {
-    if (!validateFields()) return;
+    if (Object.keys(errors).length > 0 || !password || !confirmPassword) return;
 
     try {
       setIsSubmitting(true);
@@ -48,8 +61,7 @@ const ResetPassword = () => {
       );
       console.log(response);
       toast.success("Password reset successfully!");
-      navigate("/signin",{replace:true});
-      
+      navigate("/signin", { replace: true });
     } catch (error) {
       toast.error(error?.response?.data?.message || "Something went wrong!");
     } finally {
@@ -78,7 +90,10 @@ const ResetPassword = () => {
                 errors.password ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-blue-500"
               }`}
               value={password}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => {
+                setPassword(e.target.value);
+                validateFields("password", e.target.value);
+              }}
             />
             {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
           </div>
@@ -94,7 +109,9 @@ const ResetPassword = () => {
               }`}
               value={confirmPassword}
               onChange={(e) => {
-                setConfirmPassword(e.target.value); validateFields()}}
+                setConfirmPassword(e.target.value);
+                validateFields("confirmPassword", e.target.value);
+              }}
             />
             {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>}
           </div>
