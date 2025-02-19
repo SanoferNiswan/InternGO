@@ -5,21 +5,24 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 
 const ResetPassword = () => {
   const [searchParams] = useSearchParams();
+  const [isValid, setIsValid] = useState(null);
   const token = searchParams.get("token");
 
-  useEffect(()=>{
-    vertifyToken();
-  },token)
+  useEffect(() => {
+    verifyToken();
+  }, token);
 
-  const vertifyToken = async () =>{
-    try{
-      const response = axios.post(`/api/auth/verify`,{token})
-      console.log(response);      
-    }catch(error){
+  const verifyToken = async () => {
+    try {
+      await axios.post(`/api/auth/verify`, { token });
+      setIsValid(true);
+    } catch (error) {
       console.error(error);
-      
+      if (error.response?.status === 401) {
+        setIsValid(false);
+      }
     }
-  }
+  };
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -36,17 +39,20 @@ const ResetPassword = () => {
       } else if (value.length < 8) {
         newErrors.password = "Password must be at least 8 characters long.";
       } else if (!/[A-Z]/.test(value)) {
-        newErrors.password = "Password must include at least 1 uppercase letter.";
+        newErrors.password =
+          "Password must include at least 1 uppercase letter.";
       } else if (!/[a-z]/.test(value)) {
-        newErrors.password = "Password must include at least 1 lowercase letter.";
+        newErrors.password =
+          "Password must include at least 1 lowercase letter.";
       } else if (!/[0-9]/.test(value)) {
         newErrors.password = "Password must include at least 1 number.";
       } else if (!/[@$!%*?&]/.test(value)) {
-        newErrors.password = "Password must include at least 1 special character.";
+        newErrors.password =
+          "Password must include at least 1 special character.";
       } else {
         delete newErrors.password;
       }
-    
+
       if (confirmPassword && value !== confirmPassword) {
         newErrors.confirmPassword = "Passwords do not match.";
       } else {
@@ -91,12 +97,26 @@ const ResetPassword = () => {
     }
   };
 
-
+  if (isValid === false) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen text-center">
+        <h1 className="text-2xl font-bold text-red-600">Token Expired</h1>
+        <button
+          onClick={() => navigate("/signin")}
+          className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+        >
+          Go to Sign In
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
       <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md shadow-gray-400">
-        <h2 className="text-xl font-semibold text-center mb-4">Reset Password</h2>
+        <h2 className="text-xl font-semibold text-center mb-4">
+          Reset Password
+        </h2>
         <form
           className="flex flex-col gap-4"
           onSubmit={(e) => {
@@ -111,7 +131,9 @@ const ResetPassword = () => {
             <input
               type="password"
               className={`p-2 border rounded w-full focus:outline-none focus:ring-2 ${
-                errors.password ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-blue-500"
+                errors.password
+                  ? "border-red-500 focus:ring-red-500"
+                  : "border-gray-300 focus:ring-blue-500"
               }`}
               value={password}
               onChange={(e) => {
@@ -119,7 +141,9 @@ const ResetPassword = () => {
                 validateFields("password", e.target.value);
               }}
             />
-            {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
+            {errors.password && (
+              <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+            )}
           </div>
 
           <div>
@@ -129,7 +153,9 @@ const ResetPassword = () => {
             <input
               type="password"
               className={`p-2 border rounded w-full focus:outline-none focus:ring-2 ${
-                errors.confirmPassword ? "border-red-500 focus:ring-red-500" : "border-gray-300 focus:ring-blue-500"
+                errors.confirmPassword
+                  ? "border-red-500 focus:ring-red-500"
+                  : "border-gray-300 focus:ring-blue-500"
               }`}
               value={confirmPassword}
               onChange={(e) => {
@@ -137,13 +163,19 @@ const ResetPassword = () => {
                 validateFields("confirmPassword", e.target.value);
               }}
             />
-            {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>}
+            {errors.confirmPassword && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.confirmPassword}
+              </p>
+            )}
           </div>
 
           <button
             type="submit"
             className={`p-2 rounded-md text-white font-semibold ${
-              isSubmitting ? "bg-blue-300 cursor-not-allowed" : "bg-blue-500 hover:bg-blue-600"
+              isSubmitting
+                ? "bg-blue-300 cursor-not-allowed"
+                : "bg-blue-500 hover:bg-blue-600"
             }`}
             disabled={isSubmitting}
           >
