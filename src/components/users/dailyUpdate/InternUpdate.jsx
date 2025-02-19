@@ -119,6 +119,22 @@ const InternUpdate = () => {
         return false;
       }
 
+      const isValid = (str) =>
+        /^[a-zA-Z0-9- ]*$/.test(str) && 
+        /[a-zA-Z-]/.test(str) && 
+        str.trim().length >= 3;
+
+      if (
+        !isValid(task.taskName) ||
+        !isValid(task.activitiesPlanned) ||
+        (task.activitiesCompleted && !isValid(task.activitiesCompleted))
+      ) {
+        toast.error(
+          "Task name and activities should be at least 3 characters long and not numeric"
+        );
+        return false;
+      }
+
       totalEstimatedTime += Number(task.estimatedTime);
       totalActualTime += Number(task.actualTime || 0);
     }
