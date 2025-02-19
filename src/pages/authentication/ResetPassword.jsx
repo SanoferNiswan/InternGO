@@ -102,7 +102,7 @@ const ResetPassword = () => {
   };
 
   if(loading){
-    <Loader />
+    return <Loader />
   }
 
   return (
