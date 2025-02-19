@@ -16,15 +16,25 @@ const ResetPassword = () => {
   const validateFields = (field, value) => {
     const newErrors = { ...errors };
 
+   
+
     if (field === "password") {
-      if (!value) {
+      if (!value.trim()) {
         newErrors.password = "Password is required.";
-      } else if (value.length < 6) {
-        newErrors.password = "Password must be at least 6 characters long.";
+      } else if (value.length < 8) {
+        newErrors.password = "Password must be at least 8 characters long.";
+      } else if (!/[A-Z]/.test(value)) {
+        newErrors.password = "Password must include at least 1 uppercase letter.";
+      } else if (!/[a-z]/.test(value)) {
+        newErrors.password = "Password must include at least 1 lowercase letter.";
+      } else if (!/[0-9]/.test(value)) {
+        newErrors.password = "Password must include at least 1 number.";
+      } else if (!/[@$!%*?&]/.test(value)) {
+        newErrors.password = "Password must include at least 1 special character.";
       } else {
         delete newErrors.password;
       }
-
+    
       if (confirmPassword && value !== confirmPassword) {
         newErrors.confirmPassword = "Passwords do not match.";
       } else {

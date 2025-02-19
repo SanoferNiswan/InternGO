@@ -27,13 +27,13 @@ const Home = () => {
         <img src={logo} alt="InternGO" className="w-40 h-12" />
         <div className="space-x-4">
           <button
-            className="sm:px-3 sm:py-2 lg:px-4 lg:py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            className="lg:px-4 lg:py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
             onClick={() => navigate("/signin")}
           >
             Sign In
           </button>
           <button
-            className="bg-blue-600 text-white sm:px-3 sm:py-2 lg:px-4 lg:py-2 rounded hover:bg-blue-700"
+            className="bg-blue-600 text-white lg:px-4 lg:py-2 rounded hover:bg-blue-700"
             onClick={() => navigate("/signup")}
           >
             Sign Up
@@ -99,7 +99,7 @@ const Home = () => {
             download
             className="flex gap-2 top-0"
           >
-            <FaDownload className="mt-1"/> <span>Get InternGO App</span>
+            <FaDownload className="mt-1" /> <span>Get InternGO App</span>
           </a>
         </button>
       </section>

@@ -60,7 +60,8 @@ const MilestoneList = ({
         { headers: { Authorization: `Bearer ${token}` } }
       );
     } catch (error) {
-      toast.error("Error updating milestone:", error.response.data.message);
+      console.log(error.response?.data?.message);
+      toast.error("Error updating milestone:", error.response?.data?.message);
     }
   };
 
