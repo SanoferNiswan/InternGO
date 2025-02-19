@@ -97,92 +97,90 @@ const ResetPassword = () => {
     }
   };
 
-  if (isValid === false) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen text-center">
-        <h1 className="text-2xl font-bold text-red-600">Token Expired</h1>
-        <button
-          onClick={() => navigate("/signin")}
-          className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-        >
-          Go to Sign In
-        </button>
-      </div>
-    );
-  }
-
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md shadow-gray-400">
-        <h2 className="text-xl font-semibold text-center mb-4">
-          Reset Password
-        </h2>
-        <form
-          className="flex flex-col gap-4"
-          onSubmit={(e) => {
-            e.preventDefault();
-            resetPassword();
-          }}
-        >
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              New Password
-            </label>
-            <input
-              type="password"
-              className={`p-2 border rounded w-full focus:outline-none focus:ring-2 ${
-                errors.password
-                  ? "border-red-500 focus:ring-red-500"
-                  : "border-gray-300 focus:ring-blue-500"
-              }`}
-              value={password}
-              onChange={(e) => {
-                setPassword(e.target.value);
-                validateFields("password", e.target.value);
-              }}
-            />
-            {errors.password && (
-              <p className="text-red-500 text-sm mt-1">{errors.password}</p>
-            )}
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Confirm Password
-            </label>
-            <input
-              type="password"
-              className={`p-2 border rounded w-full focus:outline-none focus:ring-2 ${
-                errors.confirmPassword
-                  ? "border-red-500 focus:ring-red-500"
-                  : "border-gray-300 focus:ring-blue-500"
-              }`}
-              value={confirmPassword}
-              onChange={(e) => {
-                setConfirmPassword(e.target.value);
-                validateFields("confirmPassword", e.target.value);
-              }}
-            />
-            {errors.confirmPassword && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.confirmPassword}
-              </p>
-            )}
-          </div>
-
-          <button
-            type="submit"
-            className={`p-2 rounded-md text-white font-semibold ${
-              isSubmitting
-                ? "bg-blue-300 cursor-not-allowed"
-                : "bg-blue-500 hover:bg-blue-600"
-            }`}
-            disabled={isSubmitting}
+      {isValid ? (
+        <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md shadow-gray-400">
+          <h2 className="text-xl font-semibold text-center mb-4">
+            Reset Password
+          </h2>
+          <form
+            className="flex flex-col gap-4"
+            onSubmit={(e) => {
+              e.preventDefault();
+              resetPassword();
+            }}
           >
-            {isSubmitting ? "Submitting..." : "Reset Password"}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                New Password
+              </label>
+              <input
+                type="password"
+                className={`p-2 border rounded w-full focus:outline-none focus:ring-2 ${
+                  errors.password
+                    ? "border-red-500 focus:ring-red-500"
+                    : "border-gray-300 focus:ring-blue-500"
+                }`}
+                value={password}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                  validateFields("password", e.target.value);
+                }}
+              />
+              {errors.password && (
+                <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Confirm Password
+              </label>
+              <input
+                type="password"
+                className={`p-2 border rounded w-full focus:outline-none focus:ring-2 ${
+                  errors.confirmPassword
+                    ? "border-red-500 focus:ring-red-500"
+                    : "border-gray-300 focus:ring-blue-500"
+                }`}
+                value={confirmPassword}
+                onChange={(e) => {
+                  setConfirmPassword(e.target.value);
+                  validateFields("confirmPassword", e.target.value);
+                }}
+              />
+              {errors.confirmPassword && (
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.confirmPassword}
+                </p>
+              )}
+            </div>
+
+            <button
+              type="submit"
+              className={`p-2 rounded-md text-white font-semibold ${
+                isSubmitting
+                  ? "bg-blue-300 cursor-not-allowed"
+                  : "bg-blue-500 hover:bg-blue-600"
+              }`}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? "Submitting..." : "Reset Password"}
+            </button>
+          </form>
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center min-h-screen text-center">
+          <h1 className="text-2xl font-bold text-red-600">Token Expired</h1>
+          <button
+            onClick={() => navigate("/signin")}
+            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+          >
+            Go to Sign In
           </button>
-        </form>
-      </div>
+        </div>
+      )}
     </div>
   );
 };
