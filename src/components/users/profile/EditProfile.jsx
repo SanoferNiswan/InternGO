@@ -120,8 +120,16 @@ const EditProfile = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^[6789]\d{9}$/;
     const ifscRegex = /^[A-Z]{4}0[A-Z0-9]{6}$/;
-    const bankNameRegex = /^[A-Za-z\s]{3,}$/; 
-    const branchRegex = /^[A-Za-z\s-]{3,}$/; 
+    const inputRegex = /^[A-Za-z\s]{3,}$/;
+    const branchRegex = /^[A-Za-z\s-]{3,}$/;
+    const accountNumberRegex = /^[0-9]{6,18}$/;
+
+    if (formData.bankDetails.accountNumber) {
+      if (!accountNumberRegex.test(formData.bankDetails.accountNumber)) {
+        toast.error("Enter a valid account number (6-18 digits).");
+        return;
+      }
+    }
 
     if (formData.personalEmail && !emailRegex.test(formData.personalEmail)) {
       toast.error("Invalid email address");
@@ -143,7 +151,7 @@ const EditProfile = () => {
 
     if (
       formData.bankDetails.bankName &&
-      !bankNameRegex.test(formData.bankDetails.bankName)
+      !inputRegex.test(formData.bankDetails.bankName)
     ) {
       toast.error("Invalid Bank Name (Only letters and spaces, min 3 chars)");
       return false;
@@ -153,9 +161,23 @@ const EditProfile = () => {
       formData.bankDetails.branch &&
       !branchRegex.test(formData.bankDetails.branch)
     ) {
-      toast.error(
-        "Invalid Branch Name (Min 3 chars, letters only allowed)"
-      );
+      toast.error("Invalid Branch Name (Min 3 chars, letters only allowed)");
+      return false;
+    }
+
+    if (
+      formData.education.college &&
+      !inputRegex.test(formData.education.college)
+    ) {
+      toast.error("College should contains alphabets only");
+      return false;
+    }
+
+    if (
+      formData.education.degree &&
+      !inputRegex.test(formData.education.degree)
+    ) {
+      toast.error("Degree should contains alphabets only");
       return false;
     }
 
@@ -204,13 +226,12 @@ const EditProfile = () => {
           },
         }
       );
-      console.log("Profile updated successfully:", response.data);
       dispatch(setAuth({ profilePhoto: response.data.data.data.profilePhoto }));
       toast.success("Profile updated successfully");
       navigate("/dashboard/my-profile");
     } catch (error) {
       console.error("Error updating profile:", error);
-      toast.error("Failed to update profile");
+      toast.error(error.response?.data?.message);
     }
   };
 

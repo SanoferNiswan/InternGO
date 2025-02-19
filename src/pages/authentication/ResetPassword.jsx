@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "../../api/axios";
 import { toast } from "react-toastify";
 import { useNavigate, useSearchParams } from "react-router-dom";
@@ -6,6 +6,20 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 const ResetPassword = () => {
   const [searchParams] = useSearchParams();
   const token = searchParams.get("token");
+
+  useEffect(()=>{
+    vertifyToken();
+  },token)
+
+  const vertifyToken = async () =>{
+    try{
+      const response = axios.post(`/api/auth/verify`,{token})
+      console.log(response);      
+    }catch(error){
+      console.error(error);
+      
+    }
+  }
 
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
@@ -15,8 +29,6 @@ const ResetPassword = () => {
 
   const validateFields = (field, value) => {
     const newErrors = { ...errors };
-
-   
 
     if (field === "password") {
       if (!value.trim()) {
@@ -78,6 +90,8 @@ const ResetPassword = () => {
       setIsSubmitting(false);
     }
   };
+
+
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
