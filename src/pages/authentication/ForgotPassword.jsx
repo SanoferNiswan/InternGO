@@ -12,20 +12,27 @@ const ForgotPassword = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (email.trim() === "") {
-        toast.error("email must not be empty");
-        return;
+      toast.error("Email must not be empty");
+      return;
     }
-      try {
-        const response = await axios.post(`/api/auth/forgot-password`, {email});
-        setSubmitted(true);
-      } catch (error) {
-        if (error) {
-          toast.error(JSON.stringify(error.response?.data?.message));
-        } else {
-          toast.error("network error");
-        }
+
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    if (!emailRegex.test(email)) {
+      toast.error("Enter a valid email address");
+      return;
+    }
+
+    try {
+      const response = await axios.post(`/api/auth/forgot-password`, { email });
+      setSubmitted(true);
+    } catch (error) {
+      if (error) {
+        toast.error(JSON.stringify(error.response?.data?.message));
+      } else {
+        toast.error("network error");
       }
-    
+    }
   };
 
   return (
