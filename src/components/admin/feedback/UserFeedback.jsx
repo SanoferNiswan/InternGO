@@ -164,7 +164,6 @@ const UserFeedback = () => {
         
       </div>
 
-      {/* Line Chart */}
       {feedback.length > 0 && (
         <div className="bg-white p-4 rounded-lg shadow-lg mb-6 flex justify-center">
           <div className="w-3/4 h-96 p-6 overflow-hidden">
