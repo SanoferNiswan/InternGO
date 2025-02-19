@@ -8,6 +8,7 @@ const ResetPassword = () => {
   const [searchParams] = useSearchParams();
   const [isValid, setIsValid] = useState(null);
   const token = searchParams.get("token");
+  const [loading,setLoading] = useState(true);
 
   useEffect(() => {
     verifyToken();
@@ -22,6 +23,8 @@ const ResetPassword = () => {
       if (error.response?.status === 401) {
         setIsValid(false);
       }
+    }finally{
+      setLoading(false);
     }
   };
 
@@ -98,7 +101,7 @@ const ResetPassword = () => {
     }
   };
 
-  if(isValid === null){
+  if(loading){
     <Loader />
   }
 
