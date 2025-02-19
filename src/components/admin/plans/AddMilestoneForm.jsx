@@ -21,7 +21,7 @@ const AddMilestoneForm = ({
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const totalMilestoneDays = currentMilestones.reduce(
-    (sum, milestone) => sum + milestone.milestoneDays,
+    (sum, milestone) => sum + parseInt(milestone.milestoneDays),
     0
   );
 
@@ -33,8 +33,11 @@ const AddMilestoneForm = ({
       return;
     } 
 
-    if (totalMilestoneDays + milestoneDays > planDays) {
-      toast.error(`Total milestone days cannot exceed ${planDays}!`);
+
+    console.log("total milestone days:",parseInt(totalMilestoneDays) + parseInt(milestoneDays));
+
+    if (parseInt(totalMilestoneDays) + parseInt(milestoneDays) > planDays) {
+      toast.error(`Total milestone days cannot exceed ${planDays}!`);      
       return;
     }
 

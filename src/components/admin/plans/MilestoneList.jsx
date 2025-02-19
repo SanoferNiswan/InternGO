@@ -38,11 +38,14 @@ const MilestoneList = ({
     try {
       const updatedTotalMilestoneDays =
         listOfMilestone.reduce(
-          (sum, m) => sum + (m.id === milestone.id ? 0 : m.milestoneDays),
+          (sum, m) => sum + parseInt(m.id === milestone.id ? 0 : m.milestoneDays),
           0
         ) + parseInt(milestone.milestoneDays);
 
+        console.log("updatedTotalMilestoneDays:",updatedTotalMilestoneDays);
+
       if (updatedTotalMilestoneDays > planDays) {
+       
         toast.error(`Total milestone days cannot exceed ${planDays}!`);
         return;
       }
@@ -60,8 +63,7 @@ const MilestoneList = ({
         { headers: { Authorization: `Bearer ${token}` } }
       );
     } catch (error) {
-      console.log(error.response?.data?.message);
-      toast.error("Error updating milestone:", error.response?.data?.message);
+      toast.error(error.response?.data?.message);
     }
   };
 

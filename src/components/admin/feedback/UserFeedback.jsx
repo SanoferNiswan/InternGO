@@ -46,7 +46,6 @@ const UserFeedback = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       setFeedback(response.data.data);
-      console.log(response);
       
     } catch (error) {
       toast.error(error);
@@ -113,7 +112,7 @@ const UserFeedback = () => {
           token: token
         },
       });
-
+      
       const blob = new Blob([response.data], { type: "application/pdf" });
       const url = window.URL.createObjectURL(blob);
 
@@ -129,8 +128,7 @@ const UserFeedback = () => {
       document.body.removeChild(link);
       window.URL.revokeObjectURL(url);
     } catch (error) {
-      console.error("Error downloading PDF:", error);
-      alert("Failed to download the PDF.");
+      toast.error("Failed to download the PDF.");
     }
   };
 

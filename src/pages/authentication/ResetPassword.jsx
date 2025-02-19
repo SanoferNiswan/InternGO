@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "../../api/axios";
 import { toast } from "react-toastify";
 import { useNavigate, useSearchParams } from "react-router-dom";
+import Loader from "../../components/Loader";
 
 const ResetPassword = () => {
   const [searchParams] = useSearchParams();
@@ -96,6 +97,10 @@ const ResetPassword = () => {
       setIsSubmitting(false);
     }
   };
+
+  if(isValid === null){
+    <Loader />
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100">
