@@ -22,10 +22,14 @@ const Feedback = () => {
     (state) => state.data
   ); 
 
+  useEffect(() => {
+      if (currentPage > totalPages) {
+        setCurrentPage(1);
+      }
+    }, [totalPages]);
+
   useEffect(()=>{
-    if(token){
       dispatch(fetchFilters());
-    }
   },[token])
 
   const [filter, setFilter] = useState({
@@ -220,8 +224,8 @@ const Feedback = () => {
       </div>
  
       {users.length > 0 ? (
-        <div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 justify-items-center ">
+        <div className="w-full">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 justify-between">
             {users.map((user) => (
               <UserCard key={user.id} user={user} />
             ))}
@@ -235,7 +239,7 @@ const Feedback = () => {
             >
               Prev
             </button>
-            <span>
+            <span className="mt-2">
               Page {currentPage} of {totalPages}
             </span>
             <button

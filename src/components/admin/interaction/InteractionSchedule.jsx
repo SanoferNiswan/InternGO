@@ -20,6 +20,8 @@ const InteractionSchedule = () => {
     (state) => state.data
   ); 
 
+
+
   useEffect(()=>{
     if(token){
       dispatch(fetchFilters());
@@ -36,6 +38,12 @@ const InteractionSchedule = () => {
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
   const [selectedDate, setSelectedDate] = useState(null);
+
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(1);
+    }
+  }, [totalPages]);
 
   const [filter, setFilter] = useState({
     year: [],

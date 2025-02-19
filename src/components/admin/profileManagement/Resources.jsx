@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useSelector,useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { fetchFilters } from "../../../redux/slices/dataSlice";
 import Select from "react-select";
 import axios from "../../../api/axios";
@@ -9,15 +9,13 @@ import Loader from "../../Loader";
 const Resources = () => {
   const { role, token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const { filters } = useSelector(
-    (state) => state.data
-  ); 
+  const { filters } = useSelector((state) => state.data);
 
-  useEffect(()=>{
-    if(token){
+  useEffect(() => {
+    if (token) {
       dispatch(fetchFilters());
     }
-  },[token])
+  }, [token]);
 
   const [users, setUsers] = useState([]);
   const [loadings, setLoadings] = useState(true);
@@ -26,6 +24,12 @@ const Resources = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
+
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(1);
+    }
+  }, [totalPages]); 
 
   const createSelectOptions = (options) =>
     options.map((option) => ({ value: option, label: option }));
@@ -121,7 +125,7 @@ const Resources = () => {
     );
   }
 
-  return ( 
+  return (
     <div className="p-6 flex flex-wrap gap-4 justify-center items-center">
       <div className="flex flex-col lg:flex-row lg:justify-between lg:gap-4">
         <div className="mb-6">
@@ -212,8 +216,8 @@ const Resources = () => {
       </div>
 
       {users.length > 0 ? (
-        <div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 justify-items-center ">
+        <div className="w-full">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 justify-between w-full">
             {users.map((user) => (
               <UserCard key={user.id} user={user} />
             ))}
@@ -227,7 +231,7 @@ const Resources = () => {
             >
               Prev
             </button>
-            <span>
+            <span className="mt-2">
               Page {currentPage} of {totalPages}
             </span>
             <button
