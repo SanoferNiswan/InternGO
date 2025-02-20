@@ -55,26 +55,29 @@ const UserFeedback = () => {
     }
   };
 
-  // generate star rating
-  const renderStars = (rating) => {
-    const stars = [];
-    for (let i = 1; i <= 5; i++) {
-      if (i <= rating) {
-        stars.push(<FaStar key={i} className="text-yellow-500" />);
-      } else if (i - rating < 1 && i - rating > 0) {
-        stars.push(<FaStarHalfAlt key={i} className="text-yellow-500" />);
-      } else {
-        stars.push(<FaRegStar key={i} className="text-gray-400" />);
-      }
-    }
-    return stars;
+  const StarRating = ({ rating }) => {
+    return (
+      <Rating
+        count={5}
+        value={rating}
+        size={32}
+        edit={false}
+        activeColor="#facc15"
+        isHalf={true}
+      />
+    );
   };
 
   const averageScore =
     feedback.reduce((sum, data) => sum + data.avg_rating, 0) / feedback.length;
 
   const lineChartData = {
-    labels: feedback.map((data) => data.interaction.name),
+    labels: feedback.map(
+      (data) =>
+        `${data.interaction.name}\u00A0(${
+          new Date(data.createdAt).toISOString().split("T")[0]
+        })`
+    ),
     datasets: [
       {
         label: "Average Rating",
@@ -111,6 +114,8 @@ const UserFeedback = () => {
 
   const categories = Object.keys(avgRatings);
   const ratingsData = Object.values(avgRatings);
+  console.log("categories", categories, "ratings:", ratingsData);
+
   const radarChartData = {
     labels: categories,
     datasets: [
@@ -183,7 +188,7 @@ const UserFeedback = () => {
 
       {feedback.length > 0 && (
         <div className="bg-white p-4 rounded-lg shadow-lg mb-6 flex justify-center">
-          <div className="w-3/4 h-[500px] p-6 overflow-y-hidden">
+          <div className="w-3/4 h-[500px] w-[100%] p-6 overflow-y-hidden">
             {" "}
             <h2 className="text-lg font-semibold text-center text-gray-700 mb-2">
               Average Ratings Over Interactions
@@ -210,8 +215,8 @@ const UserFeedback = () => {
                   x: {
                     ticks: {
                       font: {
-                        size: 14,
-                        weight: "600",
+                        size: 12,
+                        weight: "700",
                       },
                       color: "#333",
                       autoSkip: false,
@@ -224,6 +229,7 @@ const UserFeedback = () => {
                   legend: { display: false },
                 },
               }}
+              className="w-full"
             />
           </div>
         </div>
@@ -231,14 +237,14 @@ const UserFeedback = () => {
 
       {feedback.length > 0 && (
         <div className="flex justify-around items-start bg-white p-4 rounded-lg shadow-md mt-4 mb-5">
-          <div>
-            <h2 className="text-lg font-semibold text-gray-700">
+          <div className="flex flex-col justify-center">
+            <h2 className="text-lg font-semibold text-gray-700 text-center">
               Overall Rating
             </h2>
             <div className="flex text-2xl mt-2">
-              {renderStars(averageScore)}
+              <StarRating rating={averageScore} />
             </div>
-            <p className="text-gray-500 mt-1">
+            <p className="text-gray-500 mt-1 text-center">
               (
               {Number.isInteger(averageScore)
                 ? averageScore
@@ -268,16 +274,17 @@ const UserFeedback = () => {
       )}
 
       {feedback.length > 0 && (
-        <div className="bg-white p-4 rounded-lg shadow-lg mb-6 flex justify-center">
-          <div className="w-3/4 h-[500px] p-6 overflow-hidden">
-            <h2 className="text-lg font-semibold text-center text-gray-700 mb-2">
-              Overall skill ratings
+        <div className="bg-white p-4 rounded-lg shadow-lg mb-6 flex flex-col md:flex-row gap-5 justify-center">
+          {/* Radar Chart Section */}
+          <div className="md:w-2/3 w-full h-[550px] p-2 overflow-hidden flex flex-col items-center">
+            <h2 className="text-lg font-semibold text-center text-gray-700">
+              Overall Skill Ratings
             </h2>
             <Radar
               data={radarChartData}
               options={{
                 responsive: true,
-                maintainAspectRatio: false,
+                maintainAspectRatio: true,
                 layout: { padding: 10 },
                 scales: {
                   r: {
@@ -285,26 +292,49 @@ const UserFeedback = () => {
                     max: 5,
                     ticks: {
                       stepSize: 1,
-                      font: {
-                        size: 10,
-                        weight: "300",
-                      },
+                      font: { size: 10, weight: "300" },
                       color: "#333",
                     },
                     pointLabels: {
-                      font: {
-                        size: 14,
-                        weight: "400",
-                      },
+                      font: { size: 14, weight: "500" },
                       color: "#333",
                     },
                   },
                 },
-                plugins: {
-                  legend: { display: false },
-                },
+                plugins: { legend: { display: false } },
               }}
+              className="h-[550px] w-[70%] mb-12"
             />
+          </div>
+
+          {/* Skill Ratings Breakdown Section */}
+          <div className="md:w-1/3 w-full h-[550px] p-2 overflow-auto mr-22">
+            <h2 className="text-lg font-semibold text-center text-gray-700 mb-2">
+              Skill Ratings Breakdown
+            </h2>
+            <div className="space-y-2 p-2">
+              {categories.map((category, index) => (
+                <div
+                  key={category}
+                  className="flex justify-between items-center border-b pb-1 overflow-x-auto"
+                >
+                  <span className="text-gray-700 text-sm">{category}</span>
+                  <div className="flex items-center">
+                    <Rating
+                      count={5}
+                      value={ratingsData[index]}
+                      size={24}
+                      edit={false}
+                      activeColor="#facc15"
+                      isHalf={true}
+                    />
+                    <span className="ml-2 text-sm text-gray-600">
+                      {ratingsData[index].toFixed(1)}
+                    </span>
+                  </div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       )}

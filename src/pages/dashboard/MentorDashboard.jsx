@@ -3,7 +3,7 @@ import axios from "../../api/axios";
 import { useSelector } from "react-redux";
 import Announcement from "../../components/Announcement";
 import { toast } from "react-toastify";
-import { FaBomb, FaBook, FaClock, FaTasks, FaTimes } from "react-icons/fa";
+import { FaBook, FaClock, FaTasks } from "react-icons/fa";
 
 const MentorDashboard = () => {
   const { userId, token, profilePhoto, name } = useSelector(

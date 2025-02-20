@@ -120,7 +120,7 @@ const EditProfile = () => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     const phoneRegex = /^[6789]\d{9}$/;
     const ifscRegex = /^[A-Z]{4}0[A-Z0-9]{6}$/;
-    const inputRegex = /^[A-Za-z\s]{3,}$/;
+    const inputRegex = /^[A-Za-z.-\s]{3,}$/;
     const branchRegex = /^[A-Za-z\s-]{3,}$/;
     const accountNumberRegex = /^[0-9]{6,18}$/;
 

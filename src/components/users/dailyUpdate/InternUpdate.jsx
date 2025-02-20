@@ -120,8 +120,10 @@ const InternUpdate = () => {
       }
 
       const isValid = (str) =>
-        /^[a-zA-Z0-9-, ]*$/.test(str) && 
-        /[a-zA-Z-]/.test(str) && 
+        /^[a-zA-Z0-9-,.& ]*$/.test(str) && 
+        /[a-zA-Z]/.test(str) && 
+        !/^[0-9]+$/.test(str) && 
+        !/^[\s-,.&]+$/.test(str) && 
         str.trim().length >= 3;
 
       if (

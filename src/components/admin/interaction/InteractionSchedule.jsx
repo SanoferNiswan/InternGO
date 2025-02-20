@@ -53,7 +53,7 @@ const InteractionSchedule = () => {
   });
 
   const years = filters.years;
-  const status = ["PENDING", "COMPLETED"];
+  const status = ["PENDING", "COMPLETED","FEEDBACK_PENDING"];
   const batches = filters.batches;
   const designations = filters.designations;
 
