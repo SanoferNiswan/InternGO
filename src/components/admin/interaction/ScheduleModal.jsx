@@ -78,8 +78,8 @@ const ScheduleModal = ({ onClose, refreshData }) => {
         "/api/interactions/schedule",
         {
           name: fields.interactionName,
-          assignedIntern: fields.internName,
-          internEmail: fields.internEmail,
+          assignedIntern: fields.internName.trim(),
+          internEmail: fields.internEmail.trim(),
           assignedMentor: fields.mentorName,
           assignedInterviewer: fields.interviewer,
           date: fields.date,

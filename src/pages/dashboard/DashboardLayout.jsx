@@ -99,7 +99,7 @@ const DashboardLayout = () => {
       permission: "tasks.update",
       path: "/intern/help",
       icon: <FaHandsHelping />,
-    }
+    },
   ];
 
   const filteredTabs = tabs.filter((tab) =>
@@ -188,7 +188,6 @@ const DashboardLayout = () => {
               onClick={() => setDropdownOpen(!dropdownOpen)}
               className="flex items-center space-x-2 shadow-md text-blue-600 px-4 py-2 rounded-full cursor-pointer hover:bg-gray-200 font-bold text-lg"
             >
-              <span className="truncate">{name}</span>
               {profilePhoto ? (
                 <img src={profilePhoto} className="w-9 h-9 rounded-full" />
               ) : (
@@ -196,6 +195,7 @@ const DashboardLayout = () => {
                   {name?.charAt(0).toUpperCase()}
                 </div>
               )}
+              <span className="truncate">{name}</span>
             </button>
 
             {dropdownOpen && (

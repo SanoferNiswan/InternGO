@@ -51,7 +51,7 @@ const Resources = () => {
       const response = await axios.post(
         "/api/users/",
         {
-          name: search,
+          name: search.trim(),
           year: filter.year,
           batch: filter.batch,
           designation: filter.designation,

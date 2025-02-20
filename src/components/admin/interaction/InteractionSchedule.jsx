@@ -70,7 +70,7 @@ const InteractionSchedule = () => {
       const response = await axios.post(
         "/api/interactions/",
         {
-          name: search,
+          name: search.trim(),
           year: filter.year,
           batch: filter.batch,
           designation: filter.designation,

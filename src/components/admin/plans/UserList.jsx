@@ -15,20 +15,24 @@ const UserList = ({ planId }) => {
   const [search, setSearch] = useState("");
   const [selectedUsers, setSelectedUsers] = useState([]);
   const [showFilters, setShowFilters] = useState(false);
-  const [loading,setLoading] = useState(false);
+  const [loading, setLoading] = useState(false);
   const limit = 5;
   const topRef = useRef();
 
   const dispatch = useDispatch();
-  const { filters } = useSelector(
-    (state) => state.data
-  ); 
+  const { filters } = useSelector((state) => state.data);
 
-  useEffect(()=>{
-    if(token){
+  useEffect(() => {
+    if (token) {
       dispatch(fetchFilters());
     }
-  },[token])
+  }, [token]);
+
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(1);
+    }
+  }, [totalPages]);
 
   const [filter, setFilter] = useState({
     year: [],
@@ -37,11 +41,11 @@ const UserList = ({ planId }) => {
     status: [],
     planStatus: "Present",
   });
- 
+
   const years = filters.years;
   const batches = filters.batches;
   const designations = filters.designations;
-  const statusOptions = filters.statuses
+  const statusOptions = filters.statuses;
 
   const createSelectOptions = (options) =>
     options.map((option) => ({ value: option, label: option }));
@@ -56,10 +60,10 @@ const UserList = ({ planId }) => {
       const response = await axios.post(
         `/api/plans/${planId}/users`,
         {
-          name: search,
+          name: search.trim(),
           year: filter.year,
           batch: filter.batch,
-          designation: filter.designation, 
+          designation: filter.designation,
           status: filter.status,
           planStatus: filter.planStatus,
         },
@@ -79,7 +83,7 @@ const UserList = ({ planId }) => {
     } catch (error) {
       console.error("Error fetching users:", error);
       setUsers([]);
-    }finally{
+    } finally {
       setLoading(false);
     }
   };
@@ -116,11 +120,10 @@ const UserList = ({ planId }) => {
   };
 
   const toggleUserSelection = (userId) => {
-    setSelectedUsers(
-      (prevSelected) =>
-        prevSelected.includes(userId)
-          ? prevSelected.filter((id) => id !== userId) 
-          : [...prevSelected, userId] 
+    setSelectedUsers((prevSelected) =>
+      prevSelected.includes(userId)
+        ? prevSelected.filter((id) => id !== userId)
+        : [...prevSelected, userId]
     );
   };
 
@@ -144,9 +147,9 @@ const UserList = ({ planId }) => {
       console.error("Error updating users:", error);
     }
   };
- 
-  if(loading){
-    return <Loader />
+
+  if (loading) {
+    return <Loader />;
   }
   return (
     <div
@@ -192,7 +195,7 @@ const UserList = ({ planId }) => {
         >
           {showFilters ? "Hide Filters" : "Show Filters"}
         </button>
-        {showFilters && ( 
+        {showFilters && (
           <div className="mt-2 space-y-2">
             <Select
               isMulti

@@ -44,15 +44,19 @@ const AdminUpdate = () => {
   });
 
   const dispatch = useDispatch();
-  const { filters } = useSelector(
-    (state) => state.data
-  ); 
+  const { filters } = useSelector((state) => state.data);
 
-  useEffect(()=>{
-    if(token){
+  useEffect(() => {
+    if (token) {
       dispatch(fetchFilters());
     }
-  },[token])
+  }, [token]);
+
+  useEffect(() => {
+    if (currentPage > totalPages) {
+      setCurrentPage(1);
+    }
+  }, [totalPages]);
 
   const years = filters.years;
   const batches = filters.batches;
@@ -78,7 +82,7 @@ const AdminUpdate = () => {
           "/api/dailyUpdates/",
           {
             date,
-            name: search,
+            name: search.trim(),
             ...filter,
           },
           {
@@ -110,7 +114,6 @@ const AdminUpdate = () => {
   }, []);
 
   console.log(dailyUpdates);
-  
 
   if (loading) {
     return <Loader />;
@@ -118,7 +121,7 @@ const AdminUpdate = () => {
   return (
     <div className="p-6 bg-gray-100 min-h-screen">
       <h2 className="text-2xl font-bold text-center text-blue-600 mb-6">
-       Daily Updates ({formatDate(date)})
+        Daily Updates ({formatDate(date)})
       </h2>
 
       <div className="flex flex-wrap justify-center justify-between items-center gap-4 mb-6">
@@ -162,60 +165,70 @@ const AdminUpdate = () => {
       </div>
 
       {dailyUpdates.length > 0 ? (
-        dailyUpdates.filter((update) => update.tasks.length > 0).map((update) => (
-          <div key={update.user.id} className="mb-8">
-            <h3 className="text-xl font-bold text-gray-800 mb-2 p-3 rounded-md">
-              {update.user.name} - {update.user.designation}
-            </h3>
-            <div className="overflow-x-auto">
-              <table className="w-full border border-blue-300 shadow-md rounded-lg">
-                <thead>
-                  <tr className="bg-blue-100 text-black text-left text-sm">
-                    <th className="p-2 border border-blue-200">Task Name</th>
-                    <th className="p-2 border border-blue-200">
-                      Planned Activities
-                    </th>
-                    <th className="p-2 border border-blue-200">
-                      Completed Activities
-                    </th>
-                    <th className="p-2 border border-blue-200">
-                      Estimated Time
-                    </th>
-                    <th className="p-2 border border-blue-200">Actual Time</th>
-                    <th className="p-2 border border-blue-200">Progress</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {update.tasks.map((task, index) => (
-                    <tr
-                      key={task.id}
-                      className={`text-gray-900 text-sm bg-white hover:bg-blue-50`}
-                    >
-                      <td className="p-2 border border-blue-200">
-                        {task.taskName}
-                      </td>
-                      <td className="p-2 border border-blue-200">
-                        {task.activitiesPlanned || "N/A"}
-                      </td>
-                      <td className="p-2 border border-blue-200">
-                        {task.activitiesCompleted || "N/A"}
-                      </td>
-                      <td className="p-2 border border-blue-200">
-                        {task.estimatedTime || "-"} hrs
-                      </td>
-                      <td className="p-2 border border-blue-200">
-                        {task.actualTime || "-"} hrs
-                      </td>
-                      <td className={`p-2 border border-blue-200 font-semibold text-blue-700 ${task.taskProgress=="PENDING"? "text-red-600":"text-green-600"}`}>
-                        {task.taskProgress}
-                      </td>
+        dailyUpdates
+          .filter((update) => update.tasks.length > 0)
+          .map((update) => (
+            <div key={update.user.id} className="mb-8">
+              <h3 className="text-xl font-bold text-gray-800 mb-2 p-3 rounded-md">
+                {update.user.name} - {update.user.designation}
+              </h3>
+              <div className="overflow-x-auto">
+                <table className="w-full border border-blue-300 shadow-md rounded-lg">
+                  <thead>
+                    <tr className="bg-blue-100 text-black text-left text-sm">
+                      <th className="p-2 border border-blue-200">Task Name</th>
+                      <th className="p-2 border border-blue-200">
+                        Planned Activities
+                      </th>
+                      <th className="p-2 border border-blue-200">
+                        Completed Activities
+                      </th>
+                      <th className="p-2 border border-blue-200">
+                        Estimated Time
+                      </th>
+                      <th className="p-2 border border-blue-200">
+                        Actual Time
+                      </th>
+                      <th className="p-2 border border-blue-200">Progress</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {update.tasks.map((task, index) => (
+                      <tr
+                        key={task.id}
+                        className={`text-gray-900 text-sm bg-white hover:bg-blue-50`}
+                      >
+                        <td className="p-2 border border-blue-200">
+                          {task.taskName}
+                        </td>
+                        <td className="p-2 border border-blue-200">
+                          {task.activitiesPlanned || "N/A"}
+                        </td>
+                        <td className="p-2 border border-blue-200">
+                          {task.activitiesCompleted || "N/A"}
+                        </td>
+                        <td className="p-2 border border-blue-200">
+                          {task.estimatedTime || "-"} hrs
+                        </td>
+                        <td className="p-2 border border-blue-200">
+                          {task.actualTime || "-"} hrs
+                        </td>
+                        <td
+                          className={`p-2 border border-blue-200 font-semibold text-blue-700 ${
+                            task.taskProgress == "PENDING"
+                              ? "text-red-600"
+                              : "text-green-600"
+                          }`}
+                        >
+                          {task.taskProgress}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
-          </div>
-        ))
+          ))
       ) : (
         <p className="text-center text-gray-500 mt-4">No updates found.</p>
       )}
