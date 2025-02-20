@@ -461,7 +461,7 @@ const Profile = ({ userId, token }) => {
         </div>
       </div>
 
-      {isProfilePhotoModalOpen && (
+      {isProfilePhotoModalOpen && profileData.profilePhoto && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
           <div className="relative p-6 rounded-lg shadow-lg w-[90%] max-w-md">
             <button
