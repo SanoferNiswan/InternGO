@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import axios from "../../../api/axios";
+import Rating from "react-rating-stars-component";
 import { Line, Radar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -182,7 +183,7 @@ const UserFeedback = () => {
 
       {feedback.length > 0 && (
         <div className="bg-white p-4 rounded-lg shadow-lg mb-6 flex justify-center">
-          <div className="w-3/4 h-[500px] p-6 overflow-hidden">
+          <div className="w-3/4 h-[500px] p-6 overflow-y-hidden">
             {" "}
             <h2 className="text-lg font-semibold text-center text-gray-700 mb-2">
               Average Ratings Over Interactions
@@ -250,13 +251,13 @@ const UserFeedback = () => {
               Current Zone
             </h2>
             <div
-              className={`flex text-lg mt-2 ${
+              className={`flex text-lg mt-2 font-bold ${
                 feedback[0].intern.zone === "GREEN ZONE"
                   ? "text-green-500"
                   : feedback[0].intern.zone === "RED ZONE"
                   ? "text-red-500"
                   : feedback[0].intern.zone === "YELLOW ZONE"
-                  ? "text-blue-500"
+                  ? "text-yellow-500"
                   : "text-red-400"
               }`}
             >

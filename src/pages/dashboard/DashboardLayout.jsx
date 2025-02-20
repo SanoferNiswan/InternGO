@@ -59,16 +59,16 @@ const DashboardLayout = () => {
       icon: <FaTasks />,
     },
     {
-      name: "FeedBack",
-      permission: "feedback.view",
-      path: "/admin/feedback",
-      icon: <FaComments />,
-    },
-    {
       name: "Interactions",
       permission: "interactions.view",
       path: "/dashboard/interactions",
       icon: <FaCalendarAlt />,
+    },
+    {
+      name: "FeedBack",
+      permission: "feedback.view",
+      path: "/admin/feedback",
+      icon: <FaComments />,
     },
     {
       name: "Resources",
@@ -147,7 +147,7 @@ const DashboardLayout = () => {
 
     return () => {
       socket.off("notification");
-      console.log("socket off");
+      // console.log("socket off");
     };
   }, [userId]);
 

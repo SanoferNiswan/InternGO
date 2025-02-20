@@ -29,7 +29,7 @@ const Resources = () => {
     if (currentPage > totalPages) {
       setCurrentPage(1);
     }
-  }, [totalPages]); 
+  }, [totalPages]);
 
   const createSelectOptions = (options) =>
     options.map((option) => ({ value: option, label: option }));
@@ -64,6 +64,8 @@ const Resources = () => {
       );
 
       if (response.data) {
+        console.log(response.data.data.data);
+
         setUsers(response.data.data.data);
         setTotalPages(Math.ceil(response.data.data.total_pages));
       }
@@ -126,7 +128,7 @@ const Resources = () => {
   }
 
   return (
-    <div className="p-6 flex flex-wrap gap-4 justify-center items-center">
+    <div className="p-6 flex flex-col flex-wrap gap-4 justify-center items-center">
       <div className="flex flex-col lg:flex-row lg:justify-between lg:gap-4">
         <div className="mb-6">
           <label className="block text-sm font-medium text-gray-700">
@@ -244,7 +246,11 @@ const Resources = () => {
           </div>
         </div>
       ) : (
-        <p>No users found</p>
+        <div className="flex items-center justify-center h-full bg-gray-100 rounded-lg shadow-md h-[300px] w-[300px]">
+          <p className="text-gray-500 text-lg font-semibold">
+            🚀 No users found
+          </p>
+        </div>
       )}
     </div>
   );

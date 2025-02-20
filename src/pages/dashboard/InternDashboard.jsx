@@ -28,10 +28,9 @@ const InternDashboard = () => {
       });
       setPlanDetails(response.data.data.milestone);
       setZone(response.data.data.zone);
-      console.log("intern dashboard:",response.data.data);
       
     } catch (error) {
-      toast.error(error);
+      // toast.error(error);
     }finally{
       setLoading(false);
     }

@@ -373,7 +373,8 @@ const EditProfile = () => {
             />
             <FloatingInput
               id="batch"
-              label="Batch"
+              label="Education Batch"
+              placeholder="eg:2021-2025"
               name="education.batch"
               value={formData.education.batch}
               onChange={handleChange}
@@ -432,7 +433,6 @@ const EditProfile = () => {
               }
               onChange={handleChange}
               className="w-full p-2 border border-gray-300 rounded-lg"
-              placeholder="Enter skills (comma-separated)"
             />
           </div>
         </div>

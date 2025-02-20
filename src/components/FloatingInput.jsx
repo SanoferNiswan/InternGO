@@ -1,6 +1,6 @@
 import React from 'react';
 
-const FloatingInput = ({ id, label, name, type = "text", value, onChange, disabled = false }) => {
+const FloatingInput = ({ id, label, name, type = "text", value, onChange, disabled = false,placeholder=""}) => {
   const minDate = "1970-01-01";
   const maxDate = "2005-12-31";
 
@@ -18,7 +18,7 @@ const FloatingInput = ({ id, label, name, type = "text", value, onChange, disabl
         className={`block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 appearance-none dark:text-black dark:border-gray-300 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer ${
           disabled ? "bg-gray-200 cursor-not-allowed" : ""
         }`}
-        placeholder=" "
+        placeholder={placeholder}
       />
       <label
         htmlFor={id}

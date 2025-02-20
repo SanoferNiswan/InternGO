@@ -3,6 +3,7 @@ import { connectSocket } from "../services/socketService";
 import { useSelector } from "react-redux";
 import axios from "../api/axios";
 import Loader from "./Loader";
+import { toast } from "react-toastify";
 
 const Announcement = () => {
   const { userId, token } = useSelector((state) => state.auth);
@@ -25,7 +26,8 @@ const Announcement = () => {
         setAnnouncements(response.data.data);
       }
     } catch (error) {
-      console.error("Error fetching announcements:", error);
+      // console.error("Error fetching announcements:", error);
+      toast.error(JSON.stringify(error.response?.data?.message));
     } finally {
       setLoading(false);
     }
@@ -45,7 +47,7 @@ const Announcement = () => {
 
     return () => {
       socket.off("announcement");
-      console.log("announcement off");
+      // console.log("announcement off");
     };
   }, [userId]);
 
