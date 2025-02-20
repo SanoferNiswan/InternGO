@@ -34,13 +34,12 @@ const AdminUpdate = () => {
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
-  const limit = 6;
+  const limit = 8;
   const [filter, setFilter] = useState({
     year: [],
     batch: [],
     designation: [],
     status: [],
-    planStatus: "Present",
   });
 
   const dispatch = useDispatch();
@@ -61,7 +60,6 @@ const AdminUpdate = () => {
   const years = filters.years;
   const batches = filters.batches;
   const designations = filters.designations;
-  // const statusOptions = filters.statuses;
 
   useEffect(() => {
     const handler = setTimeout(() => setSearch(searchInput), 500);
@@ -208,10 +206,12 @@ const AdminUpdate = () => {
                           {task.activitiesCompleted || "N/A"}
                         </td>
                         <td className="p-2 border border-blue-200">
-                          {task.estimatedTime || "-"} hrs
+                          {task.estimatedTime
+                            ? `${task.estimatedTime}hrs`
+                            : "-"}
                         </td>
                         <td className="p-2 border border-blue-200">
-                          {task.actualTime || "-"} hrs
+                          {task.actualTime ? `${task.actualTime}hrs` : "-"}
                         </td>
                         <td
                           className={`p-2 border border-blue-200 font-semibold text-blue-700 ${

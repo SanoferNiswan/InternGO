@@ -212,7 +212,10 @@ const EditProfile = () => {
       } else if (key === "skills") {
         updatedData[key] =
           typeof formData.skills === "string"
-            ? formData.skills.split(",").map((skill) => skill.trim())
+            ? formData.skills
+                .split(",")
+                .map((skill) => skill.trim())
+                .filter((skill) => skill !== "") 
             : formData.skills;
       } else if (formData[key]) {
         updatedData[key] = formData[key];
