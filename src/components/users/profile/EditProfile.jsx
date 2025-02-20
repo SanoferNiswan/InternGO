@@ -84,14 +84,21 @@ const EditProfile = () => {
 
   const handleProfilePhotoChange = (e) => {
     const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setNewProfilePhoto(reader.result);
-        setProfilePhoto(reader.result);
-      };
-      reader.readAsDataURL(file);
+
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please select a valid image file.");
+      e.target.value = "";
+      return;
     }
+
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setNewProfilePhoto(reader.result);
+      setProfilePhoto(reader.result);
+    };
+    reader.readAsDataURL(file);
   };
 
   const handleChange = (e) => {
