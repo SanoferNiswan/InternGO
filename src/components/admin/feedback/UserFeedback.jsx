@@ -17,7 +17,7 @@ import {
 import InteractionCard from "../../interaction/InteractionCard";
 import Loader from "../../Loader";
 import { toast } from "react-toastify";
-import { FaDownload } from "react-icons/fa";
+import { FaDownload, FaRegStar, FaStar, FaStarHalfAlt } from "react-icons/fa";
 
 ChartJS.register(
   LineElement,
@@ -46,13 +46,31 @@ const UserFeedback = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
       setFeedback(response.data.data);
-      
+      console.log("response:", response.data.data);
     } catch (error) {
       toast.error(error);
     } finally {
       setLoading(false);
     }
   };
+
+  // generate star rating
+  const renderStars = (rating) => {
+    const stars = [];
+    for (let i = 1; i <= 5; i++) {
+      if (i <= rating) {
+        stars.push(<FaStar key={i} className="text-yellow-500" />);
+      } else if (i - rating < 1 && i - rating > 0) {
+        stars.push(<FaStarHalfAlt key={i} className="text-yellow-500" />);
+      } else {
+        stars.push(<FaRegStar key={i} className="text-gray-400" />);
+      }
+    }
+    return stars;
+  };
+
+  const averageScore =
+    feedback.reduce((sum, data) => sum + data.avg_rating, 0) / feedback.length;
 
   const lineChartData = {
     labels: feedback.map((data) => data.interaction.name),
@@ -102,17 +120,17 @@ const UserFeedback = () => {
         backgroundColor: "rgba(255, 99, 132, 0.2)",
       },
     ],
-  }; 
+  };
 
   const handleDownload = async () => {
     try {
       const response = await axios.get(`/api/feedbacks/${userId}/download`, {
         responseType: "blob",
         params: {
-          token: token
+          token: token,
         },
       });
-      
+
       const blob = new Blob([response.data], { type: "application/pdf" });
       const url = window.URL.createObjectURL(blob);
 
@@ -157,14 +175,14 @@ const UserFeedback = () => {
           className="text-blue-500 hover:text-blue-600 text-xl flex gap-2 "
           onClick={() => handleDownload()}
         >
-          <FaDownload /><span className="text-sm">Download</span>
+          <FaDownload />
+          <span className="text-sm">Download</span>
         </button>
-        
       </div>
 
       {feedback.length > 0 && (
         <div className="bg-white p-4 rounded-lg shadow-lg mb-6 flex justify-center">
-          <div className="w-3/4 h-96 p-6 overflow-hidden">
+          <div className="w-3/4 h-[500px] p-6 overflow-hidden">
             {" "}
             <h2 className="text-lg font-semibold text-center text-gray-700 mb-2">
               Average Ratings Over Interactions
@@ -211,8 +229,36 @@ const UserFeedback = () => {
       )}
 
       {feedback.length > 0 && (
+        <div className="flex justify-around items-start bg-white p-4 rounded-lg shadow-md mt-4 mb-5">
+          <div>
+            <h2 className="text-lg font-semibold text-gray-700">
+              Overall Rating
+            </h2>
+            <div className="flex text-2xl mt-2">
+              {renderStars(averageScore)}
+            </div>
+            <p className="text-gray-500 mt-1">
+              (
+              {Number.isInteger(averageScore)
+                ? averageScore
+                : averageScore.toFixed(1)}{" "}
+              out of 5)
+            </p>
+          </div>
+          <div className="flex flex-col justify-center">
+            <h2 className="text-lg font-semibold text-gray-700 text-center">
+              Current Zone
+            </h2>
+            <div className="flex text-lg mt-2">
+            {feedback[0].intern.zone}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {feedback.length > 0 && (
         <div className="bg-white p-4 rounded-lg shadow-lg mb-6 flex justify-center">
-          <div className="w-3/4 h-96 p-6 overflow-hidden">
+          <div className="w-3/4 h-[500px] p-6 overflow-hidden">
             <h2 className="text-lg font-semibold text-center text-gray-700 mb-2">
               Overall skill ratings
             </h2>
@@ -254,7 +300,7 @@ const UserFeedback = () => {
 
       <div className="bg-white p-5 rounded-lg shadow-lg mb-6">
         <h2 className="font-semibold text-blue-500 text-center text-xl">
-          Attended Interactions
+          Attended Interactions 
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
           {feedback.map((data) => (

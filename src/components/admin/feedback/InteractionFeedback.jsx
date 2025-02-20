@@ -138,7 +138,6 @@ const InteractionFeedback = () => {
         </div>
       </div>
 
-      {/* Radar Chart and Ratings in Two Columns */}
       <div className="bg-white p-4 rounded-lg shadow-md flex flex-col md:flex-row gap-4">
         {/* Left: Radar Chart */}
         <div className="w-full md:w-1/2 flex flex-col items-center">

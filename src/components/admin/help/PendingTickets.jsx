@@ -15,16 +15,13 @@ const PendingTickets = () => {
 
   const fetchRequests = async () => {
     try {
-      console.log("inside fetch");
-
       setLoading(true);
       const response = await axios.get(`/api/helpdesk/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("response:", response);
-
+      
       if (response) {
         setHelpRequests(response.data.data);
       }
