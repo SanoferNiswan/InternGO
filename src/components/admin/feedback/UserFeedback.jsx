@@ -249,8 +249,18 @@ const UserFeedback = () => {
             <h2 className="text-lg font-semibold text-gray-700 text-center">
               Current Zone
             </h2>
-            <div className="flex text-lg mt-2">
-            {feedback[0].intern.zone}
+            <div
+              className={`flex text-lg mt-2 ${
+                feedback[0].intern.zone === "GREEN ZONE"
+                  ? "text-green-500"
+                  : feedback[0].intern.zone === "RED ZONE"
+                  ? "text-red-500"
+                  : feedback[0].intern.zone === "YELLOW ZONE"
+                  ? "text-blue-500"
+                  : "text-red-400"
+              }`}
+            >
+              {feedback[0].intern.zone}
             </div>
           </div>
         </div>
@@ -300,7 +310,7 @@ const UserFeedback = () => {
 
       <div className="bg-white p-5 rounded-lg shadow-lg mb-6">
         <h2 className="font-semibold text-blue-500 text-center text-xl">
-          Attended Interactions 
+          Attended Interactions
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-4">
           {feedback.map((data) => (

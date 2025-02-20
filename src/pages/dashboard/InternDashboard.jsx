@@ -6,13 +6,14 @@ import { toast } from "react-toastify";
 import Loader from "../../components/Loader";
 
 const InternDashboard = () => {
-  const { user, token, userId, profilePhoto, name } = useSelector(
+  const { token, userId, profilePhoto, name } = useSelector(
     (state) => state.auth
   );
 
   const [loading,setLoading] = useState(false);
 
   const [planDetails, setPlanDetails] = useState(null);
+  const [zone,setZone] = useState(null);
 
   useEffect(() => {
     fetchPlanDetails();
@@ -25,8 +26,9 @@ const InternDashboard = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      setPlanDetails(response.data.data);
-      console.log(response);
+      setPlanDetails(response.data.data.milestone);
+      setZone(response.data.data.zone);
+      console.log("intern dashboard:",response.data.data);
       
     } catch (error) {
       toast.error(error);
@@ -76,16 +78,16 @@ const InternDashboard = () => {
           <h3 className="text-gray-500 mb-2">Current Zone</h3>
           <p
             className={`text-lg font-bold ${
-              user?.zone === "GREEN ZONE"
+              zone === "GREEN ZONE"
                 ? "text-green-500"
-                : user?.zone === "RED ZONE"
+                : zone === "RED ZONE"
                 ? "text-red-500"
-                : user?.zone === "YELLOW ZONE"
+                : zone === "YELLOW ZONE"
                 ? "text-blue-500"
                 : "text-red-400"
             }`}
           >
-            {user?.zone || "Not updated"}
+            {zone || "Not updated"}
           </p>
         </div>
         <div className="p-6 bg-white shadow-md rounded-lg transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
