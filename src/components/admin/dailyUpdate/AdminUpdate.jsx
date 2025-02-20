@@ -227,33 +227,34 @@ const AdminUpdate = () => {
                   </tbody>
                 </table>
               </div>
+              <div className="flex justify-center items-center mt-6 space-x-4">
+                <button
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.max(prev - 1, 1))
+                  }
+                  disabled={currentPage === 1}
+                  className="px-4 py-2 bg-blue-500 text-white rounded-lg disabled:bg-gray-300 transition-all hover:bg-blue-700"
+                >
+                  Previous
+                </button>
+                <span className="text-lg font-medium">
+                  Page {currentPage} of {totalPages}
+                </span>
+                <button
+                  onClick={() =>
+                    setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+                  }
+                  disabled={currentPage === totalPages}
+                  className="px-4 py-2 bg-blue-500 text-white rounded-lg disabled:bg-gray-300 transition-all hover:bg-blue-700"
+                >
+                  Next
+                </button>
+              </div>
             </div>
           ))
       ) : (
         <p className="text-center text-gray-500 mt-4">No updates found.</p>
       )}
-
-      <div className="flex justify-center items-center mt-6 space-x-4">
-        <button
-          onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-          disabled={currentPage === 1}
-          className="px-4 py-2 bg-blue-500 text-white rounded-lg disabled:bg-gray-300 transition-all hover:bg-blue-700"
-        >
-          Previous
-        </button>
-        <span className="text-lg font-medium">
-          Page {currentPage} of {totalPages}
-        </span>
-        <button
-          onClick={() =>
-            setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-          }
-          disabled={currentPage === totalPages}
-          className="px-4 py-2 bg-blue-500 text-white rounded-lg disabled:bg-gray-300 transition-all hover:bg-blue-700"
-        >
-          Next
-        </button>
-      </div>
     </div>
   );
 };
