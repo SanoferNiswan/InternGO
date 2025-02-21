@@ -57,6 +57,7 @@ const App = () => {
           <Route path="interactions" element={<Interaction />} />
           <Route path="my-profile" element={<MyProfile />} />
           <Route path="edit-profile" element={<EditProfile />} />
+          <Route path="*" element={<Navigate to="/not-found" replace />} />
         </Route>
 
         <Route
@@ -66,6 +67,7 @@ const App = () => {
           <Route path="daily-update" element={<DailyUpdate />} />
           <Route path="daily-update/:date" element={<InternUpdate />} />
           <Route path="help" element={<Help />} />
+          <Route path="*" element={<Navigate to="/not-found" replace />} />
         </Route>
 
         <Route
@@ -75,6 +77,7 @@ const App = () => {
           <Route path="feedback/create/:interactionID" element={<CreateFeedback />} />
           <Route path="feedback/view/:interactionId" element={<InteractionFeedback />} />
           <Route path="pending-tickets" element={<Help />} />
+          <Route path="*" element={<Navigate to="/not-found" replace />} />
         </Route>
 
         <Route
@@ -94,6 +97,7 @@ const App = () => {
           <Route path="feedback/user/:userId" element={<UserFeedback />} />
           {/* <Route path="pending-tickets" element={<PendingTickets />} /> */}
           <Route path="pending-tickets" element={<Help />} />
+          <Route path="*" element={<Navigate to="/not-found" replace />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/not-found" replace />} />
