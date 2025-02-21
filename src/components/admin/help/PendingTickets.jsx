@@ -21,7 +21,7 @@ const PendingTickets = () => {
           Authorization: `Bearer ${token}`,
         },
       });
-      
+
       if (response) {
         setHelpRequests(response.data.data);
       }
@@ -78,50 +78,60 @@ const PendingTickets = () => {
         </div>
       )}
 
-      <div className="space-y-4 mt-4">
-        {helpRequests.map((request) => (
-          <div
-            key={request.id}
-            className="bg-white shadow-md rounded-lg p-3 border-l-4 border-blue-500 flex justify-between items-start text-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-400"
-          >
-            <div className="flex-1 flex-col">
-              <h2 className="text-md font-medium">{request.subject}</h2>
-              <p className="text-gray-600 text-xs mt-2 mr-4">{request.description}</p>
-              <p className="text-blue-600 text-xs mt-2 mr-4"><strong>raised by :</strong>{" "}{request.senderName}</p>
-            </div>
-            <div className="flex flex-col items-end">
-              <div
-                className={`relative w-12 h-6 transition-all rounded-full cursor-pointer ${
-                  request.resolvedStatus === "RESOLVED"
-                    ? "bg-green-500"
-                    : "bg-red-500"
-                }`}
-                onClick={() => toggleResolved(request.id)}
-              >
-                <div
-                  className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform ${
-                    request.resolvedStatus === "RESOLVED"
-                      ? "translate-x-6"
-                      : "translate-x-0"
-                  }`}
-                ></div>
+      {helpRequests.length > 0 ? (
+        <div className="space-y-4 mt-4">
+          {helpRequests.map((request) => (
+            <div
+              key={request.id}
+              className="bg-white shadow-md rounded-lg p-3 border-l-4 border-blue-500 flex justify-between items-start text-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-400"
+            >
+              <div className="flex-1 flex-col">
+                <h2 className="text-md font-medium">{request.subject}</h2>
+                <p className="text-gray-600 text-sm mt-2 mr-4">
+                  {request.description}
+                </p>
+                <p className="text-blue-600 text-sm mt-2 mr-4">
+                  <strong>raised by :</strong> {request.senderName}
+                </p>
               </div>
-              <span
-                className={`text-xs font-medium mt-1 ${
-                  request.resolvedStatus === "RESOLVED"
-                    ? "text-green-500"
-                    : "text-red-500"
-                }`}
-              >
-                {request.resolvedStatus}
-              </span>
-              <p className="text-gray-500 text-xs mt-2">
-                <strong>Priority:</strong> {request.priority}
-              </p>
+              <div className="flex flex-col items-end">
+                <div
+                  className={`relative w-12 h-6 transition-all rounded-full cursor-pointer ${
+                    request.resolvedStatus === "RESOLVED"
+                      ? "bg-green-500"
+                      : "bg-red-500"
+                  }`}
+                  onClick={() => toggleResolved(request.id)}
+                >
+                  <div
+                    className={`absolute top-1 left-1 w-4 h-4 bg-white rounded-full transition-transform ${
+                      request.resolvedStatus === "RESOLVED"
+                        ? "translate-x-6"
+                        : "translate-x-0"
+                    }`}
+                  ></div>
+                </div>
+                <span
+                  className={`text-xs font-medium mt-1 ${
+                    request.resolvedStatus === "RESOLVED"
+                      ? "text-green-500"
+                      : "text-red-500"
+                  }`}
+                >
+                  {request.resolvedStatus}
+                </span>
+                <p className="text-gray-500 text-xs mt-2">
+                  <strong>Priority:</strong> {request.priority}
+                </p>
+              </div>
             </div>
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      ) : (
+        <div class="flex items-center justify-center h-96 bg-gray-100 text-gray-500 text-lg font-semibold rounded-lg shadow-md">
+          No requests found
+        </div>
+      )}
     </div>
   );
 };

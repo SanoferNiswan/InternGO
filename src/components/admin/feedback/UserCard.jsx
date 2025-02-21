@@ -3,11 +3,14 @@ import { useNavigate } from "react-router-dom";
 
 const UserCard = ({ user }) => {
   const navigate = useNavigate();
- 
+
   return (
+    
+
+
     <div
       key={user.id}
-      className="relative flex flex-col items-center bg-white shadow-lg p-6 rounded-lg cursor-pointer 
+      className="relative flex flex-col items-center bg-white shadow-lg p-6 rounded-lg cursor-pointer
              hover:shadow-2xl hover:-translate-y-2 transition-all duration-300 w-64 h-72 justify-between"
       onClick={() => navigate(`/admin/feedback/user/${user.id}`)}
     >
@@ -37,13 +40,27 @@ const UserCard = ({ user }) => {
 
       {/* User Details */}
       <div className="flex flex-col items-center mt-2 text-center">
-        <p className="text-lg font-bold">{user.name || "---"}</p>
+        <p className="text-lg font-bold">{user.name || "-"}</p>
         <p className="text-sm text-gray-700">
-          {user.year || "---"} - {user.batch || "---"}
+          {user.year || "-"} - {user.batch || "-"}
         </p>
         {/* <p className="text-sm text-gray-700">{user.phase || "---"}</p> */}
         <p className="mt-2 text-blue-600 font-semibold">
-          {user.designation || "---"}
+          {user.designation || "-"}
+        </p>
+        <p>
+          Plan:{user.plan?.name || "-"}
+        </p>
+        <p className={`text-lg font-bold ${
+              user.zone === "GREEN ZONE"
+                ? "text-green-500"
+                : user.zone === "RED ZONE"
+                ? "text-red-500"
+                : user.zone === "YELLOW ZONE"
+                ? "text-yellow-500"
+                : "text-red-400"
+            }`}>
+          {user.zone || "no zone"}
         </p>
       </div>
     </div>

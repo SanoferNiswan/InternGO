@@ -20,18 +20,26 @@ const InternDashboard = () => {
   }, [token]);
 
   const fetchPlanDetails = async () => {
+    console.log("inside fetch");
+    
     try {
+      console.log("inside try");
+      
       const response = await axios.get(`/api/users/training/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
+      console.log("intern dashboard:",response);
       setPlanDetails(response.data.data.milestone);
       setZone(response.data.data.zone);
       
     } catch (error) {
+      console.log(error);
       // toast.error(error);
     }finally{
+      console.log("finally");
+      
       setLoading(false);
     }
   };
@@ -82,7 +90,7 @@ const InternDashboard = () => {
                 : zone === "RED ZONE"
                 ? "text-red-500"
                 : zone === "YELLOW ZONE"
-                ? "text-blue-500"
+                ? "text-yellow-500"
                 : "text-red-400"
             }`}
           >

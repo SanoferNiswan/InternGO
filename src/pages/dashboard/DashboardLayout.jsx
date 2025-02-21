@@ -208,7 +208,6 @@ const DashboardLayout = () => {
                     className="px-4 py-2 hover:bg-blue-50 cursor-pointer flex items-center gap-2"
                     onClick={() => {
                       window.location.href = "/dashboard/edit-profile";
-                      setDropdownOpen(false);
                     }}
                   >
                     <FaEdit /> Edit Profile

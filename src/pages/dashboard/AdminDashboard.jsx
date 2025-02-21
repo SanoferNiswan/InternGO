@@ -48,7 +48,7 @@ const AdminDashboard = () => {
             className="w-20 h-20 sm:w-28 sm:h-28 rounded-full aspect-square object-cover"
           />
         ) : (
-          <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-full aspect-square object-cover bg-white flex items-center justify-center text-lg font-bold text-blue-500">
+          <div className="w-20 h-20 sm:w-28 sm:h-28 rounded-full aspect-square object-cover bg-white flex items-center justify-center text-4xl font-bold text-blue-500">
             {name?.charAt(0).toUpperCase()}
           </div>
         )}

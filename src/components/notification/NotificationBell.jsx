@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { FaBell, FaTrash, FaCheck } from "react-icons/fa";
 import { toast } from "react-toastify";
 import axios from "../../api/axios";
@@ -9,6 +9,19 @@ const NotificationBell = ({ notifications, setNotifications }) => {
   const { token, userId } = useSelector((state) => state.auth);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedNotifications, setSelectedNotifications] = useState([]);
+  const dropdownRef = useRef(null);
+
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const markAsRead = async () => {
     if (selectedNotifications.length === 0) {
       toast.warning("Select at least one notification!", { autoClose: 2000 });
@@ -100,7 +113,7 @@ const NotificationBell = ({ notifications, setNotifications }) => {
   };
 
   return (
-    <div className="relative">
+    <div className="relative" ref={dropdownRef}>
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="p-3 text-gray-700 hover:text-blue-600 focus:outline-none relative"

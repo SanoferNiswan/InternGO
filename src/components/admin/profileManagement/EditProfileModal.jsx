@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import axios from "../../../api/axios";
+import { toast } from "react-toastify";
 
 const EditProfileModal = ({
   profileData,
@@ -39,7 +40,7 @@ const EditProfileModal = ({
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-      alert("Profile updated successfully");
+      toast.success("Profile updated successfully");
       setIsEditProfileModalOpen(false);
       refresh();
     } catch (error) {

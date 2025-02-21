@@ -462,14 +462,13 @@ const Profile = ({ userId, token }) => {
       </div>
 
       {isProfilePhotoModalOpen && profileData.profilePhoto && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50"
+          onClick={(e) =>
+            e.target === e.currentTarget && setIsProfilePhotoModalOpen(false)
+          }
+        >
           <div className="relative p-6 rounded-lg shadow-lg w-[90%] max-w-md">
-            <button
-              className="absolute top-2 right-2 text-white bg-red-500 rounded-full p-2 hover:bg-red-600 focus:outline-none"
-              onClick={() => setIsProfilePhotoModalOpen(false)}
-            >
-              X
-            </button>
             <div className="flex justify-center">
               <img
                 src={profileData.profilePhoto}
