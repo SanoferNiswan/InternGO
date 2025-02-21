@@ -93,6 +93,13 @@ const EditProfile = () => {
       return;
     }
 
+    const maxSize = 2 * 1024 * 1024;
+    if (file.size > maxSize) {
+      toast.error("File size must be less than 2MB.");
+      e.target.value = "";
+      return;
+    }
+
     const reader = new FileReader();
     reader.onloadend = () => {
       setNewProfilePhoto(reader.result);
