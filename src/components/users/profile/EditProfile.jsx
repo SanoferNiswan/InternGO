@@ -124,7 +124,7 @@ const EditProfile = () => {
   };
 
   const validateForm = () => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const emailRegex = /^[a-zA-Z0-9.]{6,30}@[a-zA-Z0-9]+\.[a-zA-Z]{2,}$/;
     const phoneRegex = /^[6789]\d{9}$/;
     const ifscRegex = /^[A-Z]{4}0[A-Z0-9]{6}$/;
     const inputRegex = /^[A-Za-z.-\s]{3,}$/;
@@ -215,7 +215,7 @@ const EditProfile = () => {
             ? formData.skills
                 .split(",")
                 .map((skill) => skill.trim())
-                .filter((skill) => skill !== "") 
+                .filter((skill) => skill !== "")
             : formData.skills;
       } else if (formData[key]) {
         updatedData[key] = formData[key];

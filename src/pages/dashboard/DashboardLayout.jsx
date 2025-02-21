@@ -41,6 +41,12 @@ const DashboardLayout = () => {
       icon: <FaUser />,
     },
     {
+      name: "Resources",
+      permission: "users.view",
+      path: "/admin/resources",
+      icon: <FaFileAlt />,
+    },
+    {
       name: "Plans",
       permission: "plans.create",
       path: "/admin/plans",
@@ -69,12 +75,6 @@ const DashboardLayout = () => {
       permission: "feedback.view",
       path: "/admin/feedback",
       icon: <FaComments />,
-    },
-    {
-      name: "Resources",
-      permission: "users.view",
-      path: "/admin/resources",
-      icon: <FaFileAlt />,
     },
     {
       name: "Pending Tickets",
