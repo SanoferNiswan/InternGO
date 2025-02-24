@@ -20,8 +20,6 @@ const InteractionSchedule = () => {
     (state) => state.data
   ); 
 
-
-
   useEffect(()=>{
     if(token){
       dispatch(fetchFilters());

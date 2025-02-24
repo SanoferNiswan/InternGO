@@ -6,6 +6,9 @@ import { useNavigate } from "react-router-dom";
 import FloatingInput from "../../FloatingInput";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Loader from "../../Loader";
+import { skillOptions } from "../../../utils/skills";
+import Select from "react-select";
 
 const EditProfile = () => {
   const { userId, token, name, role } = useSelector((state) => state.auth);
@@ -13,6 +16,7 @@ const EditProfile = () => {
   const dispatch = useDispatch();
 
   const [formData, setFormData] = useState({
+    name: "",
     personalEmail: "",
     phone_no: "",
     gender: "",
@@ -31,56 +35,64 @@ const EditProfile = () => {
       IFSC: "",
       accountNumber: "",
     },
-    skills: [],
+    primary_skill: "",
+    secondary_skills: [],
   });
+  const [loading, setLoading] = useState(false);
 
   const [profilePhoto, setProfilePhoto] = useState(null);
   const [newProfilePhoto, setNewProfilePhoto] = useState(null);
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await axios.get(`/api/users/${userId}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        const userData = response.data.data;
-
-        setFormData((prev) => ({
-          ...prev,
-          personalEmail: userData.personalEmail || "",
-          phone_no: userData.phone_no || "",
-          gender: userData.gender || "",
-          bloodGroup: userData.bloodGroup || "",
-          dateOfBirth: userData.dateOfBirth?.split("T")[0] || "",
-          currentAddress: userData.currentAddress || "",
-          permanentAddress: userData.permanentAddress || "",
-          education: {
-            college: userData.education?.college || "",
-            degree: userData.education?.degree || "",
-            batch: userData.education?.batch || "",
-          },
-          bankDetails: {
-            bankName: userData.bankDetails?.bankName || "",
-            branch: userData.bankDetails?.branch || "",
-            IFSC: userData.bankDetails?.IFSC || "",
-            accountNumber: userData.bankDetails?.accountNumber || "",
-          },
-          skills: userData.skills || [],
-        }));
-
-        if (userData.profilePhoto) {
-          setProfilePhoto(userData.profilePhoto);
-        }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-        toast.error("Failed to fetch user data");
-      }
-    };
-
     fetchUserData();
-  }, [userId, token]);
+  }, [token]);
+
+  const fetchUserData = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(`/api/users/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+      const userData = response.data.data;
+      console.log(userData);
+
+      setFormData((prev) => ({
+        ...prev,
+        name: userData.name || "",
+        personalEmail: userData.personalEmail || "",
+        phone_no: userData.phone_no || "",
+        gender: userData.gender || "",
+        bloodGroup: userData.bloodGroup || "",
+        dateOfBirth: userData.dateOfBirth?.split("T")[0] || "",
+        currentAddress: userData.currentAddress || "",
+        permanentAddress: userData.permanentAddress || "",
+        education: {
+          college: userData.education?.college || "",
+          degree: userData.education?.degree || "",
+          batch: userData.education?.batch || "",
+        },
+        bankDetails: {
+          bankName: userData.bankDetails?.bankName || "",
+          branch: userData.bankDetails?.branch || "",
+          IFSC: userData.bankDetails?.IFSC || "",
+          accountNumber: userData.bankDetails?.accountNumber || "",
+        },
+        primary_skill: userData.primary_skill || "",
+        secondary_skills: userData.secondary_skills || [],
+      }));
+
+      if (userData.profilePhoto) {
+        setProfilePhoto(userData.profilePhoto);
+      }
+    } catch (error) {
+      console.error("Error fetching user data:", error);
+      toast.error("Failed to fetch user data");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   const handleProfilePhotoChange = (e) => {
     const file = e.target.files[0];
@@ -111,12 +123,7 @@ const EditProfile = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
 
-    if (name === "skills") {
-      setFormData((prev) => ({
-        ...prev,
-        skills: value,
-      }));
-    } else if (name.includes("education") || name.includes("bankDetails")) {
+    if (name.includes("education") || name.includes("bankDetails")) {
       const [parentKey, childKey] = name.split(".");
       setFormData((prev) => ({
         ...prev,
@@ -128,6 +135,20 @@ const EditProfile = () => {
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
+  };
+
+  const handlePrimarySkillChange = (selectedOption) => {
+    setFormData((prev) => ({
+      ...prev,
+      primary_skill: selectedOption.value,
+    }));
+  };
+
+  const handleSecondarySkillsChange = (selectedOptions) => {
+    setFormData((prev) => ({
+      ...prev,
+      secondary_skills: selectedOptions.map((option) => option.value),
+    }));
   };
 
   const validateForm = () => {
@@ -216,14 +237,6 @@ const EditProfile = () => {
             };
           }
         });
-      } else if (key === "skills") {
-        updatedData[key] =
-          typeof formData.skills === "string"
-            ? formData.skills
-                .split(",")
-                .map((skill) => skill.trim())
-                .filter((skill) => skill !== "")
-            : formData.skills;
       } else if (formData[key]) {
         updatedData[key] = formData[key];
       }
@@ -252,13 +265,15 @@ const EditProfile = () => {
     }
   };
 
+  if (loading) return <Loader />;
+
   return (
     <div>
       <ToastContainer />
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold ml-2 text-blue-600">
-            {name} Profile
+            {formData.name} Profile
           </h1>
           <div className="relative">
             <label
@@ -292,6 +307,13 @@ const EditProfile = () => {
           <h2 className="text-lg font-bold mb-2">Personal Info</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FloatingInput
+              id="name"
+              label="Name"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+            />
+            <FloatingInput
               id="personalEmail"
               label="Personal Email"
               name="personalEmail"
@@ -303,6 +325,14 @@ const EditProfile = () => {
               label="Phone Number"
               name="phone_no"
               value={formData.phone_no}
+              onChange={handleChange}
+            />
+            <FloatingInput
+              id="dateOfBirth"
+              label="Date of Birth"
+              name="dateOfBirth"
+              type="date"
+              value={formData.dateOfBirth}
               onChange={handleChange}
             />
             <div className="form-group">
@@ -344,15 +374,6 @@ const EditProfile = () => {
                 <option value="AB-">AB-</option>
               </select>
             </div>
-
-            <FloatingInput
-              id="dateOfBirth"
-              label="Date of Birth"
-              name="dateOfBirth"
-              type="date"
-              value={formData.dateOfBirth}
-              onChange={handleChange}
-            />
             <FloatingInput
               id="currentAddress"
               label="Current Address"
@@ -436,20 +457,31 @@ const EditProfile = () => {
           </div>
         )}
 
-        {/* Skills Section */}
         <div className="bg-white p-6 rounded-lg shadow-md space-y-4">
-          <h2 className="text-lg font-bold mb-2">Skills (comma separated)</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <FloatingInput
-              name="skills"
-              label="skills"
-              value={
-                Array.isArray(formData.skills)
-                  ? formData.skills.join(", ")
-                  : formData.skills
-              }
-              onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded-lg"
+          <h2 className="text-lg font-bold mb-2">Select Your Skills</h2>
+          <div className="space-y-3">
+            <label className="font-semibold">Primary Skill</label>
+            <Select
+              options={skillOptions}
+              onChange={handlePrimarySkillChange}
+              value={skillOptions.find(
+                (skill) => skill.value === formData.primary_skill
+              )}
+              isSearchable
+              placeholder="Select your primary skill"
+            />
+          </div>
+          <div className="space-y-3">
+            <label className="font-semibold">Secondary Skills</label>
+            <Select
+              options={skillOptions}
+              isMulti
+              onChange={handleSecondarySkillsChange}
+              value={skillOptions.filter((skill) =>
+                formData.secondary_skills.includes(skill.value)
+              )}
+              isSearchable
+              placeholder="Select your secondary skills"
             />
           </div>
         </div>

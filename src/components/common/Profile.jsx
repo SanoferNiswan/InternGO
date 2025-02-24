@@ -52,9 +52,10 @@ const Profile = ({ userId, token }) => {
     "education",
     "bankDetails",
     "assets",
+    "skill",
   ];
 
-  const adminTab = ["personal info", "education"];
+  const adminTab = ["personal info", "education", "skill"];
 
   const handleFieldChange = (assetId, field, value) => {
     setAssets((prevAssets) =>
@@ -194,19 +195,31 @@ const Profile = ({ userId, token }) => {
         );
       case "skill":
         return (
-          <div>
-            <h2 className="text-lg font-semibold text-blue-600 mb-2">Skills</h2>
-            <div className="flex flex-wrap gap-2">
-              {profileData.skills?.length
-                ? profileData.skills.map((skill, index) => (
-                    <span
-                      key={index}
-                      className="bg-blue-100 text-blue-700 px-3 py-1 rounded-lg text-sm"
-                    >
-                      {skill}
-                    </span>
-                  ))
-                : "---"}
+          <div className="flex flex-col gap-4">
+            <div className="flex flex-col gap-2">
+              <h2 className="text-lg font-semibold text-blue-600 mb-2">
+                Primary Skills
+              </h2>
+              <span className="bg-blue-100 text-gray-700 px-3 py-1 rounded-lg text-sm w-20">
+                {profileData.primary_skill}
+              </span>
+            </div>
+            <div className="flex flex-col gap-2">
+              <h2 className="text-lg font-semibold text-blue-600 mb-2">
+                Secondary Skills
+              </h2>
+              <div className="flex flex-wrap gap-2">
+                {profileData.secondary_skills?.length
+                  ? profileData.secondary_skills.map((skill, index) => (
+                      <span
+                        key={index}
+                        className="bg-blue-100 text-gray-700 px-3 py-1 rounded-lg text-sm"
+                      >
+                        {skill}
+                      </span>
+                    ))
+                  : "---"}
+              </div>
             </div>
           </div>
         );
@@ -223,9 +236,6 @@ const Profile = ({ userId, token }) => {
               <table className="w-full border-collapse border border-blue-300 mt-4 text-sm shadow-md rounded-lg overflow-hidden">
                 <thead>
                   <tr className="bg-blue-100 text-black text-sm font-semibold">
-                    {/* <th className="border border-blue-200 px-3 py-2">
-                      Asset ID
-                    </th> */}
                     <th className="border border-blue-200 px-3 py-2">Name</th>
                     <th className="border border-blue-200 px-3 py-2">
                       Asset Type
@@ -244,9 +254,6 @@ const Profile = ({ userId, token }) => {
                       key={asset.id}
                       className="text-gray-900 hover:bg-blue-50 transition"
                     >
-                      {/* <td className="border border-blue-200 px-3 py-2">
-                        {asset.id}
-                      </td> */}
                       <td className="border border-blue-200 px-3 py-2">
                         <input
                           type="text"
@@ -416,10 +423,14 @@ const Profile = ({ userId, token }) => {
             </div>
 
             <div className="mt-5">
-              <span className="font-semibold text-white">Skills</span>
+              <span className="font-semibold text-white">Primary skill</span>
               <div className="flex flex-wrap gap-2 mt-2">
-                {profileData.skills?.length
-                  ? profileData.skills.map((skill, index) => (
+                <span className="bg-white text-blue-600 px-3 py-1 rounded-lg text-xs font-medium">
+                  {profileData.primary_skill || "-"}
+                </span>
+                {/* <span className="font-semibold text-white">Secondary skills</span>
+                {profileData.secondary_skills?.length
+                  ? profileData.secondary_skills.map((skill, index) => (
                       <span
                         key={index}
                         className="bg-white text-blue-600 px-3 py-1 rounded-lg text-xs font-medium"
@@ -427,7 +438,7 @@ const Profile = ({ userId, token }) => {
                         {skill}
                       </span>
                     ))
-                  : "---"}
+                  : "---"} */}
               </div>
             </div>
           </div>

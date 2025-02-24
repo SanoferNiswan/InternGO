@@ -10,7 +10,7 @@ export const predefinedKPIs = [
     "Experience",
     "Problem Solving",
     "Presentation",
-    "Code Quality",
+    "Code Quality", 
     "Concepts",
     "Contribution",
     "Logical Thinking",

@@ -37,12 +37,14 @@ const Feedback = () => {
     batch: [],
     designation: [],
     status: [],
+    zone: [],
   });
 
   const years = filters.years;
   const batches = filters.batches;
   const designations = filters.designations;
   const statusOptions = filters.statuses;
+  const zoneOptions = ["GREEN ZONE", "RED ZONE", "YELLOW ZONE"];
 
   const createSelectOptions = (options) =>
     options.map((option) => ({ value: option, label: option }));
@@ -62,6 +64,7 @@ const Feedback = () => {
           batch: filter.batch,
           designation: filter.designation,
           status: filter.status,
+          zone: filter.zone,
         },
         {
           params: { limit: 10, offset: (currentPage - 1) * 10 },
@@ -129,27 +132,29 @@ const Feedback = () => {
 
   return (
     <div className="flex flex-col gap-6">
-      <div
-        onClick={() => setShowfilters(!showfilters)}
-        className="w-28 cursor-pointer border border-blue-400 rounded-md px-2 py-1 text-blue-500 text-sm bg-transparent hover:bg-blue-500 hover:text-white"
-      >
-        {showfilters ? "Hide Filters " : "Show Filters"}
-        {showfilters ? "▲" : "▼"}
+      <div className="flex flex-col sm:flex-row gap-2 justify-start">
+        <div className="w-full sm:w-auto">
+          <input
+            type="text"
+            value={searchInput}
+            onChange={(e) => setSearchInput(e.target.value)}
+            className="w-full sm:w-[500px] px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-1 focus:ring-blue-400 focus:border-blue-500 outline-none sm:text-sm"
+            placeholder="Search by name"
+          />
+        </div>
+
+        <div
+          onClick={() => setShowfilters(!showfilters)}
+          className="w-full sm:w-auto text-center cursor-pointer border border-blue-400 rounded-md px-2 py-1 text-blue-500 text-sm bg-transparent hover:bg-blue-500 hover:text-white"
+        >
+          {showfilters ? "Hide Filters " : "Show Filters"}
+          {showfilters ? "▲" : "▼"}
+        </div>
       </div>
 
       {showfilters && (
         <div className="p-4 rounded-lg shadow-md">
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
-            <div>
-              <input
-                type="text"
-                value={searchInput}
-                onChange={(e) => setSearchInput(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-                placeholder="Search by name"
-              />
-            </div>
-
             <div>
               <Select
                 isMulti
@@ -211,6 +216,22 @@ const Feedback = () => {
                 }
                 className="w-full"
                 placeholder="Select Status"
+              />
+            </div>
+
+            <div>
+              <Select
+                isMulti
+                value={filter.zone.map((status) => ({
+                  value: status,
+                  label: status,
+                }))}
+                options={createSelectOptions(zoneOptions)}
+                onChange={(selectedOptions) =>
+                  handleFilterChange(selectedOptions, "zone")
+                }
+                className="w-full"
+                placeholder="Select zone"
               />
             </div>
           </div>
@@ -346,267 +367,3 @@ const Feedback = () => {
 };
 
 export default Feedback;
-
-// import React, { useState, useEffect } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-// import { fetchFilters } from "../../../redux/slices/dataSlice";
-// import Select from "react-select";
-// import axios from "../../../api/axios";
-// import UserCard from "./UserCard";
-// import Loader from "../../Loader";
-
-// const Feedback = () => {
-//   const { role, token } = useSelector((state) => state.auth);
-
-//   const [users, setUsers] = useState([]);
-//   const [loading, setLoading] = useState(true);
-//   const [error, setError] = useState(null);
-//   const [currentPage, setCurrentPage] = useState(1);
-//   const [totalPages, setTotalPages] = useState(1);
-//   const [searchInput, setSearchInput] = useState("");
-//   const [search, setSearch] = useState("");
-
-//   const dispatch = useDispatch();
-//   const { filters } = useSelector(
-//     (state) => state.data
-//   );
-
-//   useEffect(() => {
-//       if (currentPage > totalPages) {
-//         setCurrentPage(1);
-//       }
-//     }, [totalPages]);
-
-//   useEffect(()=>{
-//       dispatch(fetchFilters());
-//   },[token])
-
-//   const [filter, setFilter] = useState({
-//     year: [],
-//     batch: [],
-//     designation: [],
-//     status: [],
-//   });
-
-//   const years = filters.years;
-//   const batches = filters.batches;
-//   const designations = filters.designations;
-//   const statusOptions = filters.statuses;
-
-//   const createSelectOptions = (options) =>
-//     options.map((option) => ({ value: option, label: option }));
-
-//   useEffect(() => {
-//     fetchData();
-//   }, [search, filter, currentPage]);
-
-//   const fetchData = async () => {
-//     try {
-//       setLoading(true);
-//       const response = await axios.post(
-//         "/api/users/",
-//         {
-//           name: search.trim(),
-//           year: filter.year,
-//           batch: filter.batch,
-//           designation: filter.designation,
-//           status: filter.status,
-//         },
-//         {
-//           params: { limit: 10, offset: (currentPage - 1) * 10 },
-//           headers: { Authorization: `Bearer ${token}` },
-//         }
-//       );
-
-//       if (response.data) {
-//         setUsers(response.data.data.data);
-//         setTotalPages(Math.ceil(response.data.data.total_pages));
-//       }
-//     } catch (err) {
-//       setError("Failed to fetch data");
-//     } finally {
-//       setLoading(false);
-//     }
-//   };
-
-//   useEffect(() => {
-//     const handler = setTimeout(() => {
-//       setSearch(searchInput);
-//     }, 1000);
-
-//     return () => {
-//       clearTimeout(handler);
-//     };
-//   }, [searchInput]);
-
-//   const handleFilterChange = (selectedOptions, filterType) => {
-//     const selectedValues = selectedOptions
-//       ? selectedOptions.map((option) => option.value)
-//       : [];
-//     setFilter({ ...filter, [filterType]: selectedValues });
-//   };
-
-//   const handleNext = () => {
-//     if (currentPage < totalPages) {
-//       setCurrentPage(currentPage + 1);
-//     }
-//   };
-
-//   const handlePrev = () => {
-//     if (currentPage > 1) {
-//       setCurrentPage(currentPage - 1);
-//     }
-//   };
-
-//   if (role !== "Admins") {
-//     return (
-//       <div className="p-6">
-//         <p className="text-center text-red-600 text-lg font-semibold">
-//           You are restricted from accessing this page.
-//         </p>
-//       </div>
-//     );
-//   }
-
-//   if (loading) {
-//     return <Loader />
-//   }
-
-//   if (error) {
-//     return (
-//       <div className="p-6">
-//         <p className="text-red-500">Error: {error}</p>
-//       </div>
-//     );
-//   }
-
-//   return (
-//     <div className="p-6 flex flex-col flex-wrap gap-4 justify-center items-center h-auto">
-//       <div className="flex flex-col lg:flex-row lg:justify-between lg:gap-4">
-//         <div className="mb-6">
-//           <label className="block text-sm font-medium text-gray-700">
-//             Search
-//           </label>
-//           <input
-//             type="text"
-//             value={searchInput}
-//             onChange={(e) => setSearchInput(e.target.value)}
-//             className="mt-1 block w-3/5 px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
-//             placeholder="Search by name"
-//           />
-//         </div>
-
-//         <div className="mb-6">
-//           <label className="block text-sm font-medium text-gray-700">
-//             Filter by Year
-//           </label>
-//           <Select
-//             isMulti
-//             value={filter.year.map((year) => ({ value: year, label: year }))}
-//             options={createSelectOptions(years)}
-//             onChange={(selectedOptions) =>
-//               handleFilterChange(selectedOptions, "year")
-//             }
-//             className="mt-1 block w-full"
-//             placeholder="Select Year"
-//           />
-//         </div>
-
-//         <div className="mb-6">
-//           <label className="block text-sm font-medium text-gray-700">
-//             Filter by Batch
-//           </label>
-//           <Select
-//             isMulti
-//             value={filter.batch.map((batch) => ({
-//               value: batch,
-//               label: batch,
-//             }))}
-//             options={createSelectOptions(batches)}
-//             onChange={(selectedOptions) =>
-//               handleFilterChange(selectedOptions, "batch")
-//             }
-//             className="mt-1 block w-full"
-//             placeholder="Select Batch"
-//           />
-//         </div>
-
-//         <div className="mb-6">
-//           <label className="block text-sm font-medium text-gray-700">
-//             Filter by Designation
-//           </label>
-//           <Select
-//             isMulti
-//             value={filter.designation.map((designation) => ({
-//               value: designation,
-//               label: designation,
-//             }))}
-//             options={createSelectOptions(designations)}
-//             onChange={(selectedOptions) =>
-//               handleFilterChange(selectedOptions, "designation")
-//             }
-//             className="mt-1 block w-full"
-//             placeholder="Select Designation"
-//           />
-//         </div>
-
-//         <div className="mb-6">
-//           <label className="block text-sm font-medium text-gray-700">
-//             Filter by Status
-//           </label>
-//           <Select
-//             isMulti
-//             value={filter.status.map((status) => ({
-//               value: status,
-//               label: status,
-//             }))}
-//             options={createSelectOptions(statusOptions)}
-//             onChange={(selectedOptions) =>
-//               handleFilterChange(selectedOptions, "status")
-//             }
-//             className="mt-1 block w-full"
-//             placeholder="Select Status"
-//           />
-//         </div>
-//       </div>
-
-//       {users.length > 0 ? (
-//         <div className="w-full">
-//           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 justify-between">
-//             {users.map((user) => (
-//               <UserCard key={user.id} user={user} />
-//             ))}
-//           </div>
-
-//           <div className="flex justify-center gap-4 mt-8">
-//             <button
-//               onClick={handlePrev}
-//               disabled={currentPage === 1}
-//               className="px-4 py-2 bg-blue-500 text-white rounded-md"
-//             >
-//               Prev
-//             </button>
-//             <span className="mt-2">
-//               Page {currentPage} of {totalPages}
-//             </span>
-//             <button
-//               onClick={handleNext}
-//               disabled={currentPage === totalPages}
-//               className="px-4 py-2 bg-blue-500 text-white rounded-md"
-//             >
-//               Next
-//             </button>
-//           </div>
-//         </div>
-//       ) : (
-//         <div className="flex items-center justify-center bg-gray-100 rounded-lg shadow-md h-[300px] w-[300px]">
-//         <p className="text-gray-500 text-lg font-semibold">
-//           🚀 No users found
-//         </p>
-//       </div>
-//       )}
-//     </div>
-//   );
-// };
-
-// export default Feedback;

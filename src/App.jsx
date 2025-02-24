@@ -92,7 +92,6 @@ const App = () => {
           <Route path="daily-update" element={<DailyUpdates />} />
           <Route path="daily-update/:date" element={<AdminUpdate />} />
           <Route path="feedback" element={<Feedback />} />
-          <Route path="add-users" element={<AddUser />} />
           <Route path="feedback/:interactionId" element={<InteractionFeedback />} />
           <Route path="feedback/user/:userId" element={<UserFeedback />} />
           {/* <Route path="pending-tickets" element={<PendingTickets />} /> */}
