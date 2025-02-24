@@ -5,9 +5,6 @@ const UserCard = ({ user }) => {
   const navigate = useNavigate();
 
   return (
-    
-
-
     <div
       key={user.id}
       className="relative flex flex-col items-center bg-white shadow-lg p-6 rounded-lg cursor-pointer
@@ -33,23 +30,20 @@ const UserCard = ({ user }) => {
         className="w-24 h-24 rounded-full object-cover mt-3 mb-3 border-2 border-gray-300"
       />
 
-      {/* Employee ID */}
       <p className="text-sm text-gray-500 font-semibold">
         Emp ID: {user.employeeId || "Not Provided"}
       </p>
 
-      {/* User Details */}
       <div className="flex flex-col items-center mt-2 text-center">
         <p className="text-lg font-bold">{user.name || "-"}</p>
         <p className="text-sm text-gray-700">
           {user.year || "-"} - {user.batch || "-"}
         </p>
-        {/* <p className="text-sm text-gray-700">{user.phase || "---"}</p> */}
         <p className="mt-2 text-blue-600 font-semibold">
           {user.designation || "-"}
         </p>
         <p>
-          Plan:{user.plan?.name || "-"}
+           {user.plan?.name? `Plan : ${user.plan.name}`:"No plans"}
         </p>
         <p className={`text-lg font-bold ${
               user.zone === "GREEN ZONE"

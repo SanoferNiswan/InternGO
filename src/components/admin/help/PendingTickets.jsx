@@ -79,11 +79,11 @@ const PendingTickets = () => {
       )}
 
       {helpRequests.length > 0 ? (
-        <div className="space-y-4 mt-4">
+        <div className="space-y-4 mt-4 p-4 flex flex-col items-center">
           {helpRequests.map((request) => (
             <div
               key={request.id}
-              className="bg-white shadow-md rounded-lg p-3 border-l-4 border-blue-500 flex justify-between items-start text-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-400"
+              className="w-full bg-white shadow-md rounded-lg p-3 border-l-4 border-blue-500 flex justify-between items-start text-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-400"
             >
               <div className="flex-1 flex-col">
                 <h2 className="text-md font-medium">{request.subject}</h2>

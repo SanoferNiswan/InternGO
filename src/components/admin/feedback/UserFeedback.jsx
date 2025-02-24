@@ -188,7 +188,7 @@ const UserFeedback = () => {
 
       {feedback.length > 0 && (
         <div className="bg-white p-4 rounded-lg shadow-lg mb-6 flex justify-center">
-          <div className="w-3/4 h-[500px] w-[100%] p-6 overflow-y-hidden">
+          <div className="w-3/4 h-[450px] w-[100%] p-6 overflow-y-hidden">
             {" "}
             <h2 className="text-lg font-semibold text-center text-gray-700 mb-2">
               Average Ratings Over Interactions
@@ -275,17 +275,18 @@ const UserFeedback = () => {
 
       {feedback.length > 0 && (
         <div className="bg-white p-4 rounded-lg shadow-lg mb-6 flex flex-col md:flex-row gap-5 justify-center">
-          {/* Radar Chart Section */}
-          <div className="md:w-2/3 w-full h-[550px] p-2 overflow-hidden flex flex-col items-center">
-            <h2 className="text-lg font-semibold text-center text-gray-700">
-              Overall Skill Ratings
-            </h2>
+        {/* Radar Chart Section */}
+        <div className="md:w-2/3 w-full p-2 flex flex-col items-center">
+          <h2 className="text-lg font-semibold text-center text-gray-700 mb-4">
+            Overall Skill Ratings
+          </h2>
+          <div className="w-full flex justify-center">
             <Radar
               data={radarChartData}
               options={{
                 responsive: true,
-                maintainAspectRatio: true,
-                layout: { padding: 10 },
+                maintainAspectRatio: false,
+                layout: { padding: 0 },
                 scales: {
                   r: {
                     min: 0,
@@ -303,40 +304,42 @@ const UserFeedback = () => {
                 },
                 plugins: { legend: { display: false } },
               }}
-              className="h-[550px] w-[70%] mb-12"
+              className="h-[450px] w-[400px]"
             />
           </div>
-
-          {/* Skill Ratings Breakdown Section */}
-          <div className="md:w-1/3 w-full h-[550px] p-2 overflow-auto mr-22">
-            <h2 className="text-lg font-semibold text-center text-gray-700 mb-2">
-              Skill Ratings Breakdown
-            </h2>
-            <div className="space-y-2 p-2">
-              {categories.map((category, index) => (
-                <div
-                  key={category}
-                  className="flex justify-between items-center border-b pb-1 overflow-x-auto"
-                >
-                  <span className="text-gray-700 text-sm">{category}</span>
-                  <div className="flex items-center">
-                    <Rating
-                      count={5}
-                      value={ratingsData[index]}
-                      size={24}
-                      edit={false}
-                      activeColor="#facc15"
-                      isHalf={true}
-                    />
-                    <span className="ml-2 text-sm text-gray-600">
-                      {ratingsData[index].toFixed(1)}
-                    </span>
-                  </div>
+        </div>
+      
+        {/* Skill Ratings Breakdown Section */}
+        <div className="md:w-1/3 w-full p-2 overflow-auto">
+          <h2 className="text-lg font-semibold text-center text-gray-700 mb-2">
+            Skill Ratings Breakdown
+          </h2>
+          <div className="space-y-2 p-2">
+            {categories.map((category, index) => (
+              <div
+                key={category}
+                className="flex justify-between items-center border-b pb-1"
+              >
+                <span className="text-gray-700 text-sm">{category}</span>
+                <div className="flex items-center">
+                  <Rating
+                    count={5}
+                    value={ratingsData[index]}
+                    size={20}
+                    edit={false}
+                    activeColor="#facc15"
+                    isHalf={true}
+                  />
+                  <span className="ml-2 text-sm text-gray-600">
+                    {ratingsData[index].toFixed(1)}
+                  </span>
                 </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </div>
+      </div>
+      
       )}
 
       <div className="bg-white p-5 rounded-lg shadow-lg mb-6">

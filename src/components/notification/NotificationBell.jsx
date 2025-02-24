@@ -147,7 +147,7 @@ const NotificationBell = ({ notifications, setNotifications }) => {
             </div>
           </div>
 
-          <div className="overflow-y-auto h-72">
+          <div className="overflow-y-auto max-h-72">
             {notifications.length === 0 ? (
               <p className="text-center text-gray-500">No new notifications</p>
             ) : (
@@ -155,13 +155,13 @@ const NotificationBell = ({ notifications, setNotifications }) => {
                 {notifications.map((notification) => (
                   <li
                     key={notification.id}
-                    className={`py-2 px-3 border-b border-gray-200 flex justify-between items-center ${
+                    className={`w-full py-2 px-3 border-b border-gray-200 flex justify-between items-center ${
                       notification.isRead
                         ? "text-gray-400"
                         : "text-gray-700 font-medium"
                     }`}
                   >
-                    <div className="flex flex-col gap-1">
+                    <div className="flex flex-col gap-1 w-full">
                       <div className="flex items-center space-x-3">
                         <input
                           type="checkbox"

@@ -134,7 +134,7 @@ const ObjectiveList = ({
       !newObjective.name ||
       !newObjective.description ||
       objectiveDays <= 0 ||
-      noOfInteractions <= 0
+      noOfInteractions < 0
     ) {
       toast.error(
         "Please fill all fields and ensure values are greater than 0."

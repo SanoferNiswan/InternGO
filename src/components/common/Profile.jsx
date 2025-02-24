@@ -220,12 +220,12 @@ const Profile = ({ userId, token }) => {
                 No assets provided
               </p>
             ) : (
-              <table className="w-3/4 border-collapse border border-blue-300 mt-4 text-sm shadow-md rounded-lg overflow-hidden">
+              <table className="w-full border-collapse border border-blue-300 mt-4 text-sm shadow-md rounded-lg overflow-hidden">
                 <thead>
                   <tr className="bg-blue-100 text-black text-sm font-semibold">
-                    <th className="border border-blue-200 px-3 py-2">
+                    {/* <th className="border border-blue-200 px-3 py-2">
                       Asset ID
-                    </th>
+                    </th> */}
                     <th className="border border-blue-200 px-3 py-2">Name</th>
                     <th className="border border-blue-200 px-3 py-2">
                       Asset Type
@@ -244,9 +244,9 @@ const Profile = ({ userId, token }) => {
                       key={asset.id}
                       className="text-gray-900 hover:bg-blue-50 transition"
                     >
-                      <td className="border border-blue-200 px-3 py-2">
+                      {/* <td className="border border-blue-200 px-3 py-2">
                         {asset.id}
-                      </td>
+                      </td> */}
                       <td className="border border-blue-200 px-3 py-2">
                         <input
                           type="text"
