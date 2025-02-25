@@ -23,9 +23,6 @@ const InteractionCard = ({ interaction, onEdit }) => {
       const response = await axios.get(
         `/api/interactions/${id}/toggleSchedule?isScheduled=${newToggleState}`
       );
-
-      console.log("Toggle Response:", response.data);
-
       setIsToggled(newToggleState);
     } catch (error) {
       console.error("Error toggling schedule status:", error);

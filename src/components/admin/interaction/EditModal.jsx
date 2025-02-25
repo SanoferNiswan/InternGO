@@ -79,8 +79,6 @@ const EditModal = ({ onClose, interaction, refreshData }) => {
       }
 
     try {
-      console.log("edit fields:",fields);
-      
       const response = await axios.patch(
         `/api/interactions/${interaction.id}/update`,
         {
@@ -95,8 +93,6 @@ const EditModal = ({ onClose, interaction, refreshData }) => {
           isScheduled:true
         }
       );
-
-      console.log(response);
 
       toast.success(response.data.message, {
         autoClose: 3000,

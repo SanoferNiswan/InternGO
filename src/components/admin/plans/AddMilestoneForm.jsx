@@ -33,9 +33,6 @@ const AddMilestoneForm = ({
       return;
     } 
 
-
-    console.log("total milestone days:",parseInt(totalMilestoneDays) + parseInt(milestoneDays));
-
     if (parseInt(totalMilestoneDays) + parseInt(milestoneDays) > planDays) {
       toast.error(`Total milestone days cannot exceed ${planDays}!`);      
       return;

@@ -45,7 +45,6 @@ const UserFeedback = () => {
     try {
       const response = await axios.get(`api/feedbacks/intern/${userId}`);
       setFeedback(response.data.data);
-      console.log("response:", response.data.data);
     } catch (error) {
       toast.error(error);
     } finally {
@@ -112,7 +111,6 @@ const UserFeedback = () => {
 
   const categories = Object.keys(avgRatings);
   const ratingsData = Object.values(avgRatings);
-  console.log("categories", categories, "ratings:", ratingsData);
 
   const radarChartData = {
     labels: categories,

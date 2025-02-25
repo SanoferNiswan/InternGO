@@ -80,7 +80,6 @@ const AddUserModal = ({ onClose }) => {
       }
 
       const response = await axios.post("/api/auth/createUser", userData);
-      console.log(response);
       toast.success("User added successfully!");
       setTimeout(onClose, 500);
     } catch (error) {

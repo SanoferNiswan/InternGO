@@ -86,7 +86,6 @@ const ResetPassword = () => {
         "/api/auth/reset-password",
         { password }
       );
-      console.log(response);
       toast.success("Password reset successfully!");
       navigate("/signin", { replace: true });
     } catch (error) {

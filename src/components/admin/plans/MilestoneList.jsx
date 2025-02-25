@@ -42,8 +42,6 @@ const MilestoneList = ({
           0
         ) + parseInt(milestone.milestoneDays);
 
-        console.log("updatedTotalMilestoneDays:",updatedTotalMilestoneDays);
-
       if (updatedTotalMilestoneDays > planDays) {
        
         toast.error(`Total milestone days cannot exceed ${planDays}!`);

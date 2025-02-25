@@ -54,8 +54,6 @@ const EditProfile = () => {
     try {
       const response = await axios.get(`/api/users/${userId}`);
       const userData = response.data.data;
-      console.log(userData);
-
       setFormData((prev) => ({
         ...prev,
         name: userData.name || "",

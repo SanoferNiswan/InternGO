@@ -110,8 +110,6 @@ const AdminUpdate = () => {
     }));
   }, []);
 
-  console.log(dailyUpdates);
-
   if (loading) {
     return <Loader />;
   }

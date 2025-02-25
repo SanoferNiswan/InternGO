@@ -78,8 +78,6 @@ const SignUp = () => {
       try {
         const { confirmPassword, ...data } = formData;
         const response = await axios.post(SIGNUP_URL, data);
-        console.log(response);
-        
 
         if (response.data.statusCode === 200) {
           toast.success("OTP sent to your email.");
@@ -88,8 +86,6 @@ const SignUp = () => {
         }
       } catch (error) {
         if (error.response) {
-          console.log(error);
-          
           toast.error(`Error: ${error.response.data.message}`);
         } else {
           toast.error("Network error, please try again later.");
@@ -111,16 +107,11 @@ const SignUp = () => {
         otp,
       });
 
-      console.log(response);
-      
-
       if (response.data.statusCode === 201) {
         toast.success("OTP Verified successfully");
         navigate("/signin");
       }
     } catch (error) {
-      console.log(error);
-      
       toast.error(JSON.stringify(error.response?.data?.message));
     }
   };

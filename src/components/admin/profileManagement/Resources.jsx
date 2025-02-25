@@ -67,8 +67,6 @@ const Resources = () => {
       );
 
       if (response.data) {
-        console.log(response.data.data.data);
-
         setUsers(response.data.data.data);
         setTotalPages(Math.ceil(response.data.data.total_pages));
       }

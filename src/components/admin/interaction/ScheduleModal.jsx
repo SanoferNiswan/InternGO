@@ -52,11 +52,9 @@ const ScheduleModal = ({ onClose, refreshData }) => {
 
   const handleSubmit = async () => {
     if (!validateFields()){
-      console.log("handle submit validate");
       return;
       
     }
-    console.log("handle submit");
     setIsSubmitting(true);
     try {
       const currentDate = new Date();

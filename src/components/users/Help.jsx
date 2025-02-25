@@ -32,7 +32,6 @@ const Help = () => {
     try {
       const response = await axios.get(`/api/helpdesk/${userId}`);
       setHelp(response.data.data);
-      console.log(response.data.data);
     } catch (error) {
       toast.error(JSON.stringify(error.response?.data?.message));
     } finally {
@@ -75,8 +74,6 @@ const Help = () => {
           resolvedStatus: "PENDING",
         }
       );
-      console.log(response);
-
       if (response) {
         toast.success("Your request is submitted. Thank you!");
         setFormData({
