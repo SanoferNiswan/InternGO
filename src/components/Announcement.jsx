@@ -4,9 +4,11 @@ import { useSelector } from "react-redux";
 import axios from "../api/axios";
 import Loader from "./Loader";
 import { toast } from "react-toastify";
+import { decodeToken } from "../utils/auth";
 
 const Announcement = () => {
-  const { userId, token } = useSelector((state) => state.auth);
+  const { token } = useSelector((state) => state.auth);
+  const {userId} = decodeToken(token);
   const [announcements, setAnnouncements] = useState([]);
   const [loading, setLoading] = useState(false);
 

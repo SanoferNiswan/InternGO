@@ -4,11 +4,20 @@ import { useSelector } from "react-redux";
 import Announcement from "../../components/Announcement";
 import { toast } from "react-toastify";
 import { FaBook, FaClock, FaTasks } from "react-icons/fa";
+import { decodeToken } from "../../utils/auth";
+import { useNavigate } from "react-router-dom";
+import Loader from "../../components/Loader";
 
 const MentorDashboard = () => {
-  const { userId, token, profilePhoto, name } = useSelector(
+  const { token, profilePhoto, name } = useSelector(
     (state) => state.auth
   );
+
+  const [forbidden,setForbidden] = useState(false);
+  const [loading,setLoading] = useState(false);
+  const navigate = useNavigate();
+
+  const {userId} = decodeToken(token);
   const [interactionCount, setInteractionCount] = useState({});
 
   useEffect(() => {
@@ -17,6 +26,7 @@ const MentorDashboard = () => {
 
   const fetchCount = async () => {
     try {
+      setLoading(true);
       const response = await axios.get(
         `/api/users/${userId}/interactionCount`,
         {
@@ -27,9 +37,17 @@ const MentorDashboard = () => {
       );
       setInteractionCount(response.data.data);
     } catch (error) {
-      toast.error(error);
+      if(error.response?.data?.statusCode==403) setForbidden(true);
+      toast.error(JSON.stringify(error.response?.data?.message));
+    }finally{
+      setLoading(false);
     }
   };
+
+  if(loading) return <Loader />
+
+  if(forbidden) navigate("/403");
+
   return (
     <div className="p-2">
       <div className="bg-blue-500 text-white p-6 rounded-lg flex flex-col sm:flex-row items-center gap-4 sm:gap-6 shadow-md mb-6 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">

@@ -5,9 +5,11 @@ import Select from "react-select";
 import axios from "../../../api/axios";
 import Loader from "../../Loader";
 import { useNavigate } from "react-router-dom";
+import { decodeToken } from "../../../utils/auth";
 
 const Feedback = () => {
-  const { role, token } = useSelector((state) => state.auth);
+  const { token } = useSelector((state) => state.auth);
+  const {role} = decodeToken(token);
   const navigate = useNavigate();
   const [showfilters, setShowfilters] = useState(false);
 

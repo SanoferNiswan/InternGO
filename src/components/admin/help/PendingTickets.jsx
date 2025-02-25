@@ -2,12 +2,14 @@ import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import axios from "../../../api/axios";
 import Loader from "../../Loader";
+import { decodeToken } from "../../../utils/auth";
 
 const PendingTickets = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [helpRequests, setHelpRequests] = useState([]);
-  const { userId, token } = useSelector((state) => state.auth);
+  const { token } = useSelector((state) => state.auth);
+  const {userId} = decodeToken(token);
 
   useEffect(() => {
     fetchRequests();

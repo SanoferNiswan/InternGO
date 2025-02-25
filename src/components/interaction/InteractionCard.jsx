@@ -3,9 +3,11 @@ import { FaEdit, FaCalendar, FaClock, FaHourglassHalf } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import axios from "../../api/axios";
 import { useNavigate } from "react-router-dom";
+import { decodeToken } from "../../utils/auth";
 
 const InteractionCard = ({ interaction, onEdit }) => {
-  const { role, token } = useSelector((state) => state.auth);
+  const { token } = useSelector((state) => state.auth);
+  const {role} = decodeToken(token);
   const navigate = useNavigate();
 
   const [isToggled, setIsToggled] = useState(interaction.isScheduled);

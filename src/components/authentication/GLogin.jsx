@@ -37,9 +37,9 @@ function GLogin() {
       
 
       if (user?.token) {
-        const { userId, role, permissions,zone, token,profilePhoto } = user;
+        const { token,profilePhoto } = user;
 
-        dispatch(setAuth({ user, userId, name, zone, token, role, permissions,profilePhoto }));
+        dispatch(setAuth({ name, token,profilePhoto }));
 
         navigate("/dashboard",{replace:true});
         

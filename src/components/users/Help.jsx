@@ -4,9 +4,11 @@ import { fetchMentors } from "../../redux/slices/dataSlice";
 import axios from "../../api/axios";
 import { toast } from "react-toastify";
 import Loader from "../Loader";
+import { decodeToken } from "../../utils/auth";
 
 const Help = () => {
-  const { userId, token } = useSelector((state) => state.auth);
+  const { token } = useSelector((state) => state.auth);
+  const {userId} = decodeToken(token);
   const dispatch = useDispatch();
   const { mentors } = useSelector((state) => state.data);
   const [loading, setLoading] = useState();

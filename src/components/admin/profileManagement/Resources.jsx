@@ -5,11 +5,15 @@ import Select from "react-select";
 import axios from "../../../api/axios";
 import UserCard from "./UserCard";
 import Loader from "../../Loader";
+import { useNavigate } from "react-router-dom";
 
 const Resources = () => {
-  const { role, token } = useSelector((state) => state.auth);
+  const { token } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
   const { filters } = useSelector((state) => state.data);
+  const [forbidden,setForbidden] = useState(false);
+
+  const navigate=useNavigate();
 
   useEffect(() => {
     if (token) {
@@ -70,7 +74,8 @@ const Resources = () => {
         setTotalPages(Math.ceil(response.data.data.total_pages));
       }
     } catch (err) {
-      setErrors("Failed to fetch data");
+      setForbidden(true);
+      setErrors(JSON.stringify(err.response?.data?.message));
     } finally {
       setLoadings(false);
     }
@@ -105,19 +110,11 @@ const Resources = () => {
     }
   };
 
-  if (role !== "Admins") {
-    return (
-      <div className="p-6">
-        <p className="text-center text-red-600 text-lg font-semibold">
-          You are restricted from accessing this page.
-        </p>
-      </div>
-    );
-  }
-
   if (loadings) {
     return <Loader />;
   }
+
+  if(forbidden) navigate("/403")
 
   if (errors) {
     return (

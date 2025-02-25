@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "../../api/axios";
 import { useSelector } from "react-redux";
+import jwtDecode from "jwt-decode"; 
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import AddUserModal from "../../components/admin/profileManagement/AddUserModal";
@@ -22,11 +23,14 @@ import {
 } from "react-icons/fa";
 import GLogout from "../../components/authentication/GLogout";
 import logo from "../../assets/interngo logo.png";
+import { decodeToken } from "../../utils/auth";
 
 const DashboardLayout = () => {
-  const { name, userId, permissions, token, profilePhoto, role } = useSelector(
+  const { name,token, profilePhoto } = useSelector(
     (state) => state.auth
   );
+
+  const {userId, permissions,role} = decodeToken(token);
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [notifications, setNotifications] = useState([]);

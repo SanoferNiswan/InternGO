@@ -94,7 +94,6 @@ const App = () => {
           <Route path="feedback" element={<Feedback />} />
           <Route path="feedback/:interactionId" element={<InteractionFeedback />} />
           <Route path="feedback/user/:userId" element={<UserFeedback />} />
-          {/* <Route path="pending-tickets" element={<PendingTickets />} /> */}
           <Route path="pending-tickets" element={<Help />} />
           <Route path="*" element={<Navigate to="/not-found" replace />} />
         </Route>
