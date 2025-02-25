@@ -218,7 +218,7 @@ const Profile = ({ userId, token }) => {
                         {skill}
                       </span>
                     ))
-                  : "---"}
+                  : "-"}
               </div>
             </div>
           </div>
