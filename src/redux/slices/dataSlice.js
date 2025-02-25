@@ -15,11 +15,9 @@ const initialState = {
 
 export const fetchMentors = createAsyncThunk(
   "data/fetchMentors",
-  async (_, { getState, rejectWithValue }) => {
+  async (_, { rejectWithValue }) => {
     try {
-      const token = getState().auth.token; 
       const response = await axios.get("/api/users/role/fetch", {
-        headers: { Authorization: `Bearer ${token}` },
         params: { roleName: ["Mentors"] },
       });
       return response.data.data.map((mentor) => mentor.name);
@@ -29,17 +27,11 @@ export const fetchMentors = createAsyncThunk(
   }
 );
 
-export const fetchFilters = createAsyncThunk("data/fetchFilters", async (_, { getState,rejectWithValue }) => {
+export const fetchFilters = createAsyncThunk("data/fetchFilters", async (_, { rejectWithValue }) => {
   try {
-    const token = getState().auth.token; 
-    const response = await axios.get("/api/users/distinct/filters",{
-      headers:{
-        Authorization:`Bearer ${token}`
-      }
-    });
+    const response = await axios.get("/api/users/distinct/filters");
     return response.data.data;
   } catch (error) {
-    // return rejectWithValue(error.response?.data?.message || "Error fetching filters");
     return rejectWithValue(JSON.stringify(error));
   }
 });

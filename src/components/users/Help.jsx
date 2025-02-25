@@ -30,11 +30,7 @@ const Help = () => {
   const fetchHelp = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`/api/helpdesk/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.get(`/api/helpdesk/${userId}`);
       setHelp(response.data.data);
       console.log(response.data.data);
     } catch (error) {
@@ -77,11 +73,6 @@ const Help = () => {
           userId,
           ...newFormData,
           resolvedStatus: "PENDING",
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
         }
       );
       console.log(response);

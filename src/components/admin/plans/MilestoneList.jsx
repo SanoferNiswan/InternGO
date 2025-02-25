@@ -59,8 +59,7 @@ const MilestoneList = ({
             mentorName: milestone.mentorName,
             milestoneDays: parseInt(milestone.milestoneDays),
           },
-        },
-        { headers: { Authorization: `Bearer ${token}` } }
+        }
       );
     } catch (error) {
       toast.error(error.response?.data?.message);
@@ -69,9 +68,7 @@ const MilestoneList = ({
 
   const handleDeleteMilestone = async (milestoneId) => {
     try {
-      await axios.delete(`/api/plans/delete/milestone/${milestoneId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.delete(`/api/plans/delete/milestone/${milestoneId}`);
 
       setListOfMilestone((prevMilestones) =>
         prevMilestones.filter((milestone) => milestone.id !== milestoneId)

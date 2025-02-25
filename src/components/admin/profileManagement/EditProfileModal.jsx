@@ -35,9 +35,6 @@ const EditProfileModal = ({
         `/api/users/update/${userId}`,
         {
           ...formData,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
         }
       );
       toast.success("Profile updated successfully");

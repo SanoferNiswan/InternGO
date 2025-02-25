@@ -85,8 +85,7 @@ const ScheduleModal = ({ onClose, refreshData }) => {
           date: fields.date,
           time: fields.time,
           duration: fields.duration,
-        },
-        { headers: { Authorization: `Bearer ${token}` } }
+        }
       );
 
       toast.success(response.data.message, {

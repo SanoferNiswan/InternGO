@@ -16,7 +16,7 @@ const AdminDashboard = () => {
   const [statusCount, setStatusCount] = useState({});
   const [loading, setLoading] = useState(true);
   const [forbidden,setForbidden] = useState(false);
-  const { token, profilePhoto,name } = useSelector((state) => state.auth);
+  const { profilePhoto,name } = useSelector((state) => state.auth);
 
   useEffect(() => {
     fetchStatusCount();
@@ -24,11 +24,7 @@ const AdminDashboard = () => {
 
   const fetchStatusCount = async () => {
     try {
-      const response = await axios.get(`/api/users/count/status`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.get(`/api/users/count/status`);
       setStatusCount(response.data.data);
     } catch (error) {     
       if(error.response?.data?.statusCode===403){

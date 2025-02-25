@@ -68,8 +68,7 @@ const UserList = ({ planId }) => {
           planStatus: filter.planStatus,
         },
         {
-          params: { limit, offset: (currentPage - 1) * limit },
-          headers: { Authorization: `Bearer ${token}` },
+          params: { limit, offset: (currentPage - 1) * limit }
         }
       );
 
@@ -138,8 +137,7 @@ const UserList = ({ planId }) => {
     try {
       await axios.patch(
         endpoint,
-        { userIds: selectedUsers },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { userIds: selectedUsers }
       );
       fetchUsers();
       setSelectedUsers([]);

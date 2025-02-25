@@ -85,7 +85,6 @@ const AdminUpdate = () => {
           },
           {
             params: { limit, offset: (currentPage - 1) * limit },
-            headers: { Authorization: `Bearer ${token}` },
           }
         );
 
@@ -118,270 +117,153 @@ const AdminUpdate = () => {
   }
   return (
     <div className="bg-gray-100 min-h-screen p-4">
-  <h2 className="text-xl font-bold text-center text-blue-600 mb-4">
-    Daily Updates ({formatDate(date)})
-  </h2>
+      <h2 className="text-xl font-bold text-center text-blue-600 mb-4">
+        Daily Updates ({formatDate(date)})
+      </h2>
 
-  {/* Filters */}
-  <div className="flex flex-wrap justify-center gap-2 mb-4">
-    <input
-      type="text"
-      value={searchInput}
-      onChange={(e) => setSearchInput(e.target.value)}
-      className="px-2 py-1 border border-gray-300 rounded-md w-40 sm:w-48 text-sm focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400"
-      placeholder="Search by name"
-    />
-    <Select
-      isMulti
-      value={createSelectOptions(filter.designation)}
-      options={createSelectOptions(designations)}
-      onChange={(selectedOptions) =>
-        handleFilterChange(selectedOptions, "designation")
-      }
-      placeholder="Designation"
-      className="w-40 sm:w-48 text-sm"
-    />
-    <Select
-      isMulti
-      value={createSelectOptions(filter.year)}
-      options={createSelectOptions(years)}
-      onChange={(selectedOptions) =>
-        handleFilterChange(selectedOptions, "year")
-      }
-      placeholder="Year"
-      className="w-40 sm:w-48 text-sm"
-    />
-    <Select
-      isMulti
-      value={createSelectOptions(filter.batch)}
-      options={createSelectOptions(batches)}
-      onChange={(selectedOptions) =>
-        handleFilterChange(selectedOptions, "batch")
-      }
-      placeholder="Batch"
-      className="w-40 sm:w-48 text-sm"
-    />
-  </div>
+      {/* Filters */}
+      <div className="flex flex-wrap justify-center gap-2 mb-4">
+        <input
+          type="text"
+          value={searchInput}
+          onChange={(e) => setSearchInput(e.target.value)}
+          className="px-2 py-1 border border-gray-300 rounded-md w-40 sm:w-48 text-sm focus:outline-none focus:ring-1 focus:ring-blue-400 focus:border-blue-400"
+          placeholder="Search by name"
+        />
+        <Select
+          isMulti
+          value={createSelectOptions(filter.designation)}
+          options={createSelectOptions(designations)}
+          onChange={(selectedOptions) =>
+            handleFilterChange(selectedOptions, "designation")
+          }
+          placeholder="Designation"
+          className="w-40 sm:w-48 text-sm"
+        />
+        <Select
+          isMulti
+          value={createSelectOptions(filter.year)}
+          options={createSelectOptions(years)}
+          onChange={(selectedOptions) =>
+            handleFilterChange(selectedOptions, "year")
+          }
+          placeholder="Year"
+          className="w-40 sm:w-48 text-sm"
+        />
+        <Select
+          isMulti
+          value={createSelectOptions(filter.batch)}
+          options={createSelectOptions(batches)}
+          onChange={(selectedOptions) =>
+            handleFilterChange(selectedOptions, "batch")
+          }
+          placeholder="Batch"
+          className="w-40 sm:w-48 text-sm"
+        />
+      </div>
 
-  {/* Table */}
-  {dailyUpdates.length > 0 ? (
-    dailyUpdates
-      .filter((update) => update.tasks.length > 0)
-      .map((update) => (
-        <div key={update.user.id} className="mb-6">
-          <h3 className="text-lg font-bold text-gray-800 mb-2 p-2 rounded-md">
-            {update.user.name} {update.user.designation ? `- ${update.user.designation}` : ""}
-          </h3>
-          <div className="overflow-x-auto">
-            <table className="w-full border border-blue-200 shadow-sm rounded-lg text-sm">
-              <thead>
-                <tr className="bg-blue-100 text-black">
-                  <th className="p-2 border border-blue-200 w-1/6">Task Name</th>
-                  <th className="p-2 border border-blue-200 w-1/6">Planned Activities</th>
-                  <th className="p-2 border border-blue-200 w-1/6">Completed Activities</th>
-                  <th className="p-2 border border-blue-200 w-1/6">Estimated Time</th>
-                  <th className="p-2 border border-blue-200 w-1/6">Actual Time</th>
-                  <th className="p-2 border border-blue-200 w-1/6">Progress</th>
-                </tr>
-              </thead>
-              <tbody>
-                {update.tasks.map((task) => (
-                  <tr
-                    key={task.id}
-                    className="text-gray-900 bg-white hover:bg-blue-50"
-                  >
-                    <td className="p-2 border border-blue-200 text-xs">{task.taskName}</td>
-                    <td className="p-2 border border-blue-200 text-xs">{task.activitiesPlanned || "N/A"}</td>
-                    <td className="p-2 border border-blue-200 text-xs">{task.activitiesCompleted || "N/A"}</td>
-                    <td className="p-2 border border-blue-200 text-xs">
-                      {task.estimatedTime ? `${task.estimatedTime}hrs` : "-"}
-                    </td>
-                    <td className="p-2 border border-blue-200 text-xs">
-                      {task.actualTime ? `${task.actualTime}hrs` : "-"}
-                    </td>
-                    <td
-                      className={`p-2 border border-blue-200 text-xs font-semibold ${
-                        task.taskProgress === "PENDING" ? "text-red-600" : "text-green-600"
-                      }`}
-                    >
-                      {task.taskProgress}
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+      {/* Table */}
+      {dailyUpdates.length > 0 ? (
+        dailyUpdates
+          .filter((update) => update.tasks.length > 0)
+          .map((update) => (
+            <div key={update.user.id} className="mb-6">
+              <h3 className="text-lg font-bold text-gray-800 mb-2 p-2 rounded-md">
+                {update.user.name}{" "}
+                {update.user.designation ? `- ${update.user.designation}` : ""}
+              </h3>
+              <div className="overflow-x-auto">
+                <table className="w-full border border-blue-200 shadow-sm rounded-lg text-sm">
+                  <thead>
+                    <tr className="bg-blue-100 text-black">
+                      <th className="p-2 border border-blue-200 w-1/6">
+                        Task Name
+                      </th>
+                      <th className="p-2 border border-blue-200 w-1/6">
+                        Planned Activities
+                      </th>
+                      <th className="p-2 border border-blue-200 w-1/6">
+                        Completed Activities
+                      </th>
+                      <th className="p-2 border border-blue-200 w-1/6">
+                        Estimated Time
+                      </th>
+                      <th className="p-2 border border-blue-200 w-1/6">
+                        Actual Time
+                      </th>
+                      <th className="p-2 border border-blue-200 w-1/6">
+                        Progress
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {update.tasks.map((task) => (
+                      <tr
+                        key={task.id}
+                        className="text-gray-900 bg-white hover:bg-blue-50"
+                      >
+                        <td className="p-2 border border-blue-200 text-xs">
+                          {task.taskName}
+                        </td>
+                        <td className="p-2 border border-blue-200 text-xs">
+                          {task.activitiesPlanned || "N/A"}
+                        </td>
+                        <td className="p-2 border border-blue-200 text-xs">
+                          {task.activitiesCompleted || "N/A"}
+                        </td>
+                        <td className="p-2 border border-blue-200 text-xs">
+                          {task.estimatedTime
+                            ? `${task.estimatedTime}hrs`
+                            : "-"}
+                        </td>
+                        <td className="p-2 border border-blue-200 text-xs">
+                          {task.actualTime ? `${task.actualTime}hrs` : "-"}
+                        </td>
+                        <td
+                          className={`p-2 border border-blue-200 text-xs font-semibold ${
+                            task.taskProgress === "PENDING"
+                              ? "text-red-600"
+                              : "text-green-600"
+                          }`}
+                        >
+                          {task.taskProgress}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          ))
+      ) : (
+        <p className="text-center text-gray-500 mt-4">No updates found.</p>
+      )}
+
+      {/* Pagination */}
+      {dailyUpdates.length > 0 && (
+        <div className="flex justify-center items-center mt-4 space-x-2">
+          <button
+            onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
+            disabled={currentPage === 1}
+            className="px-3 py-1 bg-blue-500 text-white rounded-lg disabled:bg-gray-300 text-sm hover:bg-blue-700"
+          >
+            Previous
+          </button>
+          <span className="text-sm font-medium">
+            Page {currentPage} of {totalPages}
+          </span>
+          <button
+            onClick={() =>
+              setCurrentPage((prev) => Math.min(prev + 1, totalPages))
+            }
+            disabled={currentPage === totalPages}
+            className="px-3 py-1 bg-blue-500 text-white rounded-lg disabled:bg-gray-300 text-sm hover:bg-blue-700"
+          >
+            Next
+          </button>
         </div>
-      ))
-  ) : (
-    <p className="text-center text-gray-500 mt-4">No updates found.</p>
-  )}
-
-  {/* Pagination */}
-  {dailyUpdates.length > 0 && (
-    <div className="flex justify-center items-center mt-4 space-x-2">
-      <button
-        onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-        disabled={currentPage === 1}
-        className="px-3 py-1 bg-blue-500 text-white rounded-lg disabled:bg-gray-300 text-sm hover:bg-blue-700"
-      >
-        Previous
-      </button>
-      <span className="text-sm font-medium">
-        Page {currentPage} of {totalPages}
-      </span>
-      <button
-        onClick={() =>
-          setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-        }
-        disabled={currentPage === totalPages}
-        className="px-3 py-1 bg-blue-500 text-white rounded-lg disabled:bg-gray-300 text-sm hover:bg-blue-700"
-      >
-        Next
-      </button>
+      )}
     </div>
-  )}
-</div>
-    // <div className=" bg-gray-100 min-h-screen">
-    //   <h2 className="text-2xl font-bold text-center text-blue-600 mb-6">
-    //     Daily Updates ({formatDate(date)})
-    //   </h2>
-
-    //   <div className="flex flex-wrap justify-center justify-between items-center gap-4 mb-6">
-    //     <input
-    //       type="text"
-    //       value={searchInput}
-    //       onChange={(e) => setSearchInput(e.target.value)}
-    //       className="px-3 py-2 border border-gray-300 rounded-md w-60"
-    //       placeholder="Search by name"
-    //     />
-    //     <Select
-    //       isMulti
-    //       value={createSelectOptions(filter.designation)}
-    //       options={createSelectOptions(designations)}
-    //       onChange={(selectedOptions) =>
-    //         handleFilterChange(selectedOptions, "designation")
-    //       }
-    //       placeholder="Filter by Designation"
-    //       className="w-60"
-    //     />
-    //     <Select
-    //       isMulti
-    //       value={createSelectOptions(filter.year)}
-    //       options={createSelectOptions(years)}
-    //       onChange={(selectedOptions) =>
-    //         handleFilterChange(selectedOptions, "year")
-    //       }
-    //       placeholder="Filter by Year"
-    //       className="w-60"
-    //     />
-    //     <Select
-    //       isMulti
-    //       value={createSelectOptions(filter.batch)}
-    //       options={createSelectOptions(batches)}
-    //       onChange={(selectedOptions) =>
-    //         handleFilterChange(selectedOptions, "batch")
-    //       }
-    //       placeholder="Filter by Batch"
-    //       className="w-60"
-    //     />
-    //   </div>
-
-    //   {dailyUpdates.length > 0 ? (
-    //     dailyUpdates
-    //       .filter((update) => update.tasks.length > 0)
-    //       .map((update) => (
-    //         <div key={update.user.id} className="mb-8">
-    //           <h3 className="text-xl font-bold text-gray-800 mb-2 p-3 rounded-md">
-    //             {update.user.name} {update.user.designation? `- ${update.user.designation}`:""}
-    //           </h3>
-    //           <div className="overflow-x-auto">
-    //             <table className="w-full border border-blue-300 shadow-md rounded-lg">
-    //               <thead>
-    //                 <tr className="bg-blue-100 text-black text-left text-sm">
-    //                   <th className="p-2 border border-blue-200">Task Name</th>
-    //                   <th className="p-2 border border-blue-200">
-    //                     Planned Activities
-    //                   </th>
-    //                   <th className="p-2 border border-blue-200">
-    //                     Completed Activities
-    //                   </th>
-    //                   <th className="p-2 border border-blue-200">
-    //                     Estimated Time
-    //                   </th>
-    //                   <th className="p-2 border border-blue-200">
-    //                     Actual Time
-    //                   </th>
-    //                   <th className="p-2 border border-blue-200">Progress</th>
-    //                 </tr>
-    //               </thead>
-    //               <tbody>
-    //                 {update.tasks.map((task, index) => (
-    //                   <tr
-    //                     key={task.id}
-    //                     className={`text-gray-900 text-sm bg-white hover:bg-blue-50`}
-    //                   >
-    //                     <td className="p-2 border border-blue-200">
-    //                       {task.taskName}
-    //                     </td>
-    //                     <td className="p-2 border border-blue-200">
-    //                       {task.activitiesPlanned || "N/A"}
-    //                     </td>
-    //                     <td className="p-2 border border-blue-200">
-    //                       {task.activitiesCompleted || "N/A"}
-    //                     </td>
-    //                     <td className="p-2 border border-blue-200">
-    //                       {task.estimatedTime
-    //                         ? `${task.estimatedTime}hrs`
-    //                         : "-"}
-    //                     </td>
-    //                     <td className="p-2 border border-blue-200">
-    //                       {task.actualTime ? `${task.actualTime}hrs` : "-"}
-    //                     </td>
-    //                     <td
-    //                       className={`p-2 border border-blue-200 font-semibold text-blue-700 ${
-    //                         task.taskProgress == "PENDING"
-    //                           ? "text-red-600"
-    //                           : "text-green-600"
-    //                       }`}
-    //                     >
-    //                       {task.taskProgress}
-    //                     </td>
-    //                   </tr>
-    //                 ))}
-    //               </tbody>
-    //             </table>
-    //           </div>
-    //         </div>
-    //       ))
-    //   ) : (
-    //     <p className="text-center text-gray-500 mt-4">No updates found.</p>
-    //   )}
-
-    //   {dailyUpdates.length > 0 && (
-    //     <div className="flex justify-center items-center mt-6 space-x-4">
-    //       <button
-    //         onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
-    //         disabled={currentPage === 1}
-    //         className="px-4 py-2 bg-blue-500 text-white rounded-lg disabled:bg-gray-300 transition-all hover:bg-blue-700"
-    //       >
-    //         Previous
-    //       </button>
-    //       <span className="text-lg font-medium">
-    //         Page {currentPage} of {totalPages}
-    //       </span>
-    //       <button
-    //         onClick={() =>
-    //           setCurrentPage((prev) => Math.min(prev + 1, totalPages))
-    //         }
-    //         disabled={currentPage === totalPages}
-    //         className="px-4 py-2 bg-blue-500 text-white rounded-lg disabled:bg-gray-300 transition-all hover:bg-blue-700"
-    //       >
-    //         Next
-    //       </button>
-    //     </div>
-    //   )}
-    // </div>
   );
 };
 

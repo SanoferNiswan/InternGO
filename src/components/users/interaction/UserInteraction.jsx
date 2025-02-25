@@ -11,6 +11,8 @@ import { decodeToken } from "../../../utils/auth";
 const UserInteraction = () => {
   const { token,name } = useSelector((state) => state.auth);
   const {userId}=decodeToken(token);
+  console.log(userId);
+  
   const [interactions, setInteractions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [interactionStatus, setInteractionStatus] = useState([]);
@@ -33,13 +35,10 @@ const UserInteraction = () => {
     try {
       const response = await axios.post(
         `/api/interactions/${userId}`,
-        { interactionStatus,date:selectedDate },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { interactionStatus,date:selectedDate }
       );
+      console.log(response.data.data.data);
+      
       setInteractions(response.data.data.data);
     } catch (err) {
       toast.error(err?.response?.data?.message);

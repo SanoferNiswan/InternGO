@@ -48,10 +48,7 @@ const InternUpdate = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `/api/dailyUpdates/${userId}?date=${date}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+        `/api/dailyUpdates/${userId}?date=${date}`
       );
 
       if (response.data.statusCode === 200) {
@@ -170,10 +167,7 @@ const InternUpdate = () => {
 
       await axios.post(
         `/api/dailyUpdates/${userId}/create`,
-        { date, tasks: formattedTasks },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+        { date, tasks: formattedTasks }
       );
       fetchDailyUpdates();
       toast.success("Changes saved successfully!");
@@ -188,9 +182,7 @@ const InternUpdate = () => {
   const deleteTask = async (taskId, index) => {
     try {
       if (taskId) {
-        await axios.delete(`/api/dailyUpdates/delete/${taskId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        await axios.delete(`/api/dailyUpdates/delete/${taskId}`);
       }
       setTasks((prevTasks) => prevTasks.filter((_, i) => i !== index));
       toast.success("Task deleted successfully!");

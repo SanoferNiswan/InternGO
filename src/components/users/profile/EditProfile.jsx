@@ -13,7 +13,7 @@ import { decodeToken } from "../../../utils/auth";
 
 const EditProfile = () => {
   const { token } = useSelector((state) => state.auth);
-  const {role,userId}=decodeToken(token);
+  const { role, userId } = decodeToken(token);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -52,11 +52,7 @@ const EditProfile = () => {
   const fetchUserData = async () => {
     setLoading(true);
     try {
-      const response = await axios.get(`/api/users/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.get(`/api/users/${userId}`);
       const userData = response.data.data;
       console.log(userData);
 
@@ -239,6 +235,8 @@ const EditProfile = () => {
             };
           }
         });
+      } else if (typeof formData[key] === "string" && formData[key].trim()) {
+        updatedData[key] = formData[key].trim();
       } else if (formData[key]) {
         updatedData[key] = formData[key];
       }
@@ -251,14 +249,9 @@ const EditProfile = () => {
     try {
       const response = await axios.patch(
         `/api/users/update/${userId}`,
-        updatedData,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        updatedData
       );
-      dispatch(setAuth({ profilePhoto: response.data.data.data.profilePhoto }));
+      dispatch(setAuth({ profilePhoto: response.data.data.data?.profilePhoto,name:response.data.data.data?.name }));
       toast.success("Profile updated successfully");
       navigate("/dashboard/my-profile");
     } catch (error) {

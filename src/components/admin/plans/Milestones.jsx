@@ -32,11 +32,7 @@ const Milestones = () => {
 
   const fetchPlanDetails = async () => {
     try {
-      const response = await axios.get(`/api/plans/${planId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.get(`/api/plans/${planId}`);
       setPlanDetails(response.data.data);
       setListOfMilestone(response.data.data.milestones);
     } catch (error) {
@@ -52,9 +48,7 @@ const Milestones = () => {
 
   const deletePlan = async () => {
     try {
-      await axios.delete(`/api/plans/delete/${planId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.delete(`/api/plans/delete/${planId}`);
 
       toast.success("Plan deleted successfully");
       navigate("/admin/plans");

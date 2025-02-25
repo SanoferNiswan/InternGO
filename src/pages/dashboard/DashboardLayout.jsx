@@ -1,7 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import axios from "../../api/axios";
 import { useSelector } from "react-redux";
-import jwtDecode from "jwt-decode"; 
 import { Outlet, NavLink, useNavigate } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import AddUserModal from "../../components/admin/profileManagement/AddUserModal";
@@ -157,11 +156,7 @@ const DashboardLayout = () => {
 
   const fetchNotifications = async () => {
     try {
-      const response = await axios.get(`api/notifications/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.get(`api/notifications/${userId}`);
 
       setNotifications(response.data.data);
     } catch (error) {

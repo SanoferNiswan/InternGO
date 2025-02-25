@@ -77,7 +77,6 @@ const InteractionSchedule = () => {
         },
         {
           params: { limit: 9, offset: (currentPage - 1) * 9 },
-          headers: { Authorization: `Bearer ${token}` },
         }
       );
 

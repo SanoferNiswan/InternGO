@@ -25,13 +25,7 @@ const CreateAnnouncement = () => {
     try {
       const response = await axios.post(
         "/api/notifications/createAnnouncement",
-        { message },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "application/json",
-          },
-        }
+        { message }
       );
       setSuccess("Announcement created successfully!");
       setMessage(""); 

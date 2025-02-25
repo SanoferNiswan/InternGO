@@ -28,12 +28,7 @@ const MentorDashboard = () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        `/api/users/${userId}/interactionCount`,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        `/api/users/${userId}/interactionCount`
       );
       setInteractionCount(response.data.data);
     } catch (error) {

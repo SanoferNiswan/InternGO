@@ -93,8 +93,7 @@ const EditModal = ({ onClose, interaction, refreshData }) => {
           time: fields.time,
           duration: fields.duration,
           isScheduled:true
-        },
-        { headers: { Authorization: `Bearer ${token}` } }
+        }
       );
 
       console.log(response);

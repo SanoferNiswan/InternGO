@@ -67,9 +67,7 @@ const CreateFeedback = () => {
     };
 
     try {
-      await axios.post("/api/feedbacks/create", feedbackData, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.post("/api/feedbacks/create", feedbackData);
       toast.success("Feedback added succesfully")
       navigate("/dashboard/interactions", { replace: true });
     } catch (error) {

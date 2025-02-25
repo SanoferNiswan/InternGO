@@ -18,11 +18,7 @@ const PendingTickets = () => {
   const fetchRequests = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`/api/helpdesk/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.get(`/api/helpdesk/${userId}`);
 
       if (response) {
         setHelpRequests(response.data.data);
@@ -52,11 +48,6 @@ const PendingTickets = () => {
         {
           resolvedStatus: updatedRequests.find((req) => req.id === id)
             ?.resolvedStatus,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
         }
       );
     } catch (error) {

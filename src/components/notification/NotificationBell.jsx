@@ -32,8 +32,7 @@ const NotificationBell = ({ notifications, setNotifications }) => {
     try {
       await axios.patch(
         `/api/notifications/markAsRead`,
-        { notificationIds: selectedNotifications },
-        { headers: { Authorization: `Bearer ${token}` } }
+        { notificationIds: selectedNotifications }
       );
       setNotifications((prev) =>
         prev.map((notif) =>
@@ -56,8 +55,7 @@ const NotificationBell = ({ notifications, setNotifications }) => {
     try {
       await axios.patch(
         `/api/notifications/${userId}/markAllAsRead`,
-        {},
-        { headers: { Authorization: `Bearer ${token}` } }
+        {}
       );
       setNotifications((prev) =>
         prev.map((notif) => ({ ...notif, isRead: true }))
@@ -78,7 +76,6 @@ const NotificationBell = ({ notifications, setNotifications }) => {
     try {
       await axios.delete(`/api/notifications/delete`, {
         data: { notificationIds: selectedNotifications },
-        headers: { Authorization: `Bearer ${token}` },
       });
       setNotifications((prev) =>
         prev.filter((notif) => !selectedNotifications.includes(notif.id))
@@ -94,9 +91,7 @@ const NotificationBell = ({ notifications, setNotifications }) => {
   // Delete all notifications
   const deleteAllNotifications = async () => {
     try {
-      await axios.delete(`/api/notifications/${userId}/delete`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.delete(`/api/notifications/${userId}/delete`);
       setNotifications([]);
       toast.success("All notifications deleted", { autoClose: 2000 });
     } catch (error) {
