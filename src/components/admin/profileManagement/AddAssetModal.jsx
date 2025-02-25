@@ -23,11 +23,6 @@ const AddAssetModal = ({
           assetType,
           assetName,
           givenOn,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
         }
       );
       toast.success("asset added successfully");

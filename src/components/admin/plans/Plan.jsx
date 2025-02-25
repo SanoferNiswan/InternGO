@@ -25,9 +25,7 @@ const Plan = () => {
 
   const fetchPlans = async () => {
     try {
-      const response = await axios.get("/api/plans", {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.get("/api/plans");
       setPlans(response.data.data);
     } catch (err) {
       toast.error("Unauthorized access");
@@ -52,9 +50,7 @@ const Plan = () => {
 
     try {
       setIsSubmitting(true);
-      const response = await axios.post("/api/plans/create", planDetails, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.post("/api/plans/create", planDetails);
 
       if (response.status === 201) {
         const data = response.data.data;

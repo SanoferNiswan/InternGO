@@ -54,9 +54,7 @@ const EditFeedbackModal = ({ isOpen, onClose, feedback, refreshData }) => {
     };
 
     try {
-      await axios.put(`/api/feedbacks/${feedback.id}/update`, updatedFeedback, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.put(`/api/feedbacks/${feedback.id}/update`, updatedFeedback);
       toast.success("Feedback updated successfully!");
       refreshData();
       onClose();

@@ -62,8 +62,7 @@ const Resources = () => {
           status: filter.status,
         },
         {
-          params: { limit: 8, offset: (currentPage - 1) * 8 },
-          headers: { Authorization: `Bearer ${token}` },
+          params: { limit: 8, offset: (currentPage - 1) * 8 }
         }
       );
 

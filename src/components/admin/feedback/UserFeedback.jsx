@@ -43,9 +43,7 @@ const UserFeedback = () => {
 
   const fetchFeedback = async () => {
     try {
-      const response = await axios.get(`api/feedbacks/intern/${userId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      const response = await axios.get(`api/feedbacks/intern/${userId}`);
       setFeedback(response.data.data);
       console.log("response:", response.data.data);
     } catch (error) {

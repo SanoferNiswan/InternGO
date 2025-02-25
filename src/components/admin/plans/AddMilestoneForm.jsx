@@ -45,10 +45,7 @@ const AddMilestoneForm = ({
       setIsSubmitting(true);
       const response = await axios.post(
         `/api/plans/${planId}/create/milestone`,
-        newMilestone,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+        newMilestone
       );
 
       setShowMilestoneForm(false);

@@ -79,11 +79,7 @@ const AddUserModal = ({ onClose }) => {
         return;
       }
 
-      const response = await axios.post("/api/auth/createUser", userData, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.post("/api/auth/createUser", userData);
       console.log(response);
       toast.success("User added successfully!");
       setTimeout(onClose, 500);

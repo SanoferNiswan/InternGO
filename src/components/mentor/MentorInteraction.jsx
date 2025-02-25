@@ -46,12 +46,7 @@ const MentorInteraction = () => {
     try {
       const response = await axios.post(
         `/api/interactions/${userId}`,
-        { interactionStatus, name: search.trim(),date:selectedDate },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { interactionStatus, name: search.trim(),date:selectedDate }
       );
       setInteractions(response.data.data.data);
     } catch (err) {

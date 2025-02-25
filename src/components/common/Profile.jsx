@@ -22,18 +22,14 @@ const Profile = ({ userId, token }) => {
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
-    if (userId && token) {
+    if (userId) {
       fetchProfileData();
     }
-  }, [userId, token]);
+  }, [userId]);
 
   const fetchProfileData = async () => {
     try {
-      const response = await axios.get(`/api/users/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.get(`/api/users/${userId}`);
       setProfileData(response.data.data);
       setAssets(response.data.data.assets);
     } catch (error) {
@@ -82,11 +78,6 @@ const Profile = ({ userId, token }) => {
         `/api/users/update/asset/${assetId}`,
         {
           [field]: value,
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
         }
       );
 

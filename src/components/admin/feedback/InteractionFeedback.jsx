@@ -35,9 +35,6 @@ const InteractionFeedback = () => {
     try {
       const response = await axios.get(
         `api/feedbacks/interaction/${interactionId}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
       );
       setFeedback(response.data.data);
     } catch (error) {

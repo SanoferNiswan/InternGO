@@ -19,16 +19,12 @@ const InternDashboard = () => {
 
   useEffect(() => {
     fetchPlanDetails();
-  }, [token]);
+  }, []);
 
   const fetchPlanDetails = async () => {
     
     try {
-      const response = await axios.get(`/api/users/training/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.get(`/api/users/training/${userId}`);
       setPlanDetails(response.data.data.milestone);
       setZone(response.data.data.zone);
       

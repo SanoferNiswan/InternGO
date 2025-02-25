@@ -92,8 +92,7 @@ const ObjectiveList = ({
             noOfInteractions: objective.noOfInteractions,
             roadmapType: objective.roadmapType,
           },
-        },
-        { headers: { Authorization: `Bearer ${token}` } }
+        }
       );
     } catch (error) {
       toast.error(JSON.stringify(error?.response?.data?.message));
@@ -102,9 +101,7 @@ const ObjectiveList = ({
 
   const handleDeleteObjective = async (objectiveId) => {
     try {
-      await axios.delete(`/api/plans/delete/objective/${objectiveId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await axios.delete(`/api/plans/delete/objective/${objectiveId}`);
 
       setListOfMilestone((prevMilestones) =>
         prevMilestones.map((milestoneItem) =>
@@ -159,9 +156,6 @@ const ObjectiveList = ({
           objectiveDays,
           noOfInteractions,
           milestoneId: milestone.id,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
         }
       );
 

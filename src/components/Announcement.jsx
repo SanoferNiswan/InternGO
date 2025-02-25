@@ -19,11 +19,7 @@ const Announcement = () => {
   const fetchAnnouncements = async () => {
     setLoading(true);
     try {
-      const response = await axios.get("/api/notifications/get/announcements", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await axios.get("/api/notifications/get/announcements");
       if (response.data?.statusCode === 200) {
         setAnnouncements(response.data.data);
       }

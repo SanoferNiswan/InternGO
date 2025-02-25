@@ -21,10 +21,7 @@ const InteractionCard = ({ interaction, onEdit }) => {
     setIsLoading(true);
     try {
       const response = await axios.get(
-        `/api/interactions/${id}/toggleSchedule?isScheduled=${newToggleState}`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+        `/api/interactions/${id}/toggleSchedule?isScheduled=${newToggleState}`
       );
 
       console.log("Toggle Response:", response.data);

@@ -69,8 +69,7 @@ const Feedback = () => {
           zone: filter.zone,
         },
         {
-          params: { limit: 10, offset: (currentPage - 1) * 10 },
-          headers: { Authorization: `Bearer ${token}` },
+          params: { limit: 10, offset: (currentPage - 1) * 10 }
         }
       );
 
