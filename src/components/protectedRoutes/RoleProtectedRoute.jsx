@@ -1,9 +1,12 @@
 import { useSelector } from "react-redux";
+import { decodeToken } from "../../utils/auth";
 import { Navigate, Outlet } from "react-router-dom";
 import DashboardLayout from "../../pages/dashboard/DashboardLayout";
 
 const RoleProtectedRoute = ({ allowedRoles }) => {
-  const { token, role } = useSelector((state) => state.auth);
+  const { token } = useSelector((state) => state.auth);
+
+  const {role} = decodeToken(token);
  
   if (!token) {
     return <Navigate to="/" replace />;

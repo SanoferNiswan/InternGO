@@ -3,9 +3,11 @@ import { useSelector } from "react-redux";
 import AdminDashboard from "./AdminDashboard";
 import InternDashboard from "./InternDashboard";
 import MentorDashboard from "./MentorDashboard";
+import { decodeToken } from "../../utils/auth";
 
 const Dashboard = () => {
-  const { role } = useSelector((state) => state.auth); 
+  const { token } = useSelector((state) => state.auth); 
+  const {role} = decodeToken(token);  
 
   return ( 
     <div>

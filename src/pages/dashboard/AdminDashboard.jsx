@@ -9,11 +9,14 @@ import Announcement from "../../components/Announcement";
 import axios from "../../api/axios";
 import { useSelector } from "react-redux";
 import Loader from "../../components/Loader";
+import { toast } from "react-toastify";
+import Forbidden from "../Forbidden";
 
 const AdminDashboard = () => {
   const [statusCount, setStatusCount] = useState({});
   const [loading, setLoading] = useState(true);
-  const { token, name, profilePhoto } = useSelector((state) => state.auth);
+  const [forbidden,setForbidden] = useState(false);
+  const { token, profilePhoto,name } = useSelector((state) => state.auth);
 
   useEffect(() => {
     fetchStatusCount();
@@ -27,8 +30,12 @@ const AdminDashboard = () => {
         },
       });
       setStatusCount(response.data.data);
-    } catch (error) {
-      console.log(error);
+    } catch (error) {     
+      if(error.response?.data?.statusCode===403){
+        setForbidden(true);
+      }else{
+        toast.error(JSON.stringify(error.response?.data?.message));
+      }
     } finally {
       setLoading(false);
     }
@@ -36,6 +43,10 @@ const AdminDashboard = () => {
 
   if (loading) {
     return <Loader />;
+  }
+
+  if(forbidden){
+    return <Forbidden />
   }
 
   return (

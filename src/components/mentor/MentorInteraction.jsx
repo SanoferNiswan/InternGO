@@ -6,9 +6,12 @@ import Loader from "../Loader";
 import DatePicker from "react-datepicker";
 import Select from "react-select";
 import { toast } from "react-toastify";
+import { decodeToken } from "../../utils/auth";
 
 const MentorInteraction = () => {
-  const { userId, token, name } = useSelector((state) => state.auth);
+  const { token,name } = useSelector((state) => state.auth);
+  const {userId}=decodeToken(token);
+  
   const [interactions, setInteractions] = useState([]);
   const [loading, setLoading] = useState(true);
   const [interactionStatus, setInteractionStatus] = useState([]);

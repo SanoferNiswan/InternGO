@@ -7,9 +7,10 @@ import AddAssetModal from "../admin/profileManagement/AddAssetModal";
 import Loader from "../Loader";
 import { toast } from "react-toastify";
 import defaultProfile from "../../assets/profile.jpg";
+import { decodeToken } from "../../utils/auth";
 
 const Profile = ({ userId, token }) => {
-  const { role, userId: id } = useSelector((state) => state.auth);
+  const { role, userId: id } = decodeToken(token);
   const [profileData, setProfileData] = useState(null);
   const [activeTab, setActiveTab] = useState("personal info");
   const [isProfilePhotoModalOpen, setIsProfilePhotoModalOpen] = useState(false);
@@ -51,8 +52,8 @@ const Profile = ({ userId, token }) => {
     "professional info",
     "education",
     "bankDetails",
-    "assets",
     "skill",
+    "assets",
   ];
 
   const adminTab = ["personal info", "education", "skill"];

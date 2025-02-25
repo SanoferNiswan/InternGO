@@ -31,12 +31,8 @@ const SignIn = () => {
         if (token) {
           dispatch(
             setAuth({
-              user,
-              userId,
               name,
               token,
-              role,
-              permissions,
               profilePhoto,
             })
           );

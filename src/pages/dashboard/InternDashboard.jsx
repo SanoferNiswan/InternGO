@@ -4,11 +4,13 @@ import { useSelector } from "react-redux";
 import axios from "../../api/axios";
 import { toast } from "react-toastify";
 import Loader from "../../components/Loader";
+import { decodeToken } from "../../utils/auth";
 
 const InternDashboard = () => {
-  const { token, userId, profilePhoto, name } = useSelector(
+  const { token, profilePhoto, name } = useSelector(
     (state) => state.auth
   );
+  const {userId}=decodeToken(token);
 
   const [loading,setLoading] = useState(false);
 
@@ -20,17 +22,13 @@ const InternDashboard = () => {
   }, [token]);
 
   const fetchPlanDetails = async () => {
-    console.log("inside fetch");
     
     try {
-      console.log("inside try");
-      
       const response = await axios.get(`/api/users/training/${userId}`, {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       });
-      console.log("intern dashboard:",response);
       setPlanDetails(response.data.data.milestone);
       setZone(response.data.data.zone);
       
@@ -38,8 +36,6 @@ const InternDashboard = () => {
       console.log(error);
       // toast.error(error);
     }finally{
-      console.log("finally");
-      
       setLoading(false);
     }
   };

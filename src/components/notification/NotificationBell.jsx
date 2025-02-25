@@ -4,9 +4,11 @@ import { toast } from "react-toastify";
 import axios from "../../api/axios";
 import "react-toastify/dist/ReactToastify.css";
 import { useSelector } from "react-redux";
+import { decodeToken } from "../../utils/auth";
 
 const NotificationBell = ({ notifications, setNotifications }) => {
-  const { token, userId } = useSelector((state) => state.auth);
+  const { token } = useSelector((state) => state.auth);
+  const {userId} = decodeToken(token);
   const [isOpen, setIsOpen] = useState(false);
   const [selectedNotifications, setSelectedNotifications] = useState([]);
   const dropdownRef = useRef(null);

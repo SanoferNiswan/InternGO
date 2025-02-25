@@ -15,12 +15,14 @@ import {
 import { FaStar, FaStarHalfAlt, FaRegStar } from "react-icons/fa";
 import Loader from "../../Loader";
 import EditFeedbackModal from "../../mentor/feedback/EditFeedbackModal";
+import { decodeToken } from "../../../utils/auth";
 
 ChartJS.register(RadialLinearScale, PointElement, LineElement, Tooltip, Legend);
 
 const InteractionFeedback = () => {
   const { interactionId } = useParams();
-  const { token, role } = useSelector((state) => state.auth);
+  const { token } = useSelector((state) => state.auth);
+  const {role}=decodeToken(token);
   const [feedback, setFeedback] = useState([]);
   const [loading, setLoading] = useState(true);
   const [isModalOpen, setIsModalOpen] = useState(false);

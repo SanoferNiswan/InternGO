@@ -3,9 +3,11 @@ import { useSelector } from "react-redux";
 import InteractionSchedule from "../../components/admin/interaction/InteractionSchedule";
 import UserInteraction from "../../components/users/interaction/UserInteraction";
 import MentorInteraction from "../../components/mentor/MentorInteraction";
+import { decodeToken } from "../../utils/auth";
  
 const Interaction = () => {
-  const { permissions, role } = useSelector((state) => state.auth);
+  const { token } = useSelector((state) => state.auth);
+  const { permissions, role } = decodeToken(token);
 
   return (
     <div className="bg-white shadow-md rounded-lg min-h-screen w-full">

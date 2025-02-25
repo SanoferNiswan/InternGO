@@ -9,9 +9,11 @@ import "react-toastify/dist/ReactToastify.css";
 import Loader from "../../Loader";
 import { skillOptions } from "../../../utils/skills";
 import Select from "react-select";
+import { decodeToken } from "../../../utils/auth";
 
 const EditProfile = () => {
-  const { userId, token, name, role } = useSelector((state) => state.auth);
+  const { token } = useSelector((state) => state.auth);
+  const {role,userId}=decodeToken(token);
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
@@ -260,8 +262,8 @@ const EditProfile = () => {
       toast.success("Profile updated successfully");
       navigate("/dashboard/my-profile");
     } catch (error) {
-      console.error("Error updating profile:", error);
-      toast.error(error.response?.data?.message);
+      console.error("Error updating profile:", error.response?.data?.message);
+      toast.error(JSON.stringify(error.response?.data?.message));
     }
   };
 
