@@ -83,19 +83,28 @@ const Milestones = () => {
         Number of users in current plan: {planDetails?.users.length}
       </p>
 
-      <div className="flex justify-end space-x-4">
-        <button
-          className="text-blue-600 hover:text-blue-800 flex items-center"
-          onClick={() => setIsEditing(true)}
-        >
-          <FaEdit className="mr-2" /> Edit
-        </button>
-        <button
-          className="text-red-600 hover:text-red-800 flex items-center"
-          onClick={() => deletePlan()}
-        >
-          <FaTrash className="mr-2" /> Delete
-        </button>
+      <div className="flex justify-between space-x-4 p-4">
+        <p className="text-md text-gray-700">
+          {planDetails.startDate &&
+            new Date(planDetails.startDate).toLocaleDateString()}{" "}
+          -{" "}
+          {planDetails.endDate &&
+            new Date(planDetails.endDate).toLocaleDateString()}
+        </p>
+        <div className="flex gap-2">
+          <button
+            className="text-blue-600 hover:text-blue-800 flex items-center"
+            onClick={() => setIsEditing(true)}
+          >
+            <FaEdit className="mr-2" /> Edit
+          </button>
+          <button
+            className="text-red-600 hover:text-red-800 flex items-center"
+            onClick={() => deletePlan()}
+          >
+            <FaTrash className="mr-2" /> Delete
+          </button>
+        </div>
       </div>
 
       <div className="text-center mt-4">
@@ -144,7 +153,7 @@ const Milestones = () => {
           <div className={`w-full ${showUserList ? "md:w-1/3" : ""}`}>
             <UserList planId={planId} />
           </div>
-        )} 
+        )}
       </div>
 
       {isEditing && (

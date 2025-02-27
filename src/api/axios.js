@@ -3,7 +3,7 @@ import store from "../redux/store"
 import { clearAuth } from "../redux/slices/authSlice";
 
 const axiosInstance = axios.create({
-  baseURL: "https://interngo.onrender.com",
+  baseURL: "https://interngo-1.onrender.com",
 });
 
 axiosInstance.interceptors.request.use(

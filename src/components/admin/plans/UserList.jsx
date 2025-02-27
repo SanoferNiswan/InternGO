@@ -110,12 +110,14 @@ const UserList = ({ planId }) => {
     if (currentPage < totalPages) {
       setCurrentPage(currentPage + 1);
     }
+    topRef.current.scrollIntoView({ behavior: "smooth" }); // Scroll to top
   };
 
   const handlePrev = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
     }
+    topRef.current.scrollIntoView({ behavior: "smooth" }); // Scroll to top
   };
 
   const toggleUserSelection = (userId) => {
