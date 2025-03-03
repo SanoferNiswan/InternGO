@@ -40,10 +40,14 @@ const authSlice = createSlice({
         : window.location.hostname; 
     
       ["name", "token", "profilePhoto"].forEach((cookie) => {
-        document.cookie = `${cookie}=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=${domain}`;
+        Cookies.remove(cookie, {
+          path: "/", 
+          domain: domain, 
+          secure: true, 
+          sameSite: "Lax", 
+        });
       });
     },
-    
   },
 });
 
