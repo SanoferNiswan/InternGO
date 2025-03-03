@@ -4,8 +4,10 @@ import { clearAuth } from "../redux/slices/authSlice";
 
 const axiosInstance = axios.create({
   // baseURL: "http://192.168.0.141:8080",
+  // baseURL: "https://interngo.onrender.com"
   baseURL: "https://interngo.onrender.com"
 });
+
 
 // https://interngo.onrender.com
 
