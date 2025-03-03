@@ -152,7 +152,7 @@
 //               <div className="relative">
 //                 <input
 //                   type="date"
-//                   value={milestone.startDate}
+//                   value={new Date(milestone.startDate).toISOString().slice(0, 10)}
 //                   onChange={(e) =>
 //                     handleMilestoneChange(e, milestone.id, "startDate")
 //                   }
@@ -169,7 +169,7 @@
 //               <div className="relative">
 //                 <input
 //                   type="date"
-//                   value={milestone.endDate}
+//                   value={new Date(milestone.startDate).toISOString().slice(0, 10)}
 //                   readOnly
 //                   className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border border-gray-300 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
 //                 />

@@ -84,8 +84,15 @@ const ResetPassword = () => {
       setIsSubmitting(true);
       const response = await axios.post(
         "/api/auth/reset-password",
-        { password }
+        { password },
+        {
+          headers:{
+            Authorization:`Bearer ${token}`
+          }
+        }
       );
+      console.log(response.data);
+      
       toast.success("Password reset successfully!");
       navigate("/signin", { replace: true });
     } catch (error) {
