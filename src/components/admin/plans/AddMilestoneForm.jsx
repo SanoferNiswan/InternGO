@@ -32,11 +32,14 @@
 //     const date = new Date(startDate);
 //     date.setDate(date.getDate() + days);
 //     return date.toISOString().split("T")[0];
-//   };
+// };
 
 //   const handleStartDateChange = (e) => {
 //     const startDate = e.target.value;
-//     const endDate = calculateEndDate(startDate, newMilestone.milestoneDays);
+//     let endDate = "";
+//     if(newMilestone.milestoneDays){
+//       endDate = calculateEndDate(startDate, newMilestone.milestoneDays);
+//     }
 //     setNewMilestone((prev) => ({
 //       ...prev,
 //       startDate,
@@ -152,7 +155,8 @@
 //           <div className="relative">
 //             <input
 //               type="date"
-//               value={newMilestone.startDate}
+//               value={new Date(newMilestone.startDate).toISOString().slice(0, 10)}
+//               // value={newMilestone.startDate}
 //               onChange={handleStartDateChange}
 //               min={startDate}
 //               max={endDate}
@@ -200,6 +204,8 @@
 // };
 
 // export default AddMilestoneForm;
+
+
 
 import React, { useState } from "react";
 import axios from "../../../api/axios";
