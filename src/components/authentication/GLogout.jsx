@@ -6,6 +6,7 @@ const GLogout = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
  
+  // checking clear auth commit
   const onLogout = () => {
     dispatch(clearAuth());
     navigate("/");
