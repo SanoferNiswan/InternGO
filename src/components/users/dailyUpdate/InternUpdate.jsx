@@ -173,7 +173,7 @@ const InternUpdate = () => {
       toast.success("Changes saved successfully!");
     } catch (error) {
       console.error("Error saving daily updates:", error);
-      toast.error("Failed to save changes. Please try again.");
+      toast.error(JSON.stringify(error.response?.data?.message));
     } finally {
       setIsSubmitting(false);
     }

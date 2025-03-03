@@ -127,6 +127,8 @@ const Milestones = () => {
             setListOfMilestone={setListOfMilestone}
             planId={planId}
             planDays={planDetails.planDays}
+            startDate={planDetails.startDate}
+            endDate={planDetails.endDate}
           />
 
           {showMilestoneForm && (
@@ -136,6 +138,8 @@ const Milestones = () => {
               planId={planId}
               currentMilestones={listOfMilestone}
               planDays={planDetails.planDays}
+              startDate={planDetails.startDate}
+              endDate={planDetails.endDate}
             />
           )}
 

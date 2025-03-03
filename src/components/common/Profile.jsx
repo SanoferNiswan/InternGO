@@ -74,12 +74,9 @@ const Profile = ({ userId, token }) => {
     }
 
     try {
-      await axios.patch(
-        `/api/users/update/asset/${assetId}`,
-        {
-          [field]: value,
-        }
-      );
+      await axios.patch(`/api/users/update/asset/${assetId}`, {
+        [field]: value,
+      });
 
       setAssets((prevAssets) =>
         prevAssets.map((asset) =>
@@ -188,31 +185,37 @@ const Profile = ({ userId, token }) => {
       case "skill":
         return (
           <div className="flex flex-col gap-4">
-            <div className="flex flex-col gap-2">
-              <h2 className="text-lg font-semibold text-blue-600 mb-2">
-                Primary Skills
-              </h2>
-              <span className="bg-blue-100 text-gray-700 px-3 py-1 rounded-lg text-sm w-20">
-                {profileData.primary_skill}
-              </span>
-            </div>
-            <div className="flex flex-col gap-2">
-              <h2 className="text-lg font-semibold text-blue-600 mb-2">
-                Secondary Skills
-              </h2>
-              <div className="flex flex-wrap gap-2">
-                {profileData.secondary_skills?.length
-                  ? profileData.secondary_skills.map((skill, index) => (
-                      <span
-                        key={index}
-                        className="bg-blue-100 text-gray-700 px-3 py-1 rounded-lg text-sm"
-                      >
-                        {skill}
-                      </span>
-                    ))
-                  : "-"}
+            {profileData.secondary_skills.length==0 && !profileData.primary_skill ? (
+              <div>No skills added</div>
+            ) : (
+              <div>
+                <div className="flex flex-col gap-2">
+                  <h2 className="text-lg font-semibold text-blue-600 mb-2">
+                    Primary Skills
+                  </h2>
+                  <span className="bg-blue-100 text-gray-700 px-3 py-1 rounded-lg text-sm w-20">
+                    {profileData.primary_skill}
+                  </span>
+                </div>
+                <div className="flex flex-col gap-2">
+                  <h2 className="text-lg font-semibold text-blue-600 mb-2">
+                    Secondary Skills
+                  </h2>
+                  <div className="flex flex-wrap gap-2">
+                    {profileData.secondary_skills?.length
+                      ? profileData.secondary_skills.map((skill, index) => (
+                          <span
+                            key={index}
+                            className="bg-blue-100 text-gray-700 px-3 py-1 rounded-lg text-sm"
+                          >
+                            {skill}
+                          </span>
+                        ))
+                      : "-"}
+                  </div>
+                </div>
               </div>
-            </div>
+            )}
           </div>
         );
       case "assets":

@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect,useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   FaBell,
@@ -11,9 +11,11 @@ import {
 } from "react-icons/fa";
 import logo from "../assets/Intern (3).png";
 import { useSelector } from "react-redux";
+import downloadQR from "../assets/app.jpeg";
 const Home = () => {
   const navigate = useNavigate();
   const { token } = useSelector((state) => state.auth);
+  const [showQR, setShowQR] = useState(false);
 
   useEffect(() => {
     if (token) {
@@ -93,15 +95,39 @@ const Home = () => {
         >
           Sign Up Now
         </button>
-        <button className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 ml-2">
+        {/* <button className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 ml-2">
           <a
-            href="https://expo.dev/artifacts/eas/n8JK5vhPTT5BUb6kUhxQHd.apk"
+            href="https://intern-go.s3.eu-north-1.amazonaws.com/InternGO_APK/InternGO.apk"
             download
             className="flex gap-2 top-0"
           >
             <FaDownload className="mt-1" /> <span>Get InternGO App</span>
           </a>
-        </button>
+        </button> */}
+        <div className="relative inline-block">
+          {showQR && (
+            <div className="absolute bottom-full mb-2 p-2 bg-white border rounded-lg shadow-lg ml-10">
+              <img
+                src={downloadQR}
+                alt="Download QR Code"
+                className="w-32 h-32"
+              />
+            </div>
+          )}
+          <button
+            className="bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 ml-2"
+            onMouseEnter={() => setShowQR(true)}
+            onMouseLeave={() => setShowQR(false)}
+          >
+            <a
+              href="https://intern-go.s3.eu-north-1.amazonaws.com/InternGO_APK/InternGO.apk"
+              download
+              className="flex gap-2 top-0"
+            >
+              <FaDownload className="mt-1" /> <span>Get InternGO App</span>
+            </a>
+          </button>
+        </div>
       </section>
     </div>
   );

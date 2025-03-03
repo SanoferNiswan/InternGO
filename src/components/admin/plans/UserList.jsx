@@ -154,7 +154,6 @@ const UserList = ({ planId }) => {
   return (
     <div
       className="w-full p-4 bg-gray-100 rounded-lg shadow-md mt-6"
-      ref={topRef}
     >
       <h2 className="text-lg font-semibold mb-4">Users Assigned to Plan</h2>
 
@@ -188,7 +187,7 @@ const UserList = ({ planId }) => {
         </button>
       </div>
 
-      <div className="mb-4">
+      <div className="mb-4" ref={topRef}>
         <button
           onClick={() => setShowFilters(!showFilters)}
           className="text-sm text-blue-500 hover:underline"
