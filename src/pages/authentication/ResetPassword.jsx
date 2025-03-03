@@ -14,6 +14,9 @@ const ResetPassword = () => {
     verifyToken();
   }, token);
 
+  console.log("production check");
+  
+
   const verifyToken = async () => {
     try {
       await axios.post(`/api/auth/verify`, { token });
