@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { NavLink, useNavigate } from "react-router-dom";
-import axios from "../../api/axios";
+import axios from "axios";
 import GLogin from "../../components/authentication/GLogin";
 import { useDispatch } from "react-redux";
 import { setAuth } from "../../redux/slices/authSlice";
@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 
 const SignIn = () => {
   const dispatch = useDispatch();
-  const SIGNIN_URL = "/api/auth/signin";
+  const SIGNIN_URL = "https://interngo.onrender.com/api/auth/signin";
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -26,8 +26,8 @@ const SignIn = () => {
       const response = await axios.post(SIGNIN_URL, formData);
       if (response.data) {
         const user = response.data.data;
-        const { userId, name, token, role, permissions, profilePhoto } = user;
-
+        const {  name, token, profilePhoto } = user;
+      
         if (token) {
           dispatch(
             setAuth({
@@ -46,6 +46,7 @@ const SignIn = () => {
       setErrMsg(
         JSON.stringify(error.response?.data?.message) || "An error occurred"
       );
+      toast.error(JSON.stringify(error.response?.data?.message) || "An error occurred")
     }
   };
 
