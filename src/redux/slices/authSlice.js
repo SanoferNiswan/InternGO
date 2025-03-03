@@ -35,16 +35,14 @@ const authSlice = createSlice({
       state.token = null;
       state.profilePhoto = null;
     
-      const domain = window.location.hostname.includes("vercel.app")
-        ? ".vercel.app" 
-        : window.location.hostname; 
+      console.log("Clearing auth cookies...");
     
       ["name", "token", "profilePhoto"].forEach((cookie) => {
+        console.log(`Removing cookie: ${cookie}`);
         Cookies.remove(cookie, {
-          path: "/", 
-          domain: domain, 
-          secure: true, 
-          sameSite: "Lax", 
+          path: "/",
+          secure: true,
+          sameSite: "Lax",
         });
       });
     },
