@@ -9,7 +9,8 @@ import { toast } from "react-toastify";
 
 const SignIn = () => {
   const dispatch = useDispatch();
-  const SIGNIN_URL = "https://interngo.onrender.com/api/auth/signin";
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
+  const SIGNIN_URL = `${BASE_URL}/api/auth/signin`;
   const [formData, setFormData] = useState({
     email: "",
     password: "",
