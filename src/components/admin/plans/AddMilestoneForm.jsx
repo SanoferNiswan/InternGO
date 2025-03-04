@@ -207,6 +207,15 @@
 
 
 
+
+
+
+
+
+
+
+
+
 import React, { useState } from "react";
 import axios from "../../../api/axios";
 import { toast } from "react-toastify";
@@ -262,8 +271,8 @@ const AddMilestoneForm = ({
       setNewMilestone({ name: "", mentorName: "", milestoneDays: null });
       refreshData();
     } catch (error) {
-      console.error("Error adding milestone:", error);
-      toast.error("Failed to add milestone.");
+      console.error("Error adding milestone:", error.response);
+      toast.error(JSON.stringify(error.response?.data?.message) || "Failed to add milestone.");
     } finally {
       setIsSubmitting(false);
     }
