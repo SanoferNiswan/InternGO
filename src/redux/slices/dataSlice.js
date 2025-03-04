@@ -27,14 +27,29 @@ export const fetchMentors = createAsyncThunk(
   }
 );
 
-export const fetchFilters = createAsyncThunk("data/fetchFilters", async (_, { rejectWithValue }) => {
-  try {
-    const response = await axios.get("/api/users/distinct/filters");
-    return response.data.data;
-  } catch (error) {
-    return rejectWithValue(JSON.stringify(error));
+export const fetchFilters = createAsyncThunk(
+  "data/fetchFilters",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await axios.get("/api/users/distinct/filters");
+      const data = response.data.data;
+
+      // Filter out null values from all arrays
+      const filteredData = {
+        years: data.years.filter((item) => item !== null),
+        statuses: data.statuses.filter((item) => item !== null),
+        designations: data.designations.filter((item) => item !== null),
+        batches: data.batches.filter((item) => item !== null),
+      };
+
+      console.log(filteredData);
+      return filteredData;
+    } catch (error) {
+      return rejectWithValue(JSON.stringify(error));
+    }
   }
-});
+);
+
 
 const dataSlice = createSlice({
   name: "data",

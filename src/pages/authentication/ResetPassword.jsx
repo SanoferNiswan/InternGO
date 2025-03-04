@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import axios from "../../api/axios";
+import axios from "axios"
 import { toast } from "react-toastify";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import Loader from "../../components/Loader";
@@ -8,21 +8,24 @@ const ResetPassword = () => {
   const [searchParams] = useSearchParams();
   const [isValid, setIsValid] = useState(null);
   const token = searchParams.get("token");
-  const [loading,setLoading] = useState(true);
+  const [loading,setLoading] = useState(false);
+
+  const BASE_URL = import.meta.env.VITE_BASE_URL;
 
   useEffect(() => {
-    verifyToken();
+    if(token){
+      verifyToken();
+    }
   }, token);
-
-  console.log("production check");
-  
 
   const verifyToken = async () => {
     try {
-      await axios.post(`/api/auth/verify`, { token });
+      setLoading(true);
+      await axios.post(`${BASE_URL}/api/auth/verify`, { token });
       setIsValid(true);
     } catch (error) {
       console.error(error);
+      toast.error(JSON.stringify(error.response?.data?.message))
       if (error.response?.status === 401) {
         setIsValid(false);
       }
@@ -86,7 +89,7 @@ const ResetPassword = () => {
     try {
       setIsSubmitting(true);
       const response = await axios.post(
-        "/api/auth/reset-password",
+        `${BASE_URL}/api/auth/reset-password`,
         { password },
         {
           headers:{
@@ -184,7 +187,7 @@ const ResetPassword = () => {
         </div>
       ) : (
         <div className="flex flex-col items-center justify-center min-h-screen text-center">
-          <h1 className="text-2xl font-bold text-red-600">Token Expired</h1>
+          <h1 className="text-2xl font-bold text-red-600">INVALID TOKEN</h1>
           <button
             onClick={() => navigate("/signin")}
             className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
