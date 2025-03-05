@@ -34,7 +34,6 @@ export const fetchFilters = createAsyncThunk(
       const response = await axios.get("/api/users/distinct/filters");
       const data = response.data.data;
 
-      // Filter out null values from all arrays
       const filteredData = {
         years: data.years.filter((item) => item !== null),
         statuses: data.statuses.filter((item) => item !== null),
@@ -42,7 +41,6 @@ export const fetchFilters = createAsyncThunk(
         batches: data.batches.filter((item) => item !== null),
       };
 
-      console.log(filteredData);
       return filteredData;
     } catch (error) {
       return rejectWithValue(JSON.stringify(error));

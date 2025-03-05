@@ -6,10 +6,12 @@ import axios from "../../../api/axios";
 import Loader from "../../Loader";
 import { useNavigate } from "react-router-dom";
 import { decodeToken } from "../../../utils/auth";
+import { FaDownload } from "react-icons/fa";
+import DownloadModal from "./DownloadModal";
 
 const Feedback = () => {
   const { token } = useSelector((state) => state.auth);
-  const {role} = decodeToken(token);
+  const { role } = decodeToken(token);
   const navigate = useNavigate();
   const [showfilters, setShowfilters] = useState(false);
 
@@ -19,6 +21,7 @@ const Feedback = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [searchInput, setSearchInput] = useState("");
+  const [downloadModal, setDownloadModal] = useState(false);
   const [search, setSearch] = useState("");
 
   const dispatch = useDispatch();
@@ -69,7 +72,7 @@ const Feedback = () => {
           zone: filter.zone,
         },
         {
-          params: { limit: 10, offset: (currentPage - 1) * 10 }
+          params: { limit: 10, offset: (currentPage - 1) * 10 },
         }
       );
 
@@ -133,23 +136,38 @@ const Feedback = () => {
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="flex flex-col sm:flex-row gap-2 justify-start">
-        <div className="w-full sm:w-auto">
-          <input
-            type="text"
-            value={searchInput}
-            onChange={(e) => setSearchInput(e.target.value)}
-            className="w-full sm:w-[500px] px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-1 focus:ring-blue-400 focus:border-blue-500 outline-none sm:text-sm"
-            placeholder="Search by name"
-          />
+      <div className="flex justify-between">
+        <div className="flex flex-col sm:flex-row gap-2 justify-start">
+          <div className="w-full sm:w-auto">
+            <input
+              type="text"
+              value={searchInput}
+              onChange={(e) => setSearchInput(e.target.value)}
+              className="w-full sm:w-[500px] px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-1 focus:ring-blue-400 focus:border-blue-500 outline-none sm:text-sm"
+              placeholder="Search by name"
+            />
+          </div>
+
+          <div
+            onClick={() => setShowfilters(!showfilters)}
+            className="mt-1 w-full sm:w-auto text-center cursor-pointer border border-blue-400 rounded-md px-2 py-1 text-blue-500 text-sm bg-transparent hover:bg-blue-500 hover:text-white"
+          >
+            {showfilters ? "Hide Filters " : "Show Filters"}
+            {showfilters ? "▲" : "▼"}
+          </div>
         </div>
 
-        <div
-          onClick={() => setShowfilters(!showfilters)}
-          className="w-full sm:w-auto text-center cursor-pointer border border-blue-400 rounded-md px-2 py-1 text-blue-500 text-sm bg-transparent hover:bg-blue-500 hover:text-white"
-        >
-          {showfilters ? "Hide Filters " : "Show Filters"}
-          {showfilters ? "▲" : "▼"}
+        <div className="flex justify-center items-center">
+          <button
+            className="flex items-center gap-2 text-white bg-blue-600 px-2 py-1 rounded-lg shadow-md hover:bg-blue-700"
+            onClick={() => setDownloadModal(true)}
+          >
+            <FaDownload /> Download Analytics Report
+          </button>
+
+          {downloadModal && (
+            <DownloadModal onClose={() => setDownloadModal(false)} years={years} batches={batches} />
+          )}
         </div>
       </div>
 
