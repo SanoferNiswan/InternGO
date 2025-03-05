@@ -34,6 +34,7 @@ export const fetchFilters = createAsyncThunk(
       const response = await axios.get("/api/users/distinct/filters");
       const data = response.data.data;
 
+
       const filteredData = {
         years: data.years.filter((item) => item !== null),
         statuses: data.statuses.filter((item) => item !== null),

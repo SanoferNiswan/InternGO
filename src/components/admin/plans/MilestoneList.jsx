@@ -269,6 +269,8 @@ const MilestoneList = ({
     }
   };
 
+  // dev server check git commit
+
   const handleDeleteMilestone = async (milestoneId) => {
     try {
       await axios.delete(`/api/plans/delete/milestone/${milestoneId}`);

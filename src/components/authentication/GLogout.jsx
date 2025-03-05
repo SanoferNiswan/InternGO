@@ -9,6 +9,8 @@ const GLogout = () => {
   // checking clear auth commit
   const onLogout = () => {
     dispatch(clearAuth());
+    console.log("clear auth");
+    
     navigate("/");
   };
 

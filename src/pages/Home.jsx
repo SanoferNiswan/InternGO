@@ -23,6 +23,9 @@ const Home = () => {
     }
   }, [navigate]);
 
+  console.log("production check");
+  
+
   return (
     <div className="min-h-screen bg-gray-100">
       <nav className="bg-white shadow-md p-4 flex justify-between items-center px-4">
