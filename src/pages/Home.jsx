@@ -32,13 +32,13 @@ const Home = () => {
         <img src={logo} alt="InternGO" className="w-40 h-12" />
         <div className="space-x-4">
           <button
-            className="lg:px-4 lg:py-2 md:px-4 md:py-2 sm:px-2 sm:py-1  bg-blue-600 text-white rounded hover:bg-blue-700"
+            className="lg:px-4 lg:py-2 md:px-4 md:py-2 px-2 py-1  bg-blue-600 text-white rounded hover:bg-blue-700"
             onClick={() => navigate("/signin")}
           >
             Sign In
           </button>
           <button
-            className="bg-blue-600 text-white lg:px-4 lg:py-2 rounded hover:bg-blue-700"
+            className="lg:px-4 lg:py-2 md:px-4 md:py-2 px-2 py-1  bg-blue-600 text-white rounded hover:bg-blue-700"
             onClick={() => navigate("/signup")}
           >
             Sign Up

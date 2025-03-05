@@ -9,8 +9,7 @@ import { toast } from "react-toastify";
 
 const SignIn = () => {
   const dispatch = useDispatch();
-  console.log("check dev server");
-  
+
   const BASE_URL = import.meta.env.VITE_BASE_URL;
   const SIGNIN_URL = `${BASE_URL}/api/auth/signin`;
   const [formData, setFormData] = useState({

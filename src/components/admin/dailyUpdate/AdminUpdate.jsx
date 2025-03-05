@@ -4,7 +4,7 @@ import { fetchFilters } from "../../../redux/slices/dataSlice";
 import { useParams, Navigate } from "react-router-dom";
 import axios from "../../../api/axios";
 import Select from "react-select";
-import { addDays, isAfter, parseISO, isValid } from "date-fns";
+import { addDays, isAfter, parseISO, isValid,getDay, isBefore } from "date-fns";
 import Loader from "../../Loader";
 
 const AdminUpdate = () => {
@@ -17,8 +17,9 @@ const AdminUpdate = () => {
 
   const today = new Date();
   const tomorrow = addDays(today, 1);
+  const joiningDate = new Date(2024, 8, 16);
 
-  if (isAfter(inputDate, tomorrow)) {
+  if (isAfter(inputDate, tomorrow) || getDay(inputDate)===0 || getDay(inputDate)===6 || isBefore(inputDate,joiningDate)) {
     return <Navigate to="/not-found" replace />;
   }
 
@@ -119,7 +120,6 @@ const AdminUpdate = () => {
         Daily Updates ({formatDate(date)})
       </h2>
 
-      {/* Filters */}
       <div className="flex flex-wrap justify-center gap-2 mb-4">
         <input
           type="text"
@@ -160,7 +160,6 @@ const AdminUpdate = () => {
         />
       </div>
 
-      {/* Table */}
       {dailyUpdates.length > 0 ? (
         dailyUpdates
           .filter((update) => update.tasks.length > 0)
@@ -237,7 +236,6 @@ const AdminUpdate = () => {
         <p className="text-center text-gray-500 mt-4">No updates found.</p>
       )}
 
-      {/* Pagination */}
       {dailyUpdates.length > 0 && (
         <div className="flex justify-center items-center mt-4 space-x-2">
           <button

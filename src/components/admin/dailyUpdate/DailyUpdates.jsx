@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, isSameMonth, isToday, isBefore, isAfter, subDays } from 'date-fns';
+import { format, startOfMonth, endOfMonth, startOfWeek, endOfWeek, addDays, isSameMonth, isToday, isBefore, isAfter, subDays, getDay } from 'date-fns';
 
 const DailyUpdates = () => {
   const navigate = useNavigate();
@@ -22,7 +22,7 @@ const DailyUpdates = () => {
   const tomorrow = addDays(new Date(), 1);
 
   const handleDateClick = (date) => {
-    if (isBefore(date, joiningDate) || isAfter(date, tomorrow)) return;
+    if (isBefore(date, joiningDate) || isAfter(date, tomorrow) || getDay(date)===0 || getDay(date)===6) return;
     navigate(`${format(date, 'yyyy-MM-dd')}`);
   };
 
@@ -47,7 +47,7 @@ const DailyUpdates = () => {
           </div>
         ))}
         {days.map((date) => {
-          const isRestricted = isBefore(date, joiningDate) || isAfter(date, tomorrow);
+          const isRestricted = isBefore(date, joiningDate) || isAfter(date, tomorrow) || getDay(date)===0 || getDay(date)===6;
           return (
             <div
               key={date}
