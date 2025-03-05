@@ -55,12 +55,12 @@ const EditFeedbackModal = ({ isOpen, onClose, feedback, refreshData }) => {
 
     try {
       await axios.put(`/api/feedbacks/${feedback.id}/update`, updatedFeedback);
-      toast.success("Feedback updated successfully!");
       refreshData();
       onClose();
+      toast.success("Feedback updated successfully!");
     } catch (error) {
       console.error("Error updating feedback:", error);
-      toast.error("Failed to update feedback.");
+      toast.error(JSON.stringify(error.response?.data?.message) || "Failed to update feedback.");
     }
   };
 

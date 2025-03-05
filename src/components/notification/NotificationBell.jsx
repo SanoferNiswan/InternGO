@@ -68,7 +68,6 @@ const NotificationBell = ({ notifications, setNotifications }) => {
     }
   };
 
-  // Delete selected notifications
   const deleteNotifications = async () => {
     if (selectedNotifications.length === 0) {
       toast.warning("Select at least one notification!", { autoClose: 2000 });
@@ -89,7 +88,6 @@ const NotificationBell = ({ notifications, setNotifications }) => {
     }
   };
 
-  // Delete all notifications
   const deleteAllNotifications = async () => {
     try {
       await axios.delete(`/api/notifications/${userId}/delete`);
@@ -101,7 +99,6 @@ const NotificationBell = ({ notifications, setNotifications }) => {
     }
   };
 
-  // Select/Deselect a notification
   const toggleSelection = (id) => {
     setSelectedNotifications((prev) =>
       prev.includes(id)
@@ -124,7 +121,6 @@ const NotificationBell = ({ notifications, setNotifications }) => {
         )}
       </button>
 
-      {/* Notification Dropdown */}
       {isOpen && (
         <div className="absolute right-0 mt-2 w-96 h-auto bg-white border border-gray-200 rounded-lg shadow-lg z-50">
           <div className="p-4 flex justify-between items-center border-b border-gray-300">
@@ -145,9 +141,9 @@ const NotificationBell = ({ notifications, setNotifications }) => {
             </div>
           </div>
 
-          <div className="overflow-y-auto max-h-72">
+          <div className="overflow-y-auto h-72">
             {notifications.length === 0 ? (
-              <p className="text-center text-gray-500">No new notifications</p>
+              <p className="text-center align-text-bottom text-gray-500">No new notifications</p>
             ) : (
               <ul>
                 {notifications.map((notification) => (

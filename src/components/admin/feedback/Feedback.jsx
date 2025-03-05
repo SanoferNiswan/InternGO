@@ -278,7 +278,7 @@ const Feedback = () => {
                 <tr
                   key={user.id}
                   className="hover:bg-blue-100 transition-colors "
-                  onClick={() => navigate(`/admin/feedback/user/${user.id}`)}
+                  onClick={() => navigate(`/admin/analytics/user/${user.id}`)}
                 >
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                     <img

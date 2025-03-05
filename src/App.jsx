@@ -91,9 +91,9 @@ const App = () => {
           <Route path="resources/:id" element={<UserDetail />} />
           <Route path="daily-update" element={<DailyUpdates />} />
           <Route path="daily-update/:date" element={<AdminUpdate />} />
-          <Route path="feedback" element={<Feedback />} />
-          <Route path="feedback/:interactionId" element={<InteractionFeedback />} />
-          <Route path="feedback/user/:userId" element={<UserFeedback />} />
+          <Route path="analytics" element={<Feedback />} />
+          <Route path="analytics/:interactionId" element={<InteractionFeedback />} />
+          <Route path="analytics/user/:userId" element={<UserFeedback />} />
           <Route path="pending-tickets" element={<Help />} />
           <Route path="*" element={<Navigate to="/not-found" replace />} />
         </Route>

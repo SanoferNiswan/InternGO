@@ -74,9 +74,9 @@ const DashboardLayout = () => {
       icon: <FaCalendarAlt />,
     },
     {
-      name: "FeedBack",
+      name: "Analytics",
       permission: "feedback.view",
-      path: "/admin/feedback",
+      path: "/admin/analytics",
       icon: <FaComments />,
     },
     {
@@ -238,7 +238,7 @@ const DashboardLayout = () => {
 
       <div
         className={`bg-white text-black shadow-lg transition-all duration-200 fixed top-16 left-0 flex flex-col ${
-          sidebarOpen ? "w-52 z-50" : "w-16"
+          sidebarOpen ? "w-60 z-50" : "w-16"
         } h-screen`}
         onMouseEnter={() => setSidebarOpen(true)}
         onMouseLeave={() => setSidebarOpen(false)}

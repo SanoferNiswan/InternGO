@@ -121,7 +121,7 @@ const InteractionCard = ({ interaction, onEdit }) => {
           <button
             className="text-white bg-blue-500 hover:bg-blue-600 p-2 rounded-lg"
             onClick={() => {
-              navigate(`/admin/feedback/${interaction.id}`);
+              navigate(`/admin/analytics/${interaction.id}`);
             }}
           >
             Feedback and Analytics

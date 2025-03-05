@@ -19,6 +19,8 @@ const Milestones = () => {
     name: "",
     planDays: null,
     description: "",
+    startDate:"",
+    endDate:""
   });
   const [listOfMilestone, setListOfMilestone] = useState([]);
   const [isEditing, setIsEditing] = useState(false);
@@ -58,9 +60,9 @@ const Milestones = () => {
     }
   };
 
-  if (loading) {
-    return <Loader />;
-  }
+  // if (loading) {
+  //   return <Loader />;
+  // }
 
   if (error) {
     return (
@@ -81,7 +83,7 @@ const Milestones = () => {
 
       <p className="text-gray-700 p-4">{planDetails?.description}</p>
       <p className="text-blue-700 p-4">
-        Number of users in current plan: {planDetails?.users.length}
+        Number of users in current plan: {planDetails?.users?.length}
       </p>
 
       <div className="flex justify-between space-x-4 p-4">

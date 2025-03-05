@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import axios from "../../../api/axios";
-import { parseISO, isValid, isAfter, addDays } from "date-fns";
+import { parseISO, isValid, isAfter, addDays, isBefore, getDay } from "date-fns";
 import { FaTrash } from "react-icons/fa";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -14,11 +14,9 @@ const InternUpdate = () => {
   const [loading, setLoading] = useState(false);
   const [tasks, setTasks] = useState([]);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const joiningDate = new Date(2024, 12, 16); 
 
   const inputDate = parseISO(date);
-  if (!isValid(inputDate)) {
-    return <Navigate to="/not-found" replace />;
-  }
 
   const formatDate = (dateString) => {
     const [year, month, day] = dateString.split("-");
@@ -28,7 +26,7 @@ const InternUpdate = () => {
   const today = new Date();
   const tomorrow = addDays(today, 1);
 
-  if (isAfter(inputDate, tomorrow)) {
+  if (isAfter(inputDate, tomorrow) || isBefore(inputDate,joiningDate) || !isValid(inputDate) || getDay(inputDate)===0 || getDay(inputDate)===6) {
     return <Navigate to="/not-found" replace />;
   }
 
