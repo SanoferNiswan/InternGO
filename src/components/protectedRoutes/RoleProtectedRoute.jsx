@@ -11,7 +11,7 @@ const RoleProtectedRoute = ({ allowedRoles }) => {
   }
 
   const {role} = decodeToken(token);
-  
+
   if (!allowedRoles.includes(role)) {
     return <Navigate to="/403" replace />;
   }
