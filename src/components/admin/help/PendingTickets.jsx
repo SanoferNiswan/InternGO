@@ -8,8 +8,9 @@ const PendingTickets = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
   const [helpRequests, setHelpRequests] = useState([]);
+  const [activeTab, setActiveTab] = useState("new");
   const { token } = useSelector((state) => state.auth);
-  const {userId} = decodeToken(token);
+  const { userId } = decodeToken(token);
 
   useEffect(() => {
     fetchRequests();
@@ -43,13 +44,10 @@ const PendingTickets = () => {
     setHelpRequests(updatedRequests);
 
     try {
-      await axios.patch(
-        `/api/helpdesk/${id}`,
-        {
-          resolvedStatus: updatedRequests.find((req) => req.id === id)
-            ?.resolvedStatus,
-        }
-      );
+      await axios.patch(`/api/helpdesk/${id}`, {
+        resolvedStatus: updatedRequests.find((req) => req.id === id)
+          ?.resolvedStatus,
+      });
     } catch (error) {
       setHelpRequests(helpRequests);
     }
@@ -59,8 +57,13 @@ const PendingTickets = () => {
     return <Loader />;
   }
 
+  const filteredRequests =
+    activeTab === "new"
+      ? helpRequests.filter((req) => req.resolvedStatus === "PENDING")
+      : helpRequests.filter((req) => req.resolvedStatus === "RESOLVED");
+
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4 flex flex-col items-center">
       <h1 className="text-lg font-semibold text-blue-600 mb-4 text-center">
         Help Requests
       </h1>
@@ -71,12 +74,35 @@ const PendingTickets = () => {
         </div>
       )}
 
-      {helpRequests.length > 0 ? (
-        <div className="space-y-4 mt-4 p-4 flex flex-col items-center">
-          {helpRequests.map((request) => (
+      <div className="flex space-x-4 mb-8 justify-center">
+        <button
+          onClick={() => setActiveTab("new")}
+          className={`px-6 py-2 rounded-md transition duration-200 ${
+            activeTab === "new"
+              ? "bg-blue-500 text-white"
+              : "bg-white text-gray-700 hover:bg-gray-100"
+          }`}
+        >
+          New Help Request
+        </button>
+        <button
+          onClick={() => setActiveTab("resolved")}
+          className={`px-6 py-2 rounded-md transition duration-200 ${
+            activeTab === "resolved"
+              ? "bg-blue-500 text-white"
+              : "bg-white text-gray-700 hover:bg-gray-100"
+          }`}
+        >
+          Resolved Requests
+        </button>
+      </div>
+
+      {filteredRequests.length > 0 ? (
+        <div className="w-[700px] max-w-4xl p-6 rounded-lg shadow-md transition-opacity duration-300 flex flex-col gap-6">
+          {filteredRequests.map((request) => (
             <div
               key={request.id}
-              className="w-full bg-white shadow-md rounded-lg p-3 border-l-4 border-blue-500 flex justify-between items-start text-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-400"
+              className="w-full bg-white shadow-md rounded-lg p-3 border-l-4 border-blue-500 flex justify-between items-start text-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-400 "
             >
               <div className="flex-1 flex-col">
                 <h2 className="text-md font-medium">{request.subject}</h2>
@@ -121,10 +147,12 @@ const PendingTickets = () => {
           ))}
         </div>
       ) : (
-        <div class="flex items-center justify-center h-96 bg-gray-100 text-gray-500 text-lg font-semibold rounded-lg shadow-md">
+        <div className="flex items-center justify-center h-96 w-[700px] bg-gray-100 text-gray-500 text-lg font-semibold rounded-lg shadow-md">
           No requests found
         </div>
       )}
+
+
     </div>
   );
 };

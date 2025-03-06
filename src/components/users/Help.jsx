@@ -223,9 +223,8 @@ const Help = () => {
           </form>
         )}
 
-        {/* Your Help Requests Tab */}
         {activeTab === "your" && (
-          <div className="w-[500px] max-w-4xl bg-white p-6 rounded-lg shadow-md transition-opacity duration-300">
+          <div className="w-[500px] max-w-4xl p-6 rounded-lg shadow-md transition-opacity duration-300">
             {help.length > 0 ? (
               <div className="space-y-4">
                 {help.map((h, index) => (

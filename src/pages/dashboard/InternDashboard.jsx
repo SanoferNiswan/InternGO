@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Announcement from "../../components/Announcement";
 import { useSelector } from "react-redux";
 import axios from "../../api/axios";
-import { toast } from "react-toastify";
 import Loader from "../../components/Loader";
 import { decodeToken } from "../../utils/auth";
 
