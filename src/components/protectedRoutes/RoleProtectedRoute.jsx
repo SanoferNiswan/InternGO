@@ -5,13 +5,13 @@ import DashboardLayout from "../../pages/dashboard/DashboardLayout";
 
 const RoleProtectedRoute = ({ allowedRoles }) => {
   const { token } = useSelector((state) => state.auth);
-
-  const {role} = decodeToken(token);
  
   if (!token) {
     return <Navigate to="/" replace />;
   }
 
+  const {role} = decodeToken(token);
+  
   if (!allowedRoles.includes(role)) {
     return <Navigate to="/403" replace />;
   }

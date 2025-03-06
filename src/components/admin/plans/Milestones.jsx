@@ -35,10 +35,13 @@ const Milestones = () => {
   const fetchPlanDetails = async () => {
     try {
       const response = await axios.get(`/api/plans/${planId}`);
-      console.log(response.data.data);      
+      console.log("response:",response.data.data);
+           
       setPlanDetails(response.data.data);
       setListOfMilestone(response.data.data.milestones);
     } catch (error) {
+      console.log(error);
+      
       toast.error(
         "Error fetching plan details:",
         error.response.data.statusCode
@@ -130,8 +133,6 @@ const Milestones = () => {
             setListOfMilestone={setListOfMilestone}
             planId={planId}
             planDays={planDetails.planDays}
-            startDate={planDetails.startDate}
-            endDate={planDetails.endDate}
           />
 
           {showMilestoneForm && (
@@ -141,8 +142,6 @@ const Milestones = () => {
               planId={planId}
               currentMilestones={listOfMilestone}
               planDays={planDetails.planDays}
-              startDate={planDetails.startDate}
-              endDate={planDetails.endDate}
             />
           )}
 
