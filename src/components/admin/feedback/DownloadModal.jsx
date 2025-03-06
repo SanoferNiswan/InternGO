@@ -8,6 +8,9 @@ const DownloadModal = ({ onClose, years, batches }) => {
   const [year, setYear] = useState("2025");
   const [batch, setBatch] = useState("Batch 1");
 
+  console.log("dev branch");
+  
+
   const downloadReport = async () => {
     if (!year || !batch) {
       toast.error("Please select both Year and Batch.");
@@ -42,7 +45,7 @@ const DownloadModal = ({ onClose, years, batches }) => {
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+      <div className="bg-white p-6 rounded-lg shadow-lg w-96 z-50">
         <h2 className="text-lg font-semibold mb-4 text-center">Download Report</h2>
 
         <label className="block mb-2">Select Year:</label>
