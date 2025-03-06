@@ -11,6 +11,7 @@ import { useSelector } from "react-redux";
 import Loader from "../../components/Loader";
 import { toast } from "react-toastify";
 import Forbidden from "../Forbidden";
+import { useNavigate } from "react-router-dom";
 
 const AdminDashboard = () => {
   const [statusCount, setStatusCount] = useState({});
@@ -21,6 +22,8 @@ const AdminDashboard = () => {
   useEffect(() => {
     fetchStatusCount();
   }, []);
+
+  const navigate = useNavigate();
 
   const fetchStatusCount = async () => {
     try {
@@ -36,10 +39,6 @@ const AdminDashboard = () => {
       setLoading(false);
     }
   };
-
-  if (loading) {
-    return <Loader />;
-  }
 
   if(forbidden){
     return <Forbidden />
@@ -79,7 +78,7 @@ const AdminDashboard = () => {
 
       <h1 className="text-2xl font-bold text-gray-800 mt-6 mb-6">Analytics</h1>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6" onClick={()=>navigate("/admin/resources")}>
         <div className="p-6 bg-white shadow-md rounded-lg flex items-center gap-4 transition-all duration-300 hover:shadow-2xl hover:-translate-y-2">
           <FaUsers className="text-blue-500 text-4xl" />
           <div>

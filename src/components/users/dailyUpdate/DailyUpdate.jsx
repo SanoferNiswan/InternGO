@@ -51,7 +51,7 @@ const DailyUpdate = () => {
           return (
             <div
               key={date}
-              className={`p-5 border border-gray-300 text-center font-medium text-xl relative ${
+              className={`p-4 border border-gray-300 text-center font-medium text-xl relative ${
                 isSameMonth(date, currentDate)
                   ? isToday(date)
                     ? 'bg-blue-500 text-white'

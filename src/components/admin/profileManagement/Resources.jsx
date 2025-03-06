@@ -62,7 +62,7 @@ const Resources = () => {
           status: filter.status,
         },
         {
-          params: { limit: 8, offset: (currentPage - 1) * 8 }
+          params: { limit: 12, offset: (currentPage - 1) * 12 }
         }
       );
 
