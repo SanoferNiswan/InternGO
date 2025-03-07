@@ -124,11 +124,12 @@ const InternUpdate = () => {
         task.estimatedTime > 3 ||
         task.actualTime > 3 ||
         task.estimatedTime < 0.5 ||
-        task.actualTime < 0.5
+        task.actualTime < 0
       ) {
         toast.error("time should between 0.5 to 3 hours for each task");
         return false;
       }
+
 
       const isValid = (str) =>
         !/^[0-9]+$/.test(str) &&
@@ -172,7 +173,7 @@ const InternUpdate = () => {
           activitiesCompleted: task.activitiesCompleted || "",
           estimatedTime: Number(task.estimatedTime),
           actualTime: Number(task.actualTime) || 0,
-          taskProgress: task.taskProgress || "PENDING",
+          taskProgress: task.taskProgress.toUpperCase() || "PENDING",
         },
         ...(task.id && { taskId: task.id }),
       }));
@@ -191,12 +192,13 @@ const InternUpdate = () => {
     }
   };
 
-  const deleteTask = async (taskId, index) => {
+  const deleteTask = async (taskId, index,actualTime) => {
     try {
       if (taskId) {
         await axios.delete(`/api/dailyUpdates/delete/${taskId}`);
       }
       setTasks((prevTasks) => prevTasks.filter((_, i) => i !== index));
+      actualTime && setTotalTime((prev)=>prev-actualTime);
       toast.success("Task deleted successfully!");
     } catch (error) {
       console.error("Error deleting task:", error);
@@ -233,7 +235,6 @@ const InternUpdate = () => {
     "activitiesCompleted",
     "estimatedTime",
     "actualTime",
-    "taskProgress",
   ];
 
   const getNextField = (currentField) => {
@@ -246,24 +247,6 @@ const InternUpdate = () => {
     const currentIndex = fields.indexOf(field);
 
     switch (e.key) {
-      case "ArrowRight":
-        if (currentIndex < fields.length - 1) {
-          const nextField = fields[currentIndex + 1];
-          const nextInput = input.parentElement.parentElement.querySelector(
-            `input[name="${nextField}"], select[name="${nextField}"]`
-          );
-          nextInput?.focus();
-        }
-        break;
-      case "ArrowLeft":
-        if (currentIndex > 0) {
-          const prevField = fields[currentIndex - 1];
-          const prevInput = input.parentElement.parentElement.querySelector(
-            `input[name="${prevField}"], select[name="${prevField}"]`
-          );
-          prevInput?.focus();
-        }
-        break;
       case "Enter":
         if (index < tasks.length - 1) {
           const nextRowInput =
@@ -274,6 +257,24 @@ const InternUpdate = () => {
         }
         break;
 
+      //   case "ArrowRight":
+      //   if (currentIndex < fields.length - 1) {
+      //     const nextField = fields[currentIndex + 1];
+      //     const nextInput = input.parentElement.parentElement.querySelector(
+      //       `input[name="${nextField}"], select[name="${nextField}"]`
+      //     );
+      //     nextInput?.focus();
+      //   }
+      //   break;
+      // case "ArrowLeft":
+      //   if (currentIndex > 0) {
+      //     const prevField = fields[currentIndex - 1];
+      //     const prevInput = input.parentElement.parentElement.querySelector(
+      //       `input[name="${prevField}"], select[name="${prevField}"]`
+      //     );
+      //     prevInput?.focus();
+      //   }
+      //   break;
         // case "ArrowUp":
         //   if (index > 0) {
         //     const prevRowInput =
@@ -418,7 +419,7 @@ const InternUpdate = () => {
                     <input
                       type="number"
                       name="actualTime"
-                      value={task.actualTime}
+                      value={task.actualTime || ""}
                       className="w-full bg-transparent px-1 py-0.5 text-gray-700 focus:outline-none hover:border-blue-500 focus:border-b-2 border-transparent"
                       readOnly={!isEditable}
                       onChange={(e) =>
@@ -441,7 +442,7 @@ const InternUpdate = () => {
                     <select
                       name="taskProgress"
                       className="w-full bg-transparent px-2 py-1 text-gray-700 focus:outline-none hover:border-blue-500 focus:border-b-2 border-transparent"
-                      value={task.taskProgress}
+                      value={task.taskProgress.toUpperCase()}
                       disabled={!isEditable}
                       onChange={(e) =>
                         handleInputChange(index, "taskProgress", e.target.value)
@@ -463,7 +464,7 @@ const InternUpdate = () => {
                   {isEditable && (
                     <td className="p-2 border border-blue-200">
                       <button
-                        onClick={() => deleteTask(task.id, index)}
+                        onClick={() => deleteTask(task.id, index,task.actualTime)}
                         className="px-2 py-1 text-red-500 rounded-md hover:text-red-600"
                       >
                         <FaTrash />
