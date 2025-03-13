@@ -116,18 +116,19 @@ const InternUpdate = () => {
       }
 
       if (!task.estimatedTime) {
-        toast.error("Estimated Time is required for all tasks.");actualTime
+        toast.error("Estimated Time is required for all tasks.");
         return false;
       }
 
       if (
-        task.estimatedTime > 3 ||task.estimatedTime < 0 ||
-        task.actualTime > 3 ||task.actualTime < 0
+        task.estimatedTime > 3 ||
+        task.estimatedTime < 0 ||
+        task.actualTime > 3 ||
+        task.actualTime < 0
       ) {
         toast.error("time should between 0.5 to 3 hours for each task");
         return false;
       }
-
 
       const isValid = (str) =>
         !/^[0-9]+$/.test(str) &&
@@ -190,13 +191,13 @@ const InternUpdate = () => {
     }
   };
 
-  const deleteTask = async (taskId, index,actualTime) => {
+  const deleteTask = async (taskId, index, actualTime) => {
     try {
       if (taskId) {
         await axios.delete(`/api/dailyUpdates/delete/${taskId}`);
       }
       setTasks((prevTasks) => prevTasks.filter((_, i) => i !== index));
-      actualTime && setTotalTime((prev)=>prev-actualTime);
+      actualTime && setTotalTime((prev) => prev - actualTime);
       toast.success("Task deleted successfully!");
     } catch (error) {
       console.error("Error deleting task:", error);
@@ -254,45 +255,6 @@ const InternUpdate = () => {
           nextRowInput?.focus();
         }
         break;
-
-      //   case "ArrowRight":
-      //   if (currentIndex < fields.length - 1) {
-      //     const nextField = fields[currentIndex + 1];
-      //     const nextInput = input.parentElement.parentElement.querySelector(
-      //       `input[name="${nextField}"], select[name="${nextField}"]`
-      //     );
-      //     nextInput?.focus();
-      //   }
-      //   break;
-      // case "ArrowLeft":
-      //   if (currentIndex > 0) {
-      //     const prevField = fields[currentIndex - 1];
-      //     const prevInput = input.parentElement.parentElement.querySelector(
-      //       `input[name="${prevField}"], select[name="${prevField}"]`
-      //     );
-      //     prevInput?.focus();
-      //   }
-      //   break;
-        // case "ArrowUp":
-        //   if (index > 0) {
-        //     const prevRowInput =
-        //       input.parentElement.parentElement.previousElementSibling?.querySelector(
-        //         `input[name="${field}"], select[name="${field}"]`
-        //       );
-        //     prevRowInput?.focus();
-        //   }
-        //   break;
-
-        // case "ArrowDown":
-        if (index < tasks.length - 1) {
-          const nextRowInput =
-            input.parentElement.parentElement.nextElementSibling?.querySelector(
-              `input[name="${field}"], select[name="${field}"]`
-            );
-          nextRowInput?.focus();
-        }
-        break;
-
       default:
         break;
     }
@@ -461,7 +423,9 @@ const InternUpdate = () => {
                   {isEditable && (
                     <td className="p-2 border border-blue-200">
                       <button
-                        onClick={() => deleteTask(task.id, index,task.actualTime)}
+                        onClick={() =>
+                          deleteTask(task.id, index, task.actualTime)
+                        }
                         className="px-2 py-1 text-red-500 rounded-md hover:text-red-600"
                       >
                         <FaTrash />
