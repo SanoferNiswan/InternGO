@@ -35,7 +35,6 @@ const Milestones = () => {
   const fetchPlanDetails = async () => {
     try {
       const response = await axios.get(`/api/plans/${planId}`);
-      console.log("response:",response.data.data);
            
       setPlanDetails(response.data.data);
       setListOfMilestone(response.data.data.milestones);

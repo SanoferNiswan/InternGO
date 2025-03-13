@@ -15,7 +15,7 @@ const authSlice = createSlice({
       Object.assign(state, action.payload); 
     
       Object.keys(action.payload).forEach((key) => {
-          Cookies.set(key, action.payload[key]==null?"":action.payload[key], { expires: 1/24, secure: true, sameSite: "Lax"});
+          Cookies.set(key, action.payload[key]==null?"":action.payload[key], { expires: 1/24, secure: false, sameSite: "Lax"});
       });
     },    
 
@@ -27,10 +27,9 @@ const authSlice = createSlice({
       console.log("Clearing auth cookies...");
     
       ["name", "token", "profilePhoto"].forEach((cookie) => {
-        console.log(`Removing cookie: ${cookie}`);
         Cookies.remove(cookie, {
           path: "/",
-          secure: true,
+          secure: false,
           sameSite: "Lax",
         });
       });

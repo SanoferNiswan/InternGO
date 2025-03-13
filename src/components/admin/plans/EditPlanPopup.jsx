@@ -96,7 +96,6 @@ const EditPlanPopup = ({ planDetails, onClose, onUpdate, token }) => {
 
   const handleUpdate = async () => {
     setUpdate(true);
-    console.log(updatedPlan);
 
     try {
       if (parseInt(updatedPlan.planDays) > 180) {
@@ -108,8 +107,6 @@ const EditPlanPopup = ({ planDetails, onClose, onUpdate, token }) => {
         `/api/plans/${planDetails?.id}/update`,
         { ...updatedPlan }
       );
-
-      console.log(response);
 
       if (response.status === 200) {
         toast.success("Plan updated successfully!");

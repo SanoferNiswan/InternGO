@@ -55,8 +55,6 @@ const Plan = () => {
 
     try {
       setIsSubmitting(true);
-      console.log(planDetails);
-      
       const response = await axios.post("/api/plans/create", planDetails);
 
       if (response.status === 201) {

@@ -33,8 +33,6 @@ import ResetPassword from "./pages/authentication/ResetPassword";
 import Help from "./pages/help/Help";
 
 const App = () => {
-  console.log();
-  
   return (
     <Router>
       <ToastContainer />

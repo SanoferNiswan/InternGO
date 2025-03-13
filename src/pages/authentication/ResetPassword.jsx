@@ -97,8 +97,6 @@ const ResetPassword = () => {
           }
         }
       );
-      console.log(response.data);
-      
       toast.success("Password reset successfully!");
       navigate("/signin", { replace: true });
     } catch (error) {

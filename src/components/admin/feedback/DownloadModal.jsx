@@ -8,9 +8,6 @@ const DownloadModal = ({ onClose, years, batches }) => {
   const [year, setYear] = useState("2025");
   const [batch, setBatch] = useState("Batch 1");
 
-  console.log("dev branch");
-  
-
   const downloadReport = async () => {
     if (!year || !batch) {
       toast.error("Please select both Year and Batch.");
@@ -24,8 +21,7 @@ const DownloadModal = ({ onClose, years, batches }) => {
         params: { token, year, batch },
         responseType: "blob",
       });
-      console.log(response);
-      
+
       const url = window.URL.createObjectURL(new Blob([response.data]));
       const link = document.createElement("a");
       link.href = url;
@@ -36,9 +32,6 @@ const DownloadModal = ({ onClose, years, batches }) => {
       toast.success("Downloaded successfully");
     } catch (error) {
         console.log(error.response);
-        console.log(token);
-        
-        
       toast.error(error.response?.data?.message || "Download failed");
     }
   };
