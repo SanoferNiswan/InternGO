@@ -1,6 +1,6 @@
 import { io } from "socket.io-client";
 
-const SOCKET_SERVER_URL = "https://interngo.onrender.com";
+const SOCKET_SERVER_URL = import.meta.env.VITE_BASE_URL;
 
 let socket;
 
