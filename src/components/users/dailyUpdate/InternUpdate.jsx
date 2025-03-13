@@ -116,15 +116,13 @@ const InternUpdate = () => {
       }
 
       if (!task.estimatedTime) {
-        toast.error("Estimated Time is required for all tasks.");
+        toast.error("Estimated Time is required for all tasks.");actualTime
         return false;
       }
 
       if (
-        task.estimatedTime > 3 ||
-        task.actualTime > 3 ||
-        task.estimatedTime < 0.5 ||
-        task.actualTime < 0
+        task.estimatedTime > 3 ||task.estimatedTime < 0 ||
+        task.actualTime > 3 ||task.actualTime < 0
       ) {
         toast.error("time should between 0.5 to 3 hours for each task");
         return false;
@@ -418,7 +416,6 @@ const InternUpdate = () => {
                   <td className="p-2 border border-blue-200">
                     <input
                       type="number"
-                      name="actualTime"
                       value={task.actualTime || ""}
                       className="w-full bg-transparent px-1 py-0.5 text-gray-700 focus:outline-none hover:border-blue-500 focus:border-b-2 border-transparent"
                       readOnly={!isEditable}

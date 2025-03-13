@@ -62,7 +62,7 @@ const App = () => {
 
         <Route
           path="/intern/*"
-          element={<RoleProtectedRoute allowedRoles={["Interns"]} />}
+          element={<RolePro tectedRoute allowedRoles={["Interns"]} />}
         >
           <Route path="daily-update" element={<DailyUpdate />} />
           <Route path="daily-update/:date" element={<InternUpdate />} />
