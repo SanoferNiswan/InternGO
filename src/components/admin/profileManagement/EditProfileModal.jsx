@@ -78,6 +78,8 @@ const EditProfileModal = ({
             className="w-full p-2 border border-gray-300 rounded-lg"
           >
             <option value="">Select Designation</option>
+            <option value="Intern Fullstack Engineer">Intern Fullstack Engineer</option>
+            <option value="Fullstack Engineer">Fullstack Engineer</option>
             <option value="Frontend">Frontend</option>
             <option value="Backend">Backend</option>
             <option value="Testing">Testing</option>
@@ -92,11 +94,12 @@ const EditProfileModal = ({
             onChange={handleInputChange}
             className="w-full p-2 border border-gray-300 rounded-lg"
           >
-            <option value={2026}>Select Year</option>
+            <option value={""}>Select Year</option>
             <option value={2023}>2023</option>
             <option value={2024}>2024</option>
             <option value={2025}>2025</option>
             <option value={2026}>2026</option>
+            <option value={2027}>2027</option>
           </select>
         </div>
 
