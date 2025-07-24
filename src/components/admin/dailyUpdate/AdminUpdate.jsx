@@ -1,19 +1,27 @@
 import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchFilters } from "../../../redux/slices/dataSlice";
-import { useParams, Navigate } from "react-router-dom";
+import { useParams, Navigate, useNavigate } from "react-router-dom";
 import axios from "../../../api/axios";
 import Select from "react-select";
+import { decodeToken } from "../../../utils/auth";
 import { addDays, isAfter, parseISO, isValid,getDay, isBefore } from "date-fns";
 import Loader from "../../Loader";
 
 const AdminUpdate = () => {
   const { date } = useParams();
+  const { token } = useSelector((state) => state.auth);
+  const { permissions } = decodeToken(token);
+
+  const hasAccess = permissions.includes("tasks.view")
+  const navigate = useNavigate();
 
   const inputDate = parseISO(date);
   if (!isValid(inputDate)) {
     return <Navigate to="/not-found" replace />;
   }
+
+  if(!hasAccess) navigate("/403");
 
   const today = new Date();
   const tomorrow = addDays(today, 1);
@@ -28,7 +36,6 @@ const AdminUpdate = () => {
     return `${day}-${month}-${year}`;
   };
 
-  const { token } = useSelector((state) => state.auth);
   const [searchInput, setSearchInput] = useState("");
   const [search, setSearch] = useState("");
   const [dailyUpdates, setDailyUpdates] = useState([]);

@@ -58,7 +58,7 @@ const DashboardLayout = () => {
     {
       name: "Daily Update",
       permission: "tasks.view",
-      path: "/admin/daily-update",
+      path: "/dashboard/daily-update",
       icon: <FaTasks />,
     },
     {

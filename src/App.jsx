@@ -57,6 +57,8 @@ const App = () => {
           <Route path="interactions" element={<Interaction />} />
           <Route path="my-profile" element={<MyProfile />} />
           <Route path="edit-profile" element={<EditProfile />} />
+          <Route path="daily-update" element={<DailyUpdates />} />
+          <Route path="daily-update/:date" element={<AdminUpdate />} />
           <Route path="*" element={<Navigate to="/not-found" replace />} />
         </Route>
 
@@ -89,8 +91,8 @@ const App = () => {
           <Route path="plans/:planId" element={<Milestones />} />
           <Route path="resources" element={<Resources />} />
           <Route path="resources/:id" element={<UserDetail />} />
-          <Route path="daily-update" element={<DailyUpdates />} />
-          <Route path="daily-update/:date" element={<AdminUpdate />} />
+          {/* <Route path="daily-update" element={<DailyUpdates />} />
+          <Route path="daily-update/:date" element={<AdminUpdate />} /> */}
           <Route path="analytics" element={<Feedback />} />
           <Route path="analytics/:interactionId" element={<InteractionFeedback />} />
           <Route path="analytics/user/:userId" element={<UserFeedback />} />
