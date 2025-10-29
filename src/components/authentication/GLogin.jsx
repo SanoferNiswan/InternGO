@@ -20,12 +20,12 @@ function GLogin() {
       const decodedData = decode(credential); 
 
       const { email, name } = decodedData;
-      const allowedDomain1 = "finestcoder.com";
+      const allowedDomain1 = "codingmart.in";
       const allowedDomain2 = "codingmart.com";
 
       if (email.split("@")[1] !== allowedDomain1 && email.split("@")[1] !== allowedDomain2) {
         toast.error(
-          "Authentication failed: invalid domain"
+          "Authentication failed: invalid domain - Try Codingmart account"
         );
         return;
       }
