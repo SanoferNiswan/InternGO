@@ -31,10 +31,10 @@ const AddUserModal = ({ onClose }) => {
 
       case "email":
         if (value.trim() === "") return "Email is required.";
-        const emailRegex = /^[^\s@]+@(codingmart\.in|codingmart\.com)$/;
+        const emailRegex = /^[^\s@]+@(codingmart\.in|codingmart\.com|finestcoder\.com)$/;
         return emailRegex.test(value)
           ? ""
-          : "Email must be from codingmart.in or codingmart.com.";
+          : "Email must be from finestcoder or codingmart.";
 
       case "password":
         if (value.trim() === "") return "Password is required.";

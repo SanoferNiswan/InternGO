@@ -33,10 +33,10 @@ const SignUp = () => {
           : "Name should contain only alphabets and spaces.";
       case "email":
         if (value.trim() === "") return "Email is required.";
-        const emailRegex = /^[^\s@]+@(codingmart\.in|codingmart\.com)$/;
+        const emailRegex = /^[^\s@]+@(codingmart\.in|codingmart\.com|finestcoder\.com)$/;
         return emailRegex.test(value)
           ? ""
-          : "Invalid email domain. Use @codingmart.in or @codingmart.com.";
+          : "Invalid email domain. Use codingmart or finestcoder account";
       case "password":
         if (value.trim() === "") return "Password is required.";
         if (value.length < 8)
